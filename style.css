@@ -305,6 +305,41 @@ body {
     color: #d0d0d0;
 }
 
+/* Cursive Signature Setup */
+.signature-container {
+    width: 100%;
+    max-width: 260px;
+    margin-top: 35px;
+    display: flex;
+    align-items: center;
+}
+
+.sig-svg {
+    width: 100%;
+    height: auto;
+}
+
+.sig-path {
+    stroke: #ff8c00;
+    stroke-width: 4.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    
+    /* Pre-allocates tracking line segments */
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    
+    /* Triggered by ScrollTrigger hook smoothly inside browser viewports */
+    animation: writeOnSignature 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes writeOnSignature {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
 /* Responsive Media Queries */
 @media(max-width: 900px) {
     .navbar {
@@ -336,5 +371,8 @@ body {
     }
     .about h2, .showreel-section h2, .contact h2 {
         font-size: 2.2rem;
+    }
+    .signature-container {
+        margin: 30px auto 0 auto;
     }
 }
