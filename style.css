@@ -305,6 +305,38 @@ body {
     color: #d0d0d0;
 }
 
+/* Premium Instagram Brand Color Shifting Link */
+.contact-link-wrapper {
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.contact-link {
+    color: #d0d0d0;
+    text-decoration: none;
+    font-size: 1.15rem;
+    font-weight: 500;
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.contact-link:hover {
+    transform: scale(1.03);
+    /* Exact Instagram Logo Gradient Mapping */
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: instagramGradientShift 3s ease infinite;
+}
+
+/* Shifts background layout smoothly to make the colors dynamic */
+@keyframes instagramGradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 /* Cursive Signature Setup */
 .signature-container {
     width: 100%;
@@ -325,12 +357,8 @@ body {
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
-    
-    /* Pre-allocates tracking line segments */
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
-    
-    /* Triggered by ScrollTrigger hook smoothly inside browser viewports */
     animation: writeOnSignature 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
