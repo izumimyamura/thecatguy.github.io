@@ -5,7 +5,7 @@ document.addEventListener("mousemove", (e) => {
     glow.style.top = e.clientY + "px";
 });
 
-// 2. Starfield Particle Logic 
+// 2. Starfield Particle System
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 
@@ -30,7 +30,7 @@ function animateStars(){
     stars.forEach(star => {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
         ctx.fill();
 
         star.y += 0.15;
@@ -43,7 +43,7 @@ function animateStars(){
 }
 animateStars();
 
-// 3. Combined Floating + 3D Mouse Tilt Animation for Cassette
+// 3. Merged Float Cycle + Mouse Interactive Tilt for Cassette
 const cassette = document.querySelector(".cassette");
 let mouseX = 0, mouseY = 0;
 
@@ -55,7 +55,7 @@ document.addEventListener("mousemove", (e) => {
 let floatFrame = 0;
 function updateCassetteTransforms() {
     floatFrame += 0.03;
-    const floatY = Math.sin(floatFrame) * 15; // Recreates the floating math perfectly
+    const floatY = Math.sin(floatFrame) * 12; // Continuous smooth floating formula
 
     if(cassette) {
         cassette.style.transform = `translateY(${floatY}px) rotateY(${mouseX}deg) rotateX(${-mouseY}deg)`;
@@ -64,7 +64,7 @@ function updateCassetteTransforms() {
 }
 updateCassetteTransforms();
 
-// 4. Magnetic Button Interaction
+// 4. Magnetic Interactive Button
 const btn = document.querySelector(".btn");
 if(btn) {
     document.addEventListener("mousemove", (e) => {
@@ -80,20 +80,21 @@ if(btn) {
     });
 }
 
-// 5. Advanced GSAP Smooth Scroll Reveals
+// 5. GSAP Entrance & Scroll Trigger Setup
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.utils.toArray("section").forEach(section => {
-    // Check if it's the hero section so it animates immediately instead of on scroll
     if(section.classList.contains('hero')) {
+        // Run immediately for crisp first-load layout reveal
         gsap.from(".reveal", {
-            y: 60,
+            y: 50,
             opacity: 0,
             duration: 1.2,
             stagger: 0.2,
             ease: "power3.out"
         });
     } else {
+        // Run modular scroll triggers for structural sections down-page
         gsap.from(section, {
             scrollTrigger: {
                 trigger: section,
@@ -101,7 +102,7 @@ gsap.utils.toArray("section").forEach(section => {
                 toggleActions: "play none none reverse"
             },
             opacity: 0,
-            y: 60,
+            y: 50,
             duration: 1.2,
             ease: "power3.out"
         });
