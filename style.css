@@ -11,9 +11,23 @@ html {
 body {
     background: #050505;
     color: white;
-    /* Premium Font Upgrade */
     font-family: 'Space Grotesk', sans-serif;
     overflow-x: hidden;
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #050505;
+}
+::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ff8c00;
 }
 
 /* Apple-Style Glass Navbar */
@@ -66,7 +80,7 @@ body {
     pointer-events: none;
 }
 
-/* Better Dynamic Mouse Glow */
+/* Enhanced Dynamic Mouse Glow */
 .cursor-glow {
     position: fixed;
     width: 350px;
@@ -92,7 +106,6 @@ body {
     position: relative;
 }
 
-/* Ambient Background Glow */
 .hero::before {
     content: "";
     position: absolute;
@@ -116,6 +129,9 @@ body {
     font-weight: 900;
     line-height: 1;
     letter-spacing: -4px;
+    background: linear-gradient(135deg, #ffffff 50%, #ff8c00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero-content p {
@@ -168,18 +184,20 @@ body {
     border-color: white;
 }
 
-/* Cassette Container (Combines float and 3D effects smoothly) */
+/* Cassette Elements */
 .cassette {
     width: 320px;
     z-index: 2;
     filter: drop-shadow(0 0 30px rgba(255, 180, 50, .4)) drop-shadow(0 0 80px rgba(255, 180, 50, .2));
-    /* Handled shifting styles smoothly inside script.js variables */
     transition: transform 0.2s ease-out; 
 }
 
-/* Generic Layout Blocks */
+/* Layout Blocks */
 .about, .showreel-section, .contact {
     padding: 140px 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .about h2, .showreel-section h2, .contact h2 {
@@ -188,11 +206,67 @@ body {
     font-weight: 700;
 }
 
-.about p, .contact p {
+/* Tech Grid Setup */
+.about-header {
     max-width: 800px;
-    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.about-subtitle {
+    font-size: 1.25rem !important;
+    line-height: 1.7;
     color: #d0d0d0;
-    font-size: 1.15rem;
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.tech-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.tech-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.tech-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ff8c00;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.tech-card p:not(.tech-tag) {
+    font-size: 1rem;
+    color: #b0b0b0;
+    line-height: 1.6;
+}
+
+.tech-card.featured {
+    background: linear-gradient(180deg, rgba(255, 140, 0, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border-color: rgba(255, 140, 0, 0.2);
+}
+
+.tech-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 140, 0, 0.4);
 }
 
 /* Video Section */
@@ -222,14 +296,16 @@ body {
     border-radius: 25px;
     object-fit: cover;
     box-shadow: 0 0 40px rgba(255, 140, 0, .15), 0 0 120px rgba(255, 140, 0, .1);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .contact p {
     margin-top: 10px;
+    font-size: 1.15rem;
+    color: #d0d0d0;
 }
 
-/* Breakpoint Fixes */
+/* Responsive Media Queries */
 @media(max-width: 900px) {
     .navbar {
         padding: 12px 20px;
@@ -241,10 +317,11 @@ body {
         flex-direction: column-reverse;
         justify-content: center;
         text-align: center;
-        padding: 120px 8% 60px 8%;
+        padding: 140px 8% 60px 8%;
     }
     .hero-content h1 {
         font-size: 4rem;
+        letter-spacing: -2px;
     }
     .hero-content::before {
         width: 120%;
@@ -253,6 +330,9 @@ body {
     .cassette {
         width: 200px;
         margin-bottom: 40px;
+    }
+    .tech-grid {
+        grid-template-columns: 1fr;
     }
     .about h2, .showreel-section h2, .contact h2 {
         font-size: 2.2rem;
