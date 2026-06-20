@@ -1,3 +1,15 @@
+// 6. Parallax Scroll Effect for Clouds (Going up faster as user scrolls down)
+window.addEventListener("scroll", () => {
+    const parallaxElements = document.querySelectorAll(".scroll-parallax");
+    const scrolled = window.pageYOffset;
+
+    parallaxElements.forEach(el => {
+        const speed = el.getAttribute("data-speed");
+        // Calculates structural offset transformation mapping
+        const yPos = -(scrolled * speed);
+        el.style.transform = `translateY(${yPos}px)`;
+    });
+});
 // 1. Mouse Glow Position Tracking
 const glow = document.querySelector(".cursor-glow");
 document.addEventListener("mousemove", (e) => {
