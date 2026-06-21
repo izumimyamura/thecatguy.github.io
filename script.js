@@ -17,7 +17,7 @@ gsap.fromTo(".video-scale-target",
             trigger: ".apple-video-container",
             start: "top top",
             end: "bottom bottom",
-            scrub: true // Locks scaling to scroll position
+            scrub: true
         }
     }
 );
