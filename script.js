@@ -1,262 +1,510 @@
-gsap.registerPlugin(ScrollTrigger);
-
-// ============================================================================
-// 1. FIXED GSAP KEYNOTE VIDEO ANIMATION TIMELINE
-// ============================================================================
-const appleTimeline = gsap.timeline({
-    scrollTrigger: {
-        trigger: ".apple-video-container",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true,
-        pin: true
-    }
-});
-
-// Scale down animation completes smoothly FIRST
-appleTimeline.fromTo(".video-scale-target", 
-    { width: "100vw", height: "100vh", borderRadius: "0px" },
-    { width: "85vw", height: "75vh", borderRadius: "36px", ease: "power1.inOut", duration: 1.5 }
-);
-
-// Sequence Text Overlays now fire strictly sequentially AFTER scaling finishes
-appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
-
-             .to(".step-2", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-2", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
-
-             .to(".step-3", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
-
-
-// ============================================================================
-// 2. GLOBAL CURSOR VECTOR SPACE & CAT MODE TRACKING
-// ============================================================================
-let isCatMode = false;
-const glow = document.getElementById("customCursor");
-const toggleInput = document.getElementById("catModeToggle");
-
-toggleInput.addEventListener("change", (e) => {
-    isCatMode = e.target.checked;
-    if (isCatMode) {
-        document.body.classList.add("cat-mode-active");
-    } else {
-        document.body.classList.remove("cat-mode-active");
-        if (cassette) cassette.style.transform = `translateY(0px)`;
-    }
-});
-
-let currentMouseX = 0, currentMouseY = 0;
-document.addEventListener("mousemove", (e) => {
-    currentMouseX = e.clientX;
-    currentMouseY = e.clientY;
-    
-    glow.style.left = currentMouseX + "px";
-    glow.style.top = currentMouseY + "px";
-});
-
-
-// ============================================================================
-// 3. HIGH-PERFORMANCE NATIVE 3D BENTO CARD TILT SCRIPT
-// ============================================================================
-const cards = document.querySelectorAll('.js-tilt-card');
-
-cards.forEach(card => {
-    const bgImage = card.querySelector('.card-bg-image');
-    
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left; 
-        const y = e.clientY - rect.top;
-        
-        const cardWidth = rect.width;
-        const cardHeight = rect.height;
-        
-        const rotateX = ((y / cardHeight) - 0.5) * -20;
-        const rotateY = ((x / cardWidth) - 0.5) * 20;
-        
-        const moveX = ((x / cardWidth) - 0.5) * -15;
-        const moveY = ((y / cardHeight) - 0.5) * -15;
-        
-        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        if (bgImage) {
-            bgImage.style.transform = `scale(1.15) translate3d(${moveX}px, ${moveY}px, -10px)`;
-        }
-    });
-    
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
-        if (bgImage) {
-            bgImage.style.transform = `scale(1.15) translate3d(0px, 0px, -10px)`;
-        }
-    });
-});
-
-
-// ============================================================================
-// 4. DUAL-STATE CANVAS RENDERING ENGINE (STARFIELD VS CAT-MATRIX RAIN)
-// ============================================================================
-const canvas = document.getElementById('stars');
-const ctx = canvas.getContext('2d');
-
-let backgroundState = "starfield"; // Options: "starfield" or "matrix"
-let inputBuffer = ""; 
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-// Starfield Init Array
-const stars = [];
-for(let i=0; i<80; i++){
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.5
-    });
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-// Cat Matrix Drops Init Array
-const catEmojis = ["🐾", "🐱", "🐈", "💡", "😺", "😸", "😽", "🐈‍⬛"];
-const fontSize = 16;
-let columns = Math.floor(window.innerWidth / fontSize);
-let drops = [];
-
-function initMatrixDrops() {
-    columns = Math.floor(window.innerWidth / fontSize);
-    drops = [];
-    for (let x = 0; x < columns; x++) {
-        drops[x] = Math.random() * -100; // Staggers entrance points nicely
-    }
-}
-initMatrixDrops();
-window.addEventListener('resize', initMatrixDrops);
-
-// Master Core Toggle Mechanism
-function toggleBackgroundMode() {
-    backgroundState = (backgroundState === "starfield") ? "matrix" : "starfield";
-    inputBuffer = ""; // Flush memory buffer completely
-    
-    if (backgroundState === "matrix") {
-        initMatrixDrops();
-    }
+html {
+    scroll-behavior: smooth;
 }
 
-// Bulleproof Character String Listener Loop
-document.addEventListener("keydown", (e) => {
-    if (e.key.length > 1) return; // Skip keys like Shift/Alt/Command
-    
-    inputBuffer += e.key.toLowerCase();
-    
-    // Strict bounding limit to last 3 keystrokes to align perfectly with "cat"
-    if (inputBuffer.length > 3) {
-        inputBuffer = inputBuffer.slice(-3);
-    }
-    
-    if (inputBuffer === "cat") {
-        toggleBackgroundMode();
-    }
-});
-
-// Triple Click Signature Fallback Trigger
-let sigClickCount = 0;
-const sigContainer = document.querySelector(".signature-container");
-if (sigContainer) {
-    sigContainer.style.cursor = "pointer";
-    sigContainer.addEventListener("click", () => {
-        sigClickCount++;
-        if (sigClickCount >= 3) {
-            toggleBackgroundMode();
-            sigClickCount = 0; 
-        }
-    });
+body {
+    background: #000000;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
 }
 
-// Frame Animation Pipeline Loops
-function animateBackgroundPipeline(){
-    if (backgroundState === "starfield") {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(star => {
-            ctx.beginPath();
-            ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-            ctx.fill();
-
-            star.y += 0.1;
-            if(star.y > canvas.height){
-                star.y = 0;
-                star.x = Math.random() * canvas.width;
-            }
-        });
-    } else if (backgroundState === "matrix") {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; // Creates the iconic alpha trail fade out
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = "#ff8c00"; // Signature Orange Amber Glow
-        ctx.font = fontSize + "px Space Grotesk, sans-serif";
-        
-        for (let i = 0; i < drops.length; i++) {
-            const text = catEmojis[Math.floor(Math.random() * catEmojis.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-    requestAnimationFrame(animateBackgroundPipeline);
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
 }
-animateBackgroundPipeline();
-
-
-// ============================================================================
-// 5. DUAL-STATE CASSETTE TAPE TRACKING MODULE (STALKING VS FLOATING)
-// ============================================================================
-const cassette = document.querySelector(".cassette");
-let floatFrame = 0;
-
-function updateCassette() {
-    floatFrame += 0.02;
-    
-    if (cassette) {
-        if (isCatMode) {
-            // Cat Stalking Behavior: Fast, interactive angular targeting vectors
-            const rect = cassette.getBoundingClientRect();
-            const cassetteCenterX = rect.left + rect.width / 2;
-            const cassetteCenterY = rect.top + rect.height / 2;
-            
-            const targetX = (currentMouseX - cassetteCenterX) * 0.12;
-            const targetY = (currentMouseY - cassetteCenterY) * -0.12;
-            
-            cassette.style.transform = `translate3d(${targetX * 0.2}px, ${-targetY * 0.2}px, 0) rotateY(${targetX}deg) rotateX(${targetY}deg)`;
-        } else {
-            // Normal Behavior: Relaxed, undulating floating timeline loop
-            const floatY = Math.sin(floatFrame) * 10;
-            const normalizedX = (currentMouseX / window.innerWidth - 0.5) * 20;
-            const normalizedY = (currentMouseY / window.innerHeight - 0.5) * 20;
-            cassette.style.transform = `translateY(${floatY}px) rotateY(${normalizedX}deg) rotateX(${-normalizedY}deg)`;
-        }
-    }
-    requestAnimationFrame(updateCassette);
+::-webkit-scrollbar-track {
+    background: #000000;
 }
-updateCassette();
+::-webkit-scrollbar-thumb {
+    background: #1c1c1e;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ff8c00;
+}
 
+/* Apple-Style Glass Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 1000;
+}
 
-// ============================================================================
-// 6. SIMPLE CLOUD SCROLL PARALLAX MAPPER
-// ============================================================================
-window.addEventListener("scroll", () => {
-    const parallaxElements = document.querySelectorAll(".scroll-parallax");
-    const scrolled = window.pageYOffset;
+.logo {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    font-size: 1.1rem;
+}
 
-    parallaxElements.forEach(el => {
-        const speed = el.getAttribute("data-speed");
-        const yPos = -(scrolled * speed);
-        el.style.transform = `translateY(${yPos}px)`;
-    });
-});
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #f5f5f7;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+}
+
+/* Cat Mode Toggle Button Switch */
+.cat-toggle-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 28px;
+    cursor: pointer;
+}
+
+.cat-toggle-wrapper input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.cat-slider {
+    position: absolute;
+    inset: 0;
+    background-color: #2c2c2e;
+    border-radius: 34px;
+    transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.slider-icon {
+    position: absolute;
+    left: 4px;
+    bottom: 2px;
+    font-size: 0.95rem;
+    transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.cat-toggle-wrapper input:checked + .cat-slider {
+    background-color: #ff8c00;
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
+}
+
+.cat-toggle-wrapper input:checked + .cat-slider .slider-icon {
+    transform: translateX(24px) rotate(360deg);
+}
+
+/* Canvas & Cursor Engine */
+#stars {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.cursor-glow {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 140, 0, 0.08), rgba(255, 140, 0, 0));
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: width 0.3s, height 0.3s;
+}
+
+/* Cat Mode Vector SVG Paw Cursor Override */
+body.cat-mode-active .cursor-glow {
+    width: 45px;
+    height: 45px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff8c00'><path d='M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1 2.08V22h2v-5.92c4.42-.49 8-4.24 8-8.83h-2c0 3.86-3.14 7-7 7s-7-3.14-7-7H3c0 4.59 3.58 8.34 8 8.83z'/></svg>") no-repeat center;
+    background-size: contain;
+    transform: translate(-20px, -20px);
+}
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10%;
+    position: relative;
+    background: #000000;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 7.5rem;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -4px;
+    background: linear-gradient(180deg, #ffffff 40%, #a1a1a6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    margin-top: 15px;
+    font-size: 1.5rem;
+    color: #86868b;
+    font-weight: 400;
+}
+
+.btn-container {
+    position: relative;
+    display: inline-block;
+    z-index: 10;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 35px;
+    padding: 12px 28px;
+    background: #0071e3;
+    color: white;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.95rem;
+    border-radius: 30px;
+    transition: background 0.2s, transform 0.1s ease-out;
+}
+
+.btn:hover {
+    background: #147ce5;
+}
+
+/* Layout Structural Wrapper forcing Cassette asset Landscape Horizontal */
+.cassette-frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(90deg); /* Change to -90deg if your source text orientation fields are flipped */
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
+    z-index: 2;
+}
+
+.cassette {
+    width: 320px;
+    transition: transform 0.1s ease-out;
+    will-change: transform;
+}
+
+/* Cinematic Video Timeline Components */
+.apple-video-container {
+    position: relative;
+    height: 450vh; 
+    background: #000000;
+}
+
+.video-sticky-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-scale-target {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    will-change: transform, border-radius;
+}
+
+.featured-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0px;
+}
+
+.video-overlay-text {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: transform, opacity;
+}
+
+.video-overlay-text h2 {
+    font-size: 5rem;
+    font-weight: 700;
+    letter-spacing: -2.5px;
+    margin-bottom: 12px;
+    background: linear-gradient(180deg, #ffffff 30%, #a1a1a6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.video-overlay-text p {
+    font-size: 1.4rem;
+    color: #e8e8ed;
+    max-width: 600px;
+    line-height: 1.4;
+}
+
+/* Clouds Elements Config */
+.cloud {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.1;
+    filter: blur(4px);
+    z-index: 1;
+}
+
+.cloud svg {
+    width: 100%;
+    height: auto;
+    fill: #ffffff;
+}
+
+.cloud-top { width: 400px; top: 15%; left: -5%; }
+.cloud-bottom { width: 450px; top: -10%; right: -5%; }
+
+/* Main Section Blocks */
+.about, .contact {
+    padding: 140px 10%;
+    background: #000000;
+    position: relative;
+}
+
+.about h2, .contact h2 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+}
+
+.about-header {
+    max-width: 800px;
+    margin-bottom: 50px;
+}
+
+.about-subtitle {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: #86868b;
+}
+
+/* Apple Bento Layout Grid */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin-top: 40px;
+    perspective: 1000px;
+}
+
+.tech-card {
+    position: relative;
+    background: #1c1c1e;
+    border-radius: 28px;
+    overflow: hidden;
+    z-index: 1;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.card-content {
+    position: relative;
+    padding: 40px 30px;
+    z-index: 3;
+    pointer-events: none;
+    transform: translateZ(30px);
+}
+
+.card-bg-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    z-index: 2;
+    transform: scale(1.15) translateZ(-10px);
+    transition: opacity 0.4s ease;
+    will-change: transform;
+}
+
+.card-bg-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+.tech-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.tech-tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #ff8c00;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.tech-card p:not(.tech-tag) {
+    font-size: 1.05rem;
+    color: #a1a1a6;
+    line-height: 1.5;
+}
+
+.tech-card.featured {
+    background: linear-gradient(180deg, #2c2c2e 0%, #1c1c1e 100%);
+}
+
+.tech-card:hover .card-bg-image {
+    opacity: 1;
+}
+
+/* Social Anchor Formats */
+.contact p {
+    font-size: 1.3rem;
+    color: #86868b;
+}
+
+.contact-link-wrapper {
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.contact-link {
+    color: #f5f5f7;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 500;
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.contact-link:hover {
+    transform: scale(1.02);
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: instagramGradientShift 3s ease infinite;
+}
+
+@keyframes instagramGradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Premium Image Reference Signature Vector Layout Typography Block */
+.signature-container {
+    width: 100%;
+    max-width: 280px;
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.sig-svg { 
+    width: 100%; 
+    height: auto; 
+}
+
+.sig-path {
+    stroke: #ff8c00; 
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+.sig-title-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: 6px;
+    color: #ffffff;
+    margin-top: -30px; /* Pulls text frame seamlessly tight under signature trails */
+    text-transform: uppercase;
+    opacity: 0; /* JS Timeline reveals this smoothly */
+}
+
+.sig-subtitle-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #86868b;
+    margin-top: 2px;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 4px;
+    display: inline-block;
+    width: 110px;
+    opacity: 0;
+}
+
+/* Responsive Viewports */
+@media(max-width: 900px) {
+    .navbar { padding: 15px 5%; }
+    .nav-controls { gap: 15px; }
+    .hero {
+        flex-direction: column-reverse;
+        justify-content: center;
+        text-align: center;
+        padding: 120px 5% 40px 5%;
+    }
+    .hero-content h1 { font-size: 4.2rem; letter-spacing: -2px; }
+    .cassette-frame { margin-bottom: 30px; }
+    .cassette { width: 200px; }
+    .tech-grid { grid-template-columns: 1fr; gap: 16px; }
+    .card-content { padding: 24px 16px; }
+    .about h2, .contact h2 { font-size: 2.6rem; }
+    .video-overlay-text h2 { font-size: 2.3rem; letter-spacing: -1px; }
+    .video-overlay-text p { font-size: 1.1rem; }
+}
