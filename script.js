@@ -11,13 +11,11 @@ const appleTimeline = gsap.timeline({
     }
 });
 
-// Scale down animation completes smoothly FIRST
 appleTimeline.fromTo(".video-scale-target", 
     { width: "100vw", height: "100vh", borderRadius: "0px" },
     { width: "85vw", height: "75vh", borderRadius: "36px", ease: "power1.inOut", duration: 1.5 }
 );
 
-// Sequence Text Overlays now fire strictly sequentially AFTER scaling finishes
 appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
              .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
 
@@ -28,7 +26,7 @@ appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
              .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
 
 
-// 2. Global State & Custom Cursor Tracking Loop
+// 2. Global Cursor Vector Space Coordinate Tracking 
 let isCatMode = false;
 const glow = document.getElementById("customCursor");
 const toggleInput = document.getElementById("catModeToggle");
@@ -53,7 +51,7 @@ document.addEventListener("mousemove", (e) => {
 });
 
 
-// 3. Native High-Performance 3D Bento Card Tilt System
+// 3. High-Performance Native 3D Bento Card Tilt Script
 const cards = document.querySelectorAll('.js-tilt-card');
 
 cards.forEach(card => {
@@ -61,17 +59,15 @@ cards.forEach(card => {
     
     card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left; // Mouse position inside card coordinates
+        const x = e.clientX - rect.left; 
         const y = e.clientY - rect.top;
         
         const cardWidth = rect.width;
         const cardHeight = rect.height;
         
-        // Calculate tilt multipliers (-15deg to 15deg max)
         const rotateX = ((y / cardHeight) - 0.5) * -20;
         const rotateY = ((x / cardWidth) - 0.5) * 20;
         
-        // Dynamic translation offset for interior parallax shift
         const moveX = ((x / cardWidth) - 0.5) * -15;
         const moveY = ((y / cardHeight) - 0.5) * -15;
         
@@ -82,7 +78,6 @@ cards.forEach(card => {
     });
     
     card.addEventListener('mouseleave', () => {
-        // Reset positioning softly when mouse clears viewport bounds
         card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
         if (bgImage) {
             bgImage.style.transform = `scale(1.15) translate3d(0px, 0px, -10px)`;
@@ -91,9 +86,12 @@ cards.forEach(card => {
 });
 
 
-// 4. Custom Starfield Rendering Pipeline
+// 4. Dual-State Canvas Rendering Engine (Starfield vs Cat-Matrix Rain)
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
+
+let backgroundState = "starfield"; // Options: "starfield" or "matrix"
+let inputBuffer = ""; // Tracking strings for key strings
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -102,6 +100,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
+// Star Matrix Init Setup
 const stars = [];
 for(let i=0; i<80; i++){
     stars.push({
@@ -111,26 +110,72 @@ for(let i=0; i<80; i++){
     });
 }
 
-function animateStars(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.fill();
+// Cat Matrix Drops Init Setup
+const catEmojis = ["🐾", "🐱", "🐈", "😺", "😸", "😽", "🐈‍⬛"];
+const fontSize = 16;
+let columns = Math.floor(window.innerWidth / fontSize);
+let drops = [];
 
-        star.y += 0.1;
-        if(star.y > canvas.height){
-            star.y = 0;
-            star.x = Math.random() * canvas.width;
-        }
-    });
-    requestAnimationFrame(animateStars);
+function initMatrixDrops() {
+    columns = Math.floor(window.innerWidth / fontSize);
+    drops = [];
+    for (let x = 0; x < columns; x++) {
+        drops[x] = Math.random() * -100; // Staggers drop heights on trigger initialization
+    }
 }
-animateStars();
+initMatrixDrops();
+window.addEventListener('resize', initMatrixDrops);
+
+// Listening for hidden string typing word trigger
+document.addEventListener("keydown", (e) => {
+    inputBuffer += e.key.toLowerCase();
+    inputBuffer = inputBuffer.slice(-10); // Hold last ten typed chars safely
+    
+    if (inputBuffer.includes("cat")) {
+        backgroundState = (backgroundState === "starfield") ? "matrix" : "starfield";
+        inputBuffer = ""; // Flush sequence buffer state immediately
+    }
+});
+
+function animateBackgroundPipeline(){
+    if (backgroundState === "starfield") {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(star => {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.fill();
+
+            star.y += 0.1;
+            if(star.y > canvas.height){
+                star.y = 0;
+                star.x = Math.random() * canvas.width;
+            }
+        });
+    } else if (backgroundState === "matrix") {
+        // Creates alpha trail sweep overlay effect
+        ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = "#ff8c00"; // Deep Premium Amber accent tint coloring
+        ctx.font = fontSize + "px Space Grotesk, sans-serif";
+        
+        for (let i = 0; i < drops.length; i++) {
+            const text = catEmojis[Math.floor(Math.random() * catEmojis.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+    requestAnimationFrame(animateBackgroundPipeline);
+}
+animateBackgroundPipeline();
 
 
-// 5. Dual-State Cassette Tape Tracking Calculations (Stalking vs Floating)
+// 5. Dual-State Cassette Tracking Matrix Vectors
 const cassette = document.querySelector(".cassette");
 let floatFrame = 0;
 
@@ -139,7 +184,6 @@ function updateCassette() {
     
     if (cassette) {
         if (isCatMode) {
-            // Cat Stalking Behavior: Cassette actively turns and snaps tightly toward coordinate vectors
             const rect = cassette.getBoundingClientRect();
             const cassetteCenterX = rect.left + rect.width / 2;
             const cassetteCenterY = rect.top + rect.height / 2;
@@ -149,7 +193,6 @@ function updateCassette() {
             
             cassette.style.transform = `translate3d(${targetX * 0.2}px, ${-targetY * 0.2}px, 0) rotateY(${targetX}deg) rotateX(${targetY}deg)`;
         } else {
-            // Normal Vibe: Smooth, relaxed wave oscillation
             const floatY = Math.sin(floatFrame) * 10;
             const normalizedX = (currentMouseX / window.innerWidth - 0.5) * 20;
             const normalizedY = (currentMouseY / window.innerHeight - 0.5) * 20;
@@ -161,7 +204,7 @@ function updateCassette() {
 updateCassette();
 
 
-// 6. Simple Cloud Parallax System Map
+// 6. Simple Cloud Scroll Parallax
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
     const scrolled = window.pageYOffset;
