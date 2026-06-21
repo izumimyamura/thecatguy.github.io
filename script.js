@@ -1,41 +1,97 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// 1. Unified Master Keynote Video Animation Timeline
+// 1. Fixed GSAP Keynote Video Animation Timeline
 const appleTimeline = gsap.timeline({
     scrollTrigger: {
         trigger: ".apple-video-container",
         start: "top top",
         end: "bottom bottom",
         scrub: true,
-        pin: true // Locks everything in position throughout the timeline run
+        pin: true
     }
 });
 
-// Phase A: Video window scales down from fullscreen to a rounded card view
+// Scale down animation completes smoothly FIRST
 appleTimeline.fromTo(".video-scale-target", 
     { width: "100vw", height: "100vh", borderRadius: "0px" },
-    { width: "85vw", height: "75vh", borderRadius: "36px", ease: "none" }
+    { width: "85vw", height: "75vh", borderRadius: "36px", ease: "power1.inOut", duration: 1.5 }
 );
 
-// Phase B: Sequence Text Overlays sequentially (Fade in -> Stand Still -> Fade out)
+// Sequence Text Overlays now fire strictly sequentially AFTER scaling finishes
 appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.5") // slight hold gap
+             .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
 
              .to(".step-2", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-2", { opacity: 0, y: -20, duration: 1 }, "+=0.5")
+             .to(".step-2", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
 
              .to(".step-3", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.5");
+             .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
 
 
-// 2. Mouse Dynamic Light Tracking
-const glow = document.querySelector(".cursor-glow");
-document.addEventListener("mousemove", (e) => {
-    glow.style.left = e.clientX + "px";
-    glow.style.top = e.clientY + "px";
+// 2. Global State & Custom Cursor Tracking Loop
+let isCatMode = false;
+const glow = document.getElementById("customCursor");
+const toggleInput = document.getElementById("catModeToggle");
+
+toggleInput.addEventListener("change", (e) => {
+    isCatMode = e.target.checked;
+    if (isCatMode) {
+        document.body.classList.add("cat-mode-active");
+    } else {
+        document.body.classList.remove("cat-mode-active");
+        if (cassette) cassette.style.transform = `translateY(0px)`;
+    }
 });
 
-// 3. Canvas Starfield System
+let currentMouseX = 0, currentMouseY = 0;
+document.addEventListener("mousemove", (e) => {
+    currentMouseX = e.clientX;
+    currentMouseY = e.clientY;
+    
+    glow.style.left = currentMouseX + "px";
+    glow.style.top = currentMouseY + "px";
+});
+
+
+// 3. Native High-Performance 3D Bento Card Tilt System
+const cards = document.querySelectorAll('.js-tilt-card');
+
+cards.forEach(card => {
+    const bgImage = card.querySelector('.card-bg-image');
+    
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left; // Mouse position inside card coordinates
+        const y = e.clientY - rect.top;
+        
+        const cardWidth = rect.width;
+        const cardHeight = rect.height;
+        
+        // Calculate tilt multipliers (-15deg to 15deg max)
+        const rotateX = ((y / cardHeight) - 0.5) * -20;
+        const rotateY = ((x / cardWidth) - 0.5) * 20;
+        
+        // Dynamic translation offset for interior parallax shift
+        const moveX = ((x / cardWidth) - 0.5) * -15;
+        const moveY = ((y / cardHeight) - 0.5) * -15;
+        
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        if (bgImage) {
+            bgImage.style.transform = `scale(1.15) translate3d(${moveX}px, ${moveY}px, -10px)`;
+        }
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        // Reset positioning softly when mouse clears viewport bounds
+        card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+        if (bgImage) {
+            bgImage.style.transform = `scale(1.15) translate3d(0px, 0px, -10px)`;
+        }
+    });
+});
+
+
+// 4. Custom Starfield Rendering Pipeline
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 
@@ -73,27 +129,39 @@ function animateStars(){
 }
 animateStars();
 
-// 4. Cassette Floating Calculations
+
+// 5. Dual-State Cassette Tape Tracking Calculations (Stalking vs Floating)
 const cassette = document.querySelector(".cassette");
-let mouseX = 0, mouseY = 0;
-
-document.addEventListener("mousemove", (e) => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
-});
-
 let floatFrame = 0;
+
 function updateCassette() {
     floatFrame += 0.02;
-    const floatY = Math.sin(floatFrame) * 10;
-    if(cassette) {
-        cassette.style.transform = `translateY(${floatY}px) rotateY(${mouseX}deg) rotateX(${-mouseY}deg)`;
+    
+    if (cassette) {
+        if (isCatMode) {
+            // Cat Stalking Behavior: Cassette actively turns and snaps tightly toward coordinate vectors
+            const rect = cassette.getBoundingClientRect();
+            const cassetteCenterX = rect.left + rect.width / 2;
+            const cassetteCenterY = rect.top + rect.height / 2;
+            
+            const targetX = (currentMouseX - cassetteCenterX) * 0.12;
+            const targetY = (currentMouseY - cassetteCenterY) * -0.12;
+            
+            cassette.style.transform = `translate3d(${targetX * 0.2}px, ${-targetY * 0.2}px, 0) rotateY(${targetX}deg) rotateX(${targetY}deg)`;
+        } else {
+            // Normal Vibe: Smooth, relaxed wave oscillation
+            const floatY = Math.sin(floatFrame) * 10;
+            const normalizedX = (currentMouseX / window.innerWidth - 0.5) * 20;
+            const normalizedY = (currentMouseY / window.innerHeight - 0.5) * 20;
+            cassette.style.transform = `translateY(${floatY}px) rotateY(${normalizedX}deg) rotateX(${-normalizedY}deg)`;
+        }
     }
     requestAnimationFrame(updateCassette);
 }
 updateCassette();
 
-// 5. Parallax Speed Map for Clouds
+
+// 6. Simple Cloud Parallax System Map
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
     const scrolled = window.pageYOffset;
