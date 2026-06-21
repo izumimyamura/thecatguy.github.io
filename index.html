@@ -15,18 +15,25 @@
 
     <nav class="navbar">
         <div class="logo">THE CATGUY</div>
-        <div class="nav-links">
-            <a href="#hero">Home</a>
-            <a href="#about">About</a>
-            <a href="#showreel">Showreel</a>
-            <a href="#contact">Contact</a>
+        <div class="nav-controls">
+            <div class="nav-links">
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
+                <a href="#showreel">Showreel</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <label class="cat-toggle-wrapper">
+                <input type="checkbox" id="catModeToggle">
+                <span class="cat-slider">
+                    <span class="slider-icon">🐾</span>
+                </span>
+            </label>
         </div>
     </nav>
 
     <canvas id="stars"></canvas>
-    <div class="cursor-glow"></div>
+    <div class="cursor-glow" id="customCursor"></div>
 
-    <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-content">
             <h1 class="reveal">CAT GUY</h1>
@@ -44,7 +51,6 @@
         </div>
     </section>
 
-    <!-- Apple-Style Scroll Video Container with Sequential Typography Overlays -->
     <section class="apple-video-container" id="showreel">
         <div class="video-sticky-wrapper">
             <div class="video-scale-target">
@@ -52,7 +58,6 @@
                     <source src="video.mov" type="video/mp4">
                 </video>
                 
-                <!-- Sequential Text Overlays placed safely above the canvas view -->
                 <div class="video-overlay-text step-1">
                     <h2>Visual Perfection.</h2>
                     <p>Every frame calibrated for maximum engagement.</p>
@@ -71,7 +76,6 @@
         </div>
     </section>
 
-    <!-- About Section with Image-Hover Bento Grid Layout -->
     <section class="about" id="about">
         <div class="about-header">
             <h2>About Me</h2>
@@ -82,7 +86,7 @@
         </div>
 
         <div class="tech-grid">
-            <div class="tech-card featured">
+            <div class="tech-card featured js-tilt-card">
                 <div class="card-bg-image" style="background-image: url('davinci-preview.jpg');"></div>
                 <div class="card-content">
                     <h3>DaVinci Resolve</h3>
@@ -91,7 +95,7 @@
                 </div>
             </div>
             
-            <div class="tech-card">
+            <div class="tech-card js-tilt-card">
                 <div class="card-bg-image" style="background-image: url('ae-preview.jpg');"></div>
                 <div class="card-content">
                     <h3>After Effects</h3>
@@ -100,7 +104,7 @@
                 </div>
             </div>
             
-            <div class="tech-card">
+            <div class="tech-card js-tilt-card">
                 <div class="card-bg-image" style="background-image: url('premiere-preview.jpg');"></div>
                 <div class="card-content">
                     <h3>Premiere & CapCut</h3>
@@ -111,7 +115,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="cloud cloud-bottom scroll-parallax" data-speed="-0.5">
             <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
