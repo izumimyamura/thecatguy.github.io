@@ -1,7 +1,7 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // ============================================================================
-// 1. FIXED GSAP KEYNOTE VIDEO ANIMATION TIMELINE
+// 1. DYNAMIC GSAP SCROLL VIDEO ANIMATION TIMELINE
 // ============================================================================
 const appleTimeline = gsap.timeline({
     scrollTrigger: {
@@ -13,13 +13,11 @@ const appleTimeline = gsap.timeline({
     }
 });
 
-// Scale down window frame finishes smoothly FIRST
 appleTimeline.fromTo(".video-scale-target", 
     { width: "100vw", height: "100vh", borderRadius: "0px" },
     { width: "85vw", height: "75vh", borderRadius: "36px", ease: "power1.inOut", duration: 1.5 }
 );
 
-// Sequence Overlays fire sequentially strictly AFTER window scaling reaches resting state
 appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
              .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
 
@@ -31,7 +29,7 @@ appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
 
 
 // ============================================================================
-// 2. GLOBAL CURSUR SYSTEMS & STATE MATRIX TRACKING
+// 2. CURSOR SYSTEMS & MULTI-DEVICE COORDINATE TRACKING LOOP
 // ============================================================================
 let isCatMode = false;
 const glow = document.getElementById("customCursor");
@@ -47,28 +45,41 @@ toggleInput.addEventListener("change", (e) => {
     }
 });
 
-let currentMouseX = 0, currentMouseY = 0;
-document.addEventListener("mousemove", (e) => {
-    currentMouseX = e.clientX;
-    currentMouseY = e.clientY;
-    
+let currentMouseX = window.innerWidth / 2;
+let currentMouseY = window.innerHeight / 2;
+
+function updateGlowPosition(x, y) {
+    currentMouseX = x;
+    currentMouseY = y;
     glow.style.left = currentMouseX + "px";
     glow.style.top = currentMouseY + "px";
+}
+
+// Track standard mouse movements
+document.addEventListener("mousemove", (e) => {
+    updateGlowPosition(e.clientX, e.clientY);
 });
 
+// Mobile Touch Tracking Override (Snaps cursor directly beneath finger placement)
+document.addEventListener("touchmove", (e) => {
+    if(e.touches.length > 0) {
+        updateGlowPosition(e.touches[0].clientX, e.touches[0].clientY);
+    }
+}, { passive: true });
+
 
 // ============================================================================
-// 3. HIGH-PERFORMANCE NATIVE 3D BENTO CARD TILT ENGINE
+// 3. HYBRID 3D TILT ENGINE (MOUSE HOVER & MOBILE TOUCH GESTURES)
 // ============================================================================
-const cards = document.querySelectorAll('.js-tilt-card');
+const cards = document.querySelectorAll('.js-tilt-card, .portfolio-card');
 
 cards.forEach(card => {
     const bgImage = card.querySelector('.card-bg-image');
     
-    card.addEventListener('mousemove', (e) => {
+    function processTiltCalculation(clientX, clientY) {
         const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left; 
-        const y = e.clientY - rect.top;
+        const x = clientX - rect.left; 
+        const y = clientY - rect.top;
         
         const cardWidth = rect.width;
         const cardHeight = rect.height;
@@ -83,19 +94,31 @@ cards.forEach(card => {
         if (bgImage) {
             bgImage.style.transform = `scale(1.15) translate3d(${moveX}px, ${moveY}px, -10px)`;
         }
-    });
+    }
     
-    card.addEventListener('mouseleave', () => {
+    function resetTiltState() {
         card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
         if (bgImage) {
             bgImage.style.transform = `scale(1.15) translate3d(0px, 0px, -10px)`;
         }
-    });
+    }
+
+    // Standard Desktop Hover Bounds
+    card.addEventListener('mousemove', (e) => processTiltCalculation(e.clientX, e.clientY));
+    card.addEventListener('mouseleave', resetTiltState);
+
+    // Mobile Swipe/Touch Listeners
+    card.addEventListener('touchmove', (e) => {
+        if(e.touches.length > 0) {
+            processTiltCalculation(e.touches[0].clientX, e.touches[0].clientY);
+        }
+    }, { passive: true });
+    card.addEventListener('touchend', resetTiltState);
 });
 
 
 // ============================================================================
-// 4. CANVAS RENDERING ENGINE (STARFIELD VS BULLETPROOF CAT-MATRIX RAIN)
+// 4. CANVAS RENDERING ENGINE (STARFIELD VS CAT-MATRIX RAIN)
 // ============================================================================
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
@@ -110,9 +133,8 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// Starfield Init Arrays
 const stars = [];
-for(let i=0; i<80; i++){
+for(let i=0; i<60; i++){ // Kept slightly lower for processing efficiency on older phones
     stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -120,7 +142,6 @@ for(let i=0; i<80; i++){
     });
 }
 
-// Matrix Cat Mode Drops Init Arrays
 const catEmojis = ["🐾", "🐱", "🐈", "💡", "😺", "😸", "😽", "🐈‍⬛"];
 const fontSize = 16;
 let columns = Math.floor(window.innerWidth / fontSize);
@@ -136,47 +157,37 @@ function initMatrixDrops() {
 initMatrixDrops();
 window.addEventListener('resize', initMatrixDrops);
 
-// Master Core Mode Toggle Mechanics Switchboard
 function toggleBackgroundMode() {
     backgroundState = (backgroundState === "starfield") ? "matrix" : "starfield";
-    inputBuffer = ""; // Flush memory trace immediately
-    
+    inputBuffer = ""; 
     if (backgroundState === "matrix") {
         initMatrixDrops();
     }
 }
 
-// Bulletproof Background String Typing Sequence Listener
 document.addEventListener("keydown", (e) => {
-    if (e.key.length > 1) return; // Skip function system keys like Shift/Alt
-    
+    if (e.key.length > 1) return; 
     inputBuffer += e.key.toLowerCase();
-    
-    // Keep string trace down explicitly to 3 character spaces
-    if (inputBuffer.length > 3) {
-        inputBuffer = inputBuffer.slice(-3);
-    }
-    
-    if (inputBuffer === "cat") {
-        toggleBackgroundMode();
-    }
+    if (inputBuffer.length > 3) inputBuffer = inputBuffer.slice(-3);
+    if (inputBuffer === "cat") toggleBackgroundMode();
 });
 
-// Triple Click Core Emergency Fallback Trigger Map (Sig Container)
+// Triple Tap/Click Support for Desktop & Mobile Formats
 let sigClickCount = 0;
 const sigContainer = document.querySelector(".signature-container");
 if (sigContainer) {
     sigContainer.style.cursor = "pointer";
-    sigContainer.addEventListener("click", () => {
+    const handleSignatureActivation = () => {
         sigClickCount++;
         if (sigClickCount >= 3) {
             toggleBackgroundMode();
             sigClickCount = 0; 
         }
-    });
+    };
+    sigContainer.addEventListener("click", handleSignatureActivation);
+    sigContainer.addEventListener("touchstart", handleSignatureActivation, { passive: true });
 }
 
-// Main Canvas Render Animate Loop Block
 function animateBackgroundPipeline(){
     if (backgroundState === "starfield") {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -193,7 +204,7 @@ function animateBackgroundPipeline(){
             }
         });
     } else if (backgroundState === "matrix") {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; // Creates iconic trailing render sweep glow lines
+        ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
         ctx.fillStyle = "#ff8c00"; 
@@ -215,7 +226,7 @@ animateBackgroundPipeline();
 
 
 // ============================================================================
-// 5. DUAL-STATE CASSETTE TAPE TRACKING VECTOR LOOPS
+// 5. DUAL-STATE CASSETTE TAPE TRACKING VECTOR ENGINE
 // ============================================================================
 const cassette = document.querySelector(".cassette");
 let floatFrame = 0;
@@ -225,7 +236,6 @@ function updateCassette() {
     
     if (cassette) {
         if (isCatMode) {
-            // Stalking Vector Engine: Snaps tightly towards crosshair fields
             const rect = cassette.getBoundingClientRect();
             const cassetteCenterX = rect.left + rect.width / 2;
             const cassetteCenterY = rect.top + rect.height / 2;
@@ -235,7 +245,6 @@ function updateCassette() {
             
             cassette.style.transform = `translate3d(${targetX * 0.2}px, ${-targetY * 0.2}px, 0) rotateY(${targetX}deg) rotateX(${targetY}deg)`;
         } else {
-            // Normal Vector Engine: Undulating lazy wave loops
             const floatY = Math.sin(floatFrame) * 10;
             const normalizedX = (currentMouseX / window.innerWidth - 0.5) * 20;
             const normalizedY = (currentMouseY / window.innerHeight - 0.5) * 20;
@@ -248,7 +257,7 @@ updateCassette();
 
 
 // ============================================================================
-// 6. CLOUD PARALLAX SYSTEM MAPPER
+// 6. CLOUD PARALLAX ENGINE
 // ============================================================================
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
@@ -269,37 +278,88 @@ const signaturePath = document.querySelector(".sig-path");
 
 if (signaturePath) {
     const pathLength = signaturePath.getTotalLength();
-    
-    // Core structural dash allocations initialization
     signaturePath.style.strokeDasharray = pathLength;
     signaturePath.style.strokeDashoffset = pathLength;
 
-    // Build standalone endless timeline system loop
     const signatureTimeline = gsap.timeline({ repeat: -1 });
 
     signatureTimeline
-        // Force flush reset timeline to baseline hidden states
         .set(signaturePath, { strokeDashoffset: pathLength })
-        // Draw out vector script lines flawlessly over 2.5s duration
-        .to(signaturePath, { 
-            strokeDashoffset: 0, 
-            duration: 2.5, 
-            ease: "power2.inOut" 
-        })
-        // Fade subtitle typography up precisely as stroke draws close to final target points
-        .fromTo([".sig-title-text", ".sig-subtitle-text"], 
-            { opacity: 0 }, 
-            { opacity: 1, duration: 0.5, stagger: 0.1 }, 
-            "-=0.5"
-        )
-        // Hold full signature block intact on frame view for precisely 5.0 seconds
+        .to(signaturePath, { strokeDashoffset: 0, duration: 2.5, ease: "power2.inOut" })
+        .fromTo([".sig-title-text", ".sig-subtitle-text"], { opacity: 0 }, { opacity: 1, duration: 0.5, stagger: 0.1 }, "-=0.5")
         .to({}, { duration: 5 })
-        // Clear text typography markers softly away before wipe trace actions trigger
         .to([".sig-title-text", ".sig-subtitle-text"], { opacity: 0, duration: 0.3 })
-        // Clean wipe tracing vector path backwards to hide it before loop recursion triggers
-        .to(signaturePath, { 
-            strokeDashoffset: pathLength, 
-            duration: 1.2, 
-            ease: "power2.in" 
+        .to(signaturePath, { strokeDashoffset: pathLength, duration: 1.2, ease: "power2.in" });
+}
+
+
+// ============================================================================
+// 8. INTERACTIVE ACCORDION TOGGLE CODE SETUP
+// ============================================================================
+const faqQuestions = document.querySelectorAll('.faq-question');
+
+faqQuestions.forEach(question => {
+    question.addEventListener('click', () => {
+        const item = question.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        
+        document.querySelectorAll('.faq-item').forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+                otherItem.classList.remove('active');
+                otherItem.querySelector('.faq-answer').style.maxHeight = '0';
+            }
         });
+        
+        item.classList.toggle('active');
+        if (item.classList.contains('active')) {
+            answer.style.maxHeight = answer.scrollHeight + "px";
+        } else {
+            answer.style.maxHeight = "0";
+        }
+    });
+});
+
+
+// ============================================================================
+// 9. "WANT EASTER EGGS?" 4-STEP POP-UP SIMULATOR CONTROL LOOP
+// ============================================================================
+let currentAdStep = 1;
+const adOverlay = document.getElementById("adOverlay");
+const adMessageText = document.getElementById("adMessageText");
+const adTriggerBtn = document.getElementById("eggTriggerBtn");
+const adNextBtn = document.getElementById("adNextBtn");
+const adCloseBtn = document.getElementById("adCloseBtn");
+
+const adScriptArray = {
+    1: "There is no easter egg here.",
+    2: "Seriously, why are you still clicking? Stop.",
+    3: "This is completely empty. Go back and watch the showreel.",
+    4: "Fine. You win! Go down to the very bottom and tap the handwritten signature 3 times."
+};
+
+function launchAdSequence() {
+    currentAdStep = 1;
+    adMessageText.innerText = adScriptArray[currentAdStep];
+    adNextBtn.innerText = "Next";
+    adOverlay.classList.add("active");
+}
+
+function handleAdStepProgression() {
+    currentAdStep++;
+    if (currentAdStep <= 4) {
+        adMessageText.innerText = adScriptArray[currentAdStep];
+        if (currentAdStep === 4) adNextBtn.innerText = "Got It";
+    } else {
+        closeAdOverlayCleanly();
+    }
+}
+
+function closeAdOverlayCleanly() {
+    adOverlay.classList.remove("active");
+}
+
+if(adTriggerBtn && adOverlay && adNextBtn && adCloseBtn) {
+    adTriggerBtn.addEventListener("click", launchAdSequence);
+    adNextBtn.addEventListener("click", handleAdStepProgression);
+    adCloseBtn.addEventListener("click", closeAdOverlayCleanly);
 }
