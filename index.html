@@ -26,6 +26,7 @@
     <canvas id="stars"></canvas>
     <div class="cursor-glow"></div>
 
+    <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-content">
             <h1 class="reveal">CAT GUY</h1>
@@ -43,20 +44,34 @@
         </div>
     </section>
 
+    <!-- Apple-Style Scroll Video Container with Sequential Typography Overlays -->
     <section class="apple-video-container" id="showreel">
         <div class="video-sticky-wrapper">
             <div class="video-scale-target">
                 <video class="featured-video" autoplay muted loop playsinline>
                     <source src="video.mov" type="video/mp4">
                 </video>
-                <div class="video-overlay-text">
+                
+                <!-- Sequential Text Overlays placed safely above the canvas view -->
+                <div class="video-overlay-text step-1">
                     <h2>Visual Perfection.</h2>
                     <p>Every frame calibrated for maximum engagement.</p>
+                </div>
+
+                <div class="video-overlay-text step-2">
+                    <h2>Pacing That Hooks.</h2>
+                    <p>Retention design built directly into the timeline.</p>
+                </div>
+
+                <div class="video-overlay-text step-3">
+                    <h2>Hollywood Grading.</h2>
+                    <p>Dynamic node structures giving your film true depth.</p>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- About Section with Image-Hover Bento Grid Layout -->
     <section class="about" id="about">
         <div class="about-header">
             <h2>About Me</h2>
@@ -96,6 +111,7 @@
         </div>
     </section>
 
+    <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="cloud cloud-bottom scroll-parallax" data-speed="-0.5">
             <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
