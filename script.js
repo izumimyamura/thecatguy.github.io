@@ -31,7 +31,7 @@ appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
 
 
 // ============================================================================
-// 2. GLOBAL CURSOR SYSTEMS & STATE MATRIX TRACKING
+// 2. GLOBAL CURSUR SYSTEMS & STATE MATRIX TRACKING
 // ============================================================================
 let isCatMode = false;
 const glow = document.getElementById("customCursor");
@@ -121,7 +121,7 @@ for(let i=0; i<80; i++){
 }
 
 // Matrix Cat Mode Drops Init Arrays
-const catEmojis = ["🐾", "🐱", "🐈", "😺", "😸", "😽", "🐈‍⬛"];
+const catEmojis = ["🐾", "🐱", "🐈", "💡", "😺", "😸", "😽", "🐈‍⬛"];
 const fontSize = 16;
 let columns = Math.floor(window.innerWidth / fontSize);
 let drops = [];
@@ -152,7 +152,7 @@ document.addEventListener("keydown", (e) => {
     
     inputBuffer += e.key.toLowerCase();
     
-    // Strict buffer bounding limits keeping size locked exactly to 3 characters
+    // Keep string trace down explicitly to 3 character spaces
     if (inputBuffer.length > 3) {
         inputBuffer = inputBuffer.slice(-3);
     }
@@ -162,7 +162,7 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-// Triple Click Core Emergency Fallback Trigger Map (Sig Row)
+// Triple Click Core Emergency Fallback Trigger Map (Sig Container)
 let sigClickCount = 0;
 const sigContainer = document.querySelector(".signature-container");
 if (sigContainer) {
