@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>THE CAT GUY | Video Editor</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,10 +18,17 @@
         <div class="nav-controls">
             <div class="nav-links">
                 <a href="#hero">Home</a>
-                <a href="#about">About</a>
                 <a href="#showreel">Showreel</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#about">About</a>
+                <a href="#faq">FAQ</a>
                 <a href="#contact">Contact</a>
             </div>
+            
+            <!-- Interactive Inverting Glitch Easter Egg Button Trigger -->
+            <button class="egg-glitch-btn" id="eggTriggerBtn">Want Easter Eggs?</button>
+
+            <!-- Cat Mode Premium Toggle Switch -->
             <label class="cat-toggle-wrapper" title="Toggle Cat Mode Cursor">
                 <input type="checkbox" id="catModeToggle">
                 <span class="cat-slider">
@@ -31,9 +38,24 @@
         </div>
     </nav>
 
+    <!-- Simulation Ad Pop-up Container Overlay Layer -->
+    <div class="ad-popup-overlay" id="adOverlay">
+        <div class="ad-popup-box">
+            <div class="ad-popup-header">
+                <span class="ad-title">⚠️ SYSTEM_ALERT.EXE</span>
+                <button class="ad-close-btn" id="adCloseBtn">&times;</button>
+            </div>
+            <div class="ad-popup-body">
+                <p id="adMessageText">There is no easter egg here.</p>
+                <button class="ad-action-btn" id="adNextBtn">Next</button>
+            </div>
+        </div>
+    </div>
+
     <canvas id="stars"></canvas>
     <div class="cursor-glow" id="customCursor"></div>
 
+    <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-content">
             <h1 class="reveal glitch-text" data-text="CAT GUY">CAT GUY</h1>
@@ -54,6 +76,7 @@
         </div>
     </section>
 
+    <!-- Apple-Style Scroll Video Container -->
     <section class="apple-video-container" id="showreel">
         <div class="video-sticky-wrapper">
             <div class="video-scale-target">
@@ -79,6 +102,41 @@
         </div>
     </section>
 
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="section-header">
+            <h2>Selected Work</h2>
+            <p class="section-subtitle">Proven retention edits built across multiple niches.</p>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-card js-tilt-card">
+                <div class="card-bg-image" style="background-image: url('project1-thumb.jpg');"></div>
+                <div class="portfolio-card-content">
+                    <span class="portfolio-tag">Cinematic</span>
+                    <h3>The Midnight Chase</h3>
+                    <p>High-energy color grading and heavy velocity framing shifts.</p>
+                </div>
+            </div>
+            <div class="portfolio-card js-tilt-card">
+                <div class="card-bg-image" style="background-image: url('project2-thumb.jpg');"></div>
+                <div class="portfolio-card-content">
+                    <span class="portfolio-tag">Short-Form</span>
+                    <h3>Viral Retention Reel</h3>
+                    <p>Micro-cut editing style keeping average watch time above 85%.</p>
+                </div>
+            </div>
+            <div class="portfolio-card js-tilt-card">
+                <div class="card-bg-image" style="background-image: url('project3-thumb.jpg');"></div>
+                <div class="portfolio-card-content">
+                    <span class="portfolio-tag">Commercial</span>
+                    <h3>Cyberpunk Apparel Promo</h3>
+                    <p>Sound design matrix overlay synced with dynamic speed ramping.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section with Interactive 3D Bento Grid Layout -->
     <section class="about" id="about">
         <div class="about-header">
             <h2>About Me</h2>
@@ -116,8 +174,49 @@
                 </div>
             </div>
         </div>
+
+        <!-- Client Testimonials Sub-Grid -->
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"The retention editing on our short-form content shot our views past 1.2M. Absolute legend."</p>
+                <div class="testimonial-author">- Apex Media Studio</div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"Pacing is precise, communication is fast, and his node-grading style sets him lightyears ahead."</p>
+                <div class="testimonial-author">- Neon Odyssey Productions</div>
+            </div>
+        </div>
     </section>
 
+    <!-- FAQ Accordion Section -->
+    <section class="faq" id="faq">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know before we launch your timeline project.</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">What is your typical turnaround time? <span class="faq-icon"></span></button>
+                <div class="faq-answer">
+                    <p>Short-form reels/Tiktoks are usually delivered within 24-48 hours. Long-form documentary edits, highly complex cinematic pacing montages, or VFX-heavy clips typically take between 4 to 7 business days depending on script scope guidelines.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Do you handle your own sound design and mixing? <span class="faq-icon"></span></button>
+                <div class="faq-answer">
+                    <p>Yes. Every single edit includes custom industry-grade sound elements—including cinematic whooshes, atmospheric risers, impact sweeps, environment layers, and clear, compressed dialogue audio engineering.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">What software assets do you utilize for production deliverables? <span class="faq-icon"></span></button>
+                <div class="faq-answer">
+                    <p>I build primary timelines, node structure grades, and final mastery configurations directly inside DaVinci Resolve Studio. Motion templates, complex tracking vectors, and heavy visual effects assets are designed inside Adobe After Effects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="cloud cloud-bottom scroll-parallax" data-speed="-0.5">
             <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
@@ -131,6 +230,7 @@
             <a href="https://www.instagram.com/thecatguy.editz/" target="_blank" rel="noopener noreferrer" class="contact-link">Instagram: @thecatguy.editz</a>
         </p>
 
+        <!-- Dynamic Loop Animated Real Signature Block -->
         <div class="signature-container">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" class="sig-svg">
                 <path class="sig-path" d="M 180,310 C 180,310 260,140 255,145 C 250,150 170,265 175,260 C 180,255 285,190 280,195 C 275,200 215,360 215,360 M 235,265 C 245,255 255,255 260,265 C 265,270 270,255 275,255 C 280,255 285,265 295,250 C 305,235 310,255 315,255 C 320,255 325,250 415,235" />
