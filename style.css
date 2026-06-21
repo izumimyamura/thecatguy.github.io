@@ -118,7 +118,7 @@ body {
     transform: translateX(24px) rotate(360deg);
 }
 
-/* Starfield Background Canvas Container */
+/* Canvas & Cursor Engine */
 #stars {
     position: fixed;
     inset: 0;
@@ -138,7 +138,7 @@ body {
     transition: width 0.3s, height 0.3s;
 }
 
-/* Cat Mode Custom SVG Cursor Variant */
+/* Cat Mode Vector SVG Paw Cursor Override */
 body.cat-mode-active .cursor-glow {
     width: 45px;
     height: 45px;
@@ -147,7 +147,7 @@ body.cat-mode-active .cursor-glow {
     transform: translate(-20px, -20px);
 }
 
-/* Hero Layout Modules */
+/* Hero Section */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -203,12 +203,12 @@ body.cat-mode-active .cursor-glow {
     background: #147ce5;
 }
 
-/* Layout Structural Wrapper to Force Cassette Horizontal */
+/* Layout Structural Wrapper forcing Cassette asset Landscape Horizontal */
 .cassette-frame {
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: rotate(90deg); /* Adjust to -90deg if orientation is inverted */
+    transform: rotate(90deg); /* Change to -90deg if your source text orientation fields are flipped */
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
     z-index: 2;
 }
@@ -219,7 +219,7 @@ body.cat-mode-active .cursor-glow {
     will-change: transform;
 }
 
-/* Expanded Cinematic Timeline Components */
+/* Cinematic Video Timeline Components */
 .apple-video-container {
     position: relative;
     height: 450vh; 
@@ -301,7 +301,7 @@ body.cat-mode-active .cursor-glow {
 .cloud-top { width: 400px; top: 15%; left: -5%; }
 .cloud-bottom { width: 450px; top: -10%; right: -5%; }
 
-/* Main Section Content Blocks */
+/* Main Section Blocks */
 .about, .contact {
     padding: 140px 10%;
     background: #000000;
@@ -326,7 +326,7 @@ body.cat-mode-active .cursor-glow {
     color: #86868b;
 }
 
-/* Apple Bento Layout Grid Layer Mechanics */
+/* Apple Bento Layout Grid */
 .tech-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -439,28 +439,57 @@ body.cat-mode-active .cursor-glow {
     100% { background-position: 0% 50%; }
 }
 
-/* Path Drawing Animations */
+/* Premium Image Reference Signature Vector Layout Typography Block */
 .signature-container {
     width: 100%;
-    max-width: 260px;
+    max-width: 280px;
     margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-.sig-svg { width: 100%; height: auto; }
+.sig-svg { 
+    width: 100%; 
+    height: auto; 
+}
+
 .sig-path {
-    stroke: #ff8c00;
-    stroke-width: 4.5;
+    stroke: #ff8c00; 
+    stroke-width: 3.5;
     stroke-linecap: round;
     stroke-linejoin: round;
     fill: none;
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: writeOnSignature 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-@keyframes writeOnSignature { to { stroke-dashoffset: 0; } }
+.sig-title-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: 6px;
+    color: #ffffff;
+    margin-top: -30px; /* Pulls text frame seamlessly tight under signature trails */
+    text-transform: uppercase;
+    opacity: 0; /* JS Timeline reveals this smoothly */
+}
 
-/* Media Viewports */
+.sig-subtitle-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #86868b;
+    margin-top: 2px;
+    text-transform: uppercase;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 4px;
+    display: inline-block;
+    width: 110px;
+    opacity: 0;
+}
+
+/* Responsive Viewports */
 @media(max-width: 900px) {
     .navbar { padding: 15px 5%; }
     .nav-controls { gap: 15px; }
