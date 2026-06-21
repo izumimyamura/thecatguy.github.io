@@ -1,6 +1,8 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// 1. Fixed GSAP Keynote Video Animation Timeline
+// ============================================================================
+// 1. FIXED GSAP KEYNOTE VIDEO ANIMATION TIMELINE
+// ============================================================================
 const appleTimeline = gsap.timeline({
     scrollTrigger: {
         trigger: ".apple-video-container",
@@ -11,11 +13,13 @@ const appleTimeline = gsap.timeline({
     }
 });
 
+// Scale down animation completes smoothly FIRST
 appleTimeline.fromTo(".video-scale-target", 
     { width: "100vw", height: "100vh", borderRadius: "0px" },
     { width: "85vw", height: "75vh", borderRadius: "36px", ease: "power1.inOut", duration: 1.5 }
 );
 
+// Sequence Text Overlays now fire strictly sequentially AFTER scaling finishes
 appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
              .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
 
@@ -26,7 +30,9 @@ appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
              .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
 
 
-// 2. Global Cursor Vector Space Coordinate Tracking 
+// ============================================================================
+// 2. GLOBAL CURSOR VECTOR SPACE & CAT MODE TRACKING
+// ============================================================================
 let isCatMode = false;
 const glow = document.getElementById("customCursor");
 const toggleInput = document.getElementById("catModeToggle");
@@ -51,7 +57,9 @@ document.addEventListener("mousemove", (e) => {
 });
 
 
-// 3. High-Performance Native 3D Bento Card Tilt Script
+// ============================================================================
+// 3. HIGH-PERFORMANCE NATIVE 3D BENTO CARD TILT SCRIPT
+// ============================================================================
 const cards = document.querySelectorAll('.js-tilt-card');
 
 cards.forEach(card => {
@@ -86,12 +94,14 @@ cards.forEach(card => {
 });
 
 
-// 4. Dual-State Canvas Rendering Engine (Starfield vs Cat-Matrix Rain)
+// ============================================================================
+// 4. DUAL-STATE CANVAS RENDERING ENGINE (STARFIELD VS CAT-MATRIX RAIN)
+// ============================================================================
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 
 let backgroundState = "starfield"; // Options: "starfield" or "matrix"
-let inputBuffer = ""; // Tracking strings for key strings
+let inputBuffer = ""; 
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -100,7 +110,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// Star Matrix Init Setup
+// Starfield Init Array
 const stars = [];
 for(let i=0; i<80; i++){
     stars.push({
@@ -110,8 +120,8 @@ for(let i=0; i<80; i++){
     });
 }
 
-// Cat Matrix Drops Init Setup
-const catEmojis = ["🐾", "🐱", "🐈", "😺", "😸", "😽", "🐈‍⬛"];
+// Cat Matrix Drops Init Array
+const catEmojis = ["🐾", "🐱", "🐈", "💡", "😺", "😸", "😽", "🐈‍⬛"];
 const fontSize = 16;
 let columns = Math.floor(window.innerWidth / fontSize);
 let drops = [];
@@ -120,23 +130,53 @@ function initMatrixDrops() {
     columns = Math.floor(window.innerWidth / fontSize);
     drops = [];
     for (let x = 0; x < columns; x++) {
-        drops[x] = Math.random() * -100; // Staggers drop heights on trigger initialization
+        drops[x] = Math.random() * -100; // Staggers entrance points nicely
     }
 }
 initMatrixDrops();
 window.addEventListener('resize', initMatrixDrops);
 
-// Listening for hidden string typing word trigger
-document.addEventListener("keydown", (e) => {
-    inputBuffer += e.key.toLowerCase();
-    inputBuffer = inputBuffer.slice(-10); // Hold last ten typed chars safely
+// Master Core Toggle Mechanism
+function toggleBackgroundMode() {
+    backgroundState = (backgroundState === "starfield") ? "matrix" : "starfield";
+    inputBuffer = ""; // Flush memory buffer completely
     
-    if (inputBuffer.includes("cat")) {
-        backgroundState = (backgroundState === "starfield") ? "matrix" : "starfield";
-        inputBuffer = ""; // Flush sequence buffer state immediately
+    if (backgroundState === "matrix") {
+        initMatrixDrops();
+    }
+}
+
+// Bulleproof Character String Listener Loop
+document.addEventListener("keydown", (e) => {
+    if (e.key.length > 1) return; // Skip keys like Shift/Alt/Command
+    
+    inputBuffer += e.key.toLowerCase();
+    
+    // Strict bounding limit to last 3 keystrokes to align perfectly with "cat"
+    if (inputBuffer.length > 3) {
+        inputBuffer = inputBuffer.slice(-3);
+    }
+    
+    if (inputBuffer === "cat") {
+        toggleBackgroundMode();
     }
 });
 
+// Triple Click Signature Fallback Trigger
+let sigClickCount = 0;
+const sigContainer = document.querySelector(".signature-container");
+if (sigContainer) {
+    sigContainer.style.cursor = "pointer";
+    sigContainer.addEventListener("click", () => {
+        sigClickCount++;
+        if (sigClickCount >= 3) {
+            toggleBackgroundMode();
+            sigClickCount = 0; 
+        }
+    });
+}
+
+// Frame Animation Pipeline Loops
 function animateBackgroundPipeline(){
     if (backgroundState === "starfield") {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -153,11 +193,10 @@ function animateBackgroundPipeline(){
             }
         });
     } else if (backgroundState === "matrix") {
-        // Creates alpha trail sweep overlay effect
-        ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; // Creates the iconic alpha trail fade out
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        ctx.fillStyle = "#ff8c00"; // Deep Premium Amber accent tint coloring
+        ctx.fillStyle = "#ff8c00"; // Signature Orange Amber Glow
         ctx.font = fontSize + "px Space Grotesk, sans-serif";
         
         for (let i = 0; i < drops.length; i++) {
@@ -175,7 +214,9 @@ function animateBackgroundPipeline(){
 animateBackgroundPipeline();
 
 
-// 5. Dual-State Cassette Tracking Matrix Vectors
+// ============================================================================
+// 5. DUAL-STATE CASSETTE TAPE TRACKING MODULE (STALKING VS FLOATING)
+// ============================================================================
 const cassette = document.querySelector(".cassette");
 let floatFrame = 0;
 
@@ -184,6 +225,7 @@ function updateCassette() {
     
     if (cassette) {
         if (isCatMode) {
+            // Cat Stalking Behavior: Fast, interactive angular targeting vectors
             const rect = cassette.getBoundingClientRect();
             const cassetteCenterX = rect.left + rect.width / 2;
             const cassetteCenterY = rect.top + rect.height / 2;
@@ -193,6 +235,7 @@ function updateCassette() {
             
             cassette.style.transform = `translate3d(${targetX * 0.2}px, ${-targetY * 0.2}px, 0) rotateY(${targetX}deg) rotateX(${targetY}deg)`;
         } else {
+            // Normal Behavior: Relaxed, undulating floating timeline loop
             const floatY = Math.sin(floatFrame) * 10;
             const normalizedX = (currentMouseX / window.innerWidth - 0.5) * 20;
             const normalizedY = (currentMouseY / window.innerHeight - 0.5) * 20;
@@ -204,7 +247,9 @@ function updateCassette() {
 updateCassette();
 
 
-// 6. Simple Cloud Scroll Parallax
+// ============================================================================
+// 6. SIMPLE CLOUD SCROLL PARALLAX MAPPER
+// ============================================================================
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
     const scrolled = window.pageYOffset;
