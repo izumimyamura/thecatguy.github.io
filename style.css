@@ -208,7 +208,7 @@ body.cat-mode-active .cursor-glow {
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: rotate(90deg); /* Change to -90deg if your source text orientation fields are flipped */
+    transform: rotate(90deg); 
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7));
     z-index: 2;
 }
@@ -217,6 +217,65 @@ body.cat-mode-active .cursor-glow {
     width: 320px;
     transition: transform 0.1s ease-out;
     will-change: transform;
+}
+
+/* ============================================================================
+   8. RETRO GLITCH TEXT DISTORTION STYLING
+   ============================================================================ */
+.glitch-text {
+    position: relative;
+    cursor: default;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    clip: rect(0, 0, 0, 0); 
+}
+
+.glitch-text::before {
+    left: -3px;
+    text-shadow: 3px 0 #00ffff;
+}
+
+.glitch-text::after {
+    left: 3px;
+    text-shadow: -3px 0 #ff8c00;
+}
+
+.glitch-text:hover::before {
+    background: transparent;
+    -webkit-text-fill-color: #00ffff;
+    animation: glitch-anim-1 0.35s infinite linear alternate-reverse;
+}
+
+.glitch-text:hover::after {
+    background: transparent;
+    -webkit-text-fill-color: #ff8c00;
+    animation: glitch-anim-2 0.35s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+    0% { clip: rect(20px, 9999px, 40px, 0); transform: skew(0.3deg); }
+    20% { clip: rect(60px, 9999px, 10px, 0); transform: skew(-0.5deg); }
+    40% { clip: rect(85px, 9999px, 5px, 0); transform: skew(0.8deg); }
+    60% { clip: rect(12px, 9999px, 95px, 0); transform: skew(-0.2deg); }
+    80% { clip: rect(45px, 9999px, 60px, 0); transform: skew(0.4deg); }
+    100% { clip: rect(30px, 9999px, 80px, 0); transform: skew(-0.1deg); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip: rect(70px, 9999px, 15px, 0); transform: skew(-0.4deg); }
+    25% { clip: rect(35px, 9999px, 90px, 0); transform: skew(0.2deg); }
+    50% { rect: clip(10px, 9999px, 45px, 0); transform: skew(-0.8deg); }
+    75% { clip: rect(80px, 9999px, 100px, 0); transform: skew(0.5deg); }
+    100% { clip: rect(55px, 9999px, 30px, 0); transform: skew(-0.2deg); }
 }
 
 /* Cinematic Video Timeline Components */
@@ -439,7 +498,7 @@ body.cat-mode-active .cursor-glow {
     100% { background-position: 0% 50%; }
 }
 
-/* Premium Image Reference Signature Vector Layout Typography Block */
+/* Reference Signature Block Typography Layout Styling */
 .signature-container {
     width: 100%;
     max-width: 280px;
@@ -469,9 +528,9 @@ body.cat-mode-active .cursor-glow {
     font-weight: 400;
     letter-spacing: 6px;
     color: #ffffff;
-    margin-top: -30px; /* Pulls text frame seamlessly tight under signature trails */
+    margin-top: -30px; 
     text-transform: uppercase;
-    opacity: 0; /* JS Timeline reveals this smoothly */
+    opacity: 0; 
 }
 
 .sig-subtitle-text {
