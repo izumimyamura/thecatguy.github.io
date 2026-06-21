@@ -1,38 +1,32 @@
-// Register standard scroll tracking engine plugins
 gsap.registerPlugin(ScrollTrigger);
 
-// 1. Apple-Style Product Zoom-Out Reveal Execution
-gsap.fromTo(".video-scale-target", 
-    {
-        width: "100vw",
-        height: "100vh",
-        borderRadius: "0px"
-    },
-    {
-        width: "85vw",
-        height: "75vh",
-        borderRadius: "36px",
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".apple-video-container",
-            start: "top top",
-            end: "bottom bottom",
-            scrub: true
-        }
-    }
-);
-
-// Fades out text overlay inside the video as it scales down
-gsap.to(".video-overlay-text", {
-    opacity: 0,
-    ease: "none",
+// 1. Unified Master Keynote Video Animation Timeline
+const appleTimeline = gsap.timeline({
     scrollTrigger: {
         trigger: ".apple-video-container",
         start: "top top",
-        end: "top -50%",
-        scrub: true
+        end: "bottom bottom",
+        scrub: true,
+        pin: true // Locks everything in position throughout the timeline run
     }
 });
+
+// Phase A: Video window scales down from fullscreen to a rounded card view
+appleTimeline.fromTo(".video-scale-target", 
+    { width: "100vw", height: "100vh", borderRadius: "0px" },
+    { width: "85vw", height: "75vh", borderRadius: "36px", ease: "none" }
+);
+
+// Phase B: Sequence Text Overlays sequentially (Fade in -> Stand Still -> Fade out)
+appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
+             .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.5") // slight hold gap
+
+             .to(".step-2", { opacity: 1, y: 0, duration: 1 })
+             .to(".step-2", { opacity: 0, y: -20, duration: 1 }, "+=0.5")
+
+             .to(".step-3", { opacity: 1, y: 0, duration: 1 })
+             .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.5");
+
 
 // 2. Mouse Dynamic Light Tracking
 const glow = document.querySelector(".cursor-glow");
