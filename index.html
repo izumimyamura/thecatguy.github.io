@@ -25,10 +25,8 @@
                 <a href="#contact">Contact</a>
             </div>
             
-            <!-- Interactive Inverting Glitch Easter Egg Button Trigger -->
             <button class="egg-glitch-btn" id="eggTriggerBtn">Want Easter Eggs?</button>
 
-            <!-- Cat Mode Premium Toggle Switch -->
             <label class="cat-toggle-wrapper" title="Toggle Cat Mode Cursor">
                 <input type="checkbox" id="catModeToggle">
                 <span class="cat-slider">
@@ -52,6 +50,21 @@
         </div>
     </div>
 
+    <!-- NEW: Apple iOS iMessage Notification Popup Wrapper -->
+    <div class="apple-msg-popup" id="appleMsgNotify">
+        <div class="apple-msg-header">
+            <div class="apple-msg-avatar">🐾</div>
+            <div class="apple-msg-meta">
+                <span class="apple-msg-sender">THE CAT GUY</span>
+                <span class="apple-msg-app">iMessage • now</span>
+            </div>
+            <button class="apple-msg-close" id="appleMsgClose">&times;</button>
+        </div>
+        <div class="apple-msg-body">
+            <div class="apple-bubble">Follow me on insta! 📸</div>
+        </div>
+    </div>
+
     <canvas id="stars"></canvas>
     <div class="cursor-glow" id="customCursor"></div>
 
@@ -60,14 +73,15 @@
         <div class="hero-content">
             <h1 class="reveal glitch-text" data-text="CAT GUY">CAT GUY</h1>
             
-            <!-- Upgraded Oscar-Style Spotlight Subtitle Layout Container -->
             <div class="spotlight-subtitle-container" id="spotlightTextFrame">
                 <p class="reveal spotlight-text">Cinematic Video Editor</p>
                 <div class="spotlight-beam" id="oscarLightBeam"></div>
             </div>
 
-            <div class="btn-container">
-                <a href="#contact" class="btn">Contact Me</a>
+            <!-- NEW: Upgraded Interactive Sparkle Burst Layout Button Frame Wrapper -->
+            <div class="btn-container special-burst-frame">
+                <canvas class="button-burst-canvas" id="btnBurstCanvas"></canvas>
+                <a href="#contact" class="btn" id="burstTargetBtn">Contact Me</a>
             </div>
         </div>
         
@@ -87,7 +101,7 @@
         <div class="video-sticky-wrapper">
             <div class="video-scale-target">
                 <video class="featured-video" autoplay muted loop playsinline>
-                    <source src="video.mov" type="video/mp4">
+                    <source src="video.mov" type="video/video">
                 </video>
                 
                 <div class="video-overlay-text step-1">
@@ -115,7 +129,6 @@
             <p class="section-subtitle">Proven retention edits built across multiple niches.</p>
         </div>
         <div class="portfolio-grid">
-            <!-- Cards now contain micro-canvas structures for custom background animations -->
             <div class="portfolio-card js-tilt-card js-animated-card">
                 <canvas class="card-animation-canvas"></canvas>
                 <div class="card-bg-image" style="background-image: url('project1-thumb.jpg');"></div>
@@ -185,7 +198,6 @@
             </div>
         </div>
 
-        <!-- Client Testimonials Sub-Grid -->
         <div class="testimonials-container">
             <div class="testimonial-card">
                 <p class="testimonial-quote">"The retention editing on our short-form content shot our views past 1.2M. Absolute legend."</p>
@@ -234,13 +246,13 @@
             </svg>
         </div>
 
-        <h2>Contact</h2>
+        <!-- Target Hook class linked inside the JS notification module trigger -->
+        <h2 class="contact-header-target" id="contactHeader">Contact</h2>
         <p>Email: kevin123kevinl123@gmail.com</p>
         <p class="contact-link-wrapper">
             <a href="https://www.instagram.com/thecatguy.editz/" target="_blank" rel="noopener noreferrer" class="contact-link">Instagram: @thecatguy.editz</a>
         </p>
 
-        <!-- Dynamic Loop Animated Real Signature Block -->
         <div class="signature-container">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" class="sig-svg">
                 <path class="sig-path" d="M 180,310 C 180,310 260,140 255,145 C 250,150 170,265 175,260 C 180,255 285,190 280,195 C 275,200 215,360 215,360 M 235,265 C 245,255 255,255 260,265 C 265,270 270,255 275,255 C 280,255 285,265 295,250 C 305,235 310,255 315,255 C 320,255 325,250 415,235" />
