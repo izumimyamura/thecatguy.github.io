@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* Removes blue tap box on mobile links */
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -78,7 +78,7 @@ body {
     opacity: 1;
 }
 
-/* "Want Easter Eggs?" Negative Glitch Inverting Button Styling */
+/* "Want Easter Eggs?" Negative Glitch Button styling rules */
 .egg-glitch-btn {
     background: #ffffff;
     color: #000000;
@@ -106,7 +106,7 @@ body {
     100% { transform: scale(1.05) translate(0, 0) skew(-3deg); }
 }
 
-/* Cyberpunk Simulation Pop-up Ad Panels */
+/* Simulation Pop-up Ad Panels */
 .ad-popup-overlay {
     position: fixed;
     inset: 0;
@@ -252,11 +252,49 @@ body.cat-mode-active .cursor-glow {
     -webkit-text-fill-color: transparent;
 }
 
-.hero-content p {
+/* NEW: Hollywood Oscar Spotlight Ray Layout Rules */
+.spotlight-subtitle-container {
+    position: relative;
+    display: inline-block;
     margin-top: 15px;
+    padding: 10px 0;
+    overflow: visible;
+}
+
+.spotlight-text {
     font-size: 1.5rem;
     color: #86868b;
     font-weight: 400;
+    transition: color 0.3s ease;
+    position: relative;
+    z-index: 5;
+    cursor: default;
+}
+
+.spotlight-subtitle-container:hover .spotlight-text {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+.spotlight-beam {
+    position: fixed; /* Binds coordinates completely relative to window viewports */
+    top: 0;
+    left: 0;
+    width: 140px;
+    height: 100vh;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(255, 140, 0, 0.08) 40%, rgba(0, 0, 0, 0) 100%);
+    clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%); /* Simulates wide flashlight cone expansion downward */
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+    transform: translateX(-50%);
+    mix-blend-mode: screen;
+    filter: blur(1px);
+    transition: opacity 0.3s ease;
+}
+
+.spotlight-subtitle-container:hover .spotlight-beam {
+    opacity: 1;
 }
 
 .btn-container {
@@ -320,7 +358,6 @@ body.cat-mode-active .cursor-glow {
     text-shadow: -3px 0 #ff8c00;
 }
 
-/* Triggers animation on hover OR active touch down states for mobile */
 .glitch-text:hover::before,
 .glitch-text:active::before {
     background: transparent;
@@ -461,6 +498,23 @@ body.cat-mode-active .cursor-glow {
     will-change: transform;
 }
 
+/* NEW: Inside-Box Background Particle Canvas Style */
+.card-animation-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.portfolio-card:hover .card-animation-canvas,
+.portfolio-card:active .card-animation-canvas {
+    opacity: 1; /* Reveals animation cascade smoothly on activation states */
+}
+
 .portfolio-card-content {
     position: relative;
     padding: 35px;
@@ -502,10 +556,11 @@ body.cat-mode-active .cursor-glow {
     opacity: 0.45;
     transition: opacity 0.4s ease, transform 0.4s ease;
     transform: scale(1) translateZ(-10px);
+    z-index: 2;
 }
 
 .portfolio-card:hover .card-bg-image {
-    opacity: 0.8;
+    opacity: 0.25; /* Dims slightly further to make flowing vector arrays show beautifully */
 }
 
 /* About & Bento Systems */
@@ -826,7 +881,7 @@ body.cat-mode-active .cursor-glow {
 /* Premium Mobile Responsive Media Breaks */
 @media(max-width: 1150px) {
     .navbar { padding: 15px 5%; }
-    .nav-links { display: none; } /* Collapses inline textual references cleanly */
+    .nav-links { display: none; } 
 }
 
 @media(max-width: 900px) {
@@ -838,6 +893,7 @@ body.cat-mode-active .cursor-glow {
     }
     .hero-content h1 { font-size: 3.8rem; letter-spacing: -2px; }
     .hero-content p { font-size: 1.2rem; }
+    .spotlight-beam { display: none !important; } /* Silences spotlight overlay on simple tracking mobile headers */
     .cassette-frame { margin-bottom: 40px; }
     .cassette { width: 220px; }
     .tech-grid, .portfolio-grid, .testimonials-container { grid-template-columns: 1fr; gap: 20px; }
