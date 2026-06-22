@@ -1,50 +1,53 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // ============================================================================
-// 1. DYNAMIC GSAP SCROLL VIDEO ANIMATION TIMELINE & AUTOPLAY ENFORCER
+// 1. DYNAMIC GSAP SCROLL VIDEO ANIMATION TIMELINE & AUTOPLAY FORCING ENGINE
 // ============================================================================
-const appleTimeline = gsap.timeline({
-    scrollTrigger: {
-        trigger: ".apple-video-container",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true,
-        pin: true
-    }
-});
+const videoContainerSelector = document.querySelector(".apple-video-container");
 
-appleTimeline.fromTo(".video-scale-target", 
-    { width: "100vw", height: "100vh", borderRadius: "0px" },
-    { width: "85vw", height: "75vh", borderRadius: "36px", ease: "power1.inOut", duration: 1.5 }
-);
+if(videoContainerSelector) {
+    const appleTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".apple-video-container",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true,
+            pin: true
+        }
+    });
 
-appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
+    appleTimeline.fromTo(".video-scale-target", 
+        { width: "100vw", height: "100vh", borderRadius: "0px" },
+        { width: "85vw", height: "75vh", borderRadius: "36px", ease: "power1.inOut", duration: 1.5 }
+    );
 
-             .to(".step-2", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-2", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
+    appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
+                 .to(".step-1", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
 
-             .to(".step-3", { opacity: 1, y: 0, duration: 1 })
-             .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
+                 .to(".step-2", { opacity: 1, y: 0, duration: 1 })
+                 .to(".step-2", { opacity: 0, y: -20, duration: 1 }, "+=0.8")
 
-// Android & iOS Low-Power Playback Loop Override
+                 .to(".step-3", { opacity: 1, y: 0, duration: 1 })
+                 .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
+}
+
+// Android & iOS Low-Power Mode Playback Loop Override (Targeted exclusively to video.mp4 streams)
 const premiumVideo = document.querySelector(".featured-video");
 if (premiumVideo) {
     premiumVideo.muted = true;
     premiumVideo.defaultMuted = true;
+    premiumVideo.setAttribute("muted", "");
+    premiumVideo.setAttribute("playsinline", "");
     
-    const playAttempt = premiumVideo.play();
-    if (playAttempt !== undefined) {
-        playAttempt.catch(() => {
-            const forcePlayOnInteraction = () => {
-                premiumVideo.play();
-                document.removeEventListener("click", forcePlayOnInteraction);
-                document.removeEventListener("touchstart", forcePlayOnInteraction);
-            };
-            document.addEventListener("click", forcePlayOnInteraction);
-            document.addEventListener("touchstart", forcePlayOnInteraction, { passive: true });
-        });
-    }
+    const forceVideoPlay = () => {
+        premiumVideo.play().catch(err => console.log("Retrying playback stream..."));
+    };
+
+    forceVideoPlay();
+
+    document.addEventListener("touchstart", forceVideoPlay, { once: true, passive: true });
+    document.addEventListener("click", forceVideoPlay, { once: true });
+    document.addEventListener("scroll", forceVideoPlay, { once: true, passive: true });
 }
 
 
@@ -55,24 +58,28 @@ let isCatMode = false;
 const glow = document.getElementById("customCursor");
 const toggleInput = document.getElementById("catModeToggle");
 
-toggleInput.addEventListener("change", (e) => {
-    isCatMode = e.target.checked;
-    if (isCatMode) {
-        document.body.classList.add("cat-mode-active");
-    } else {
-        document.body.classList.remove("cat-mode-active");
-        if (cassette) cassette.style.transform = `translateY(0px)`;
-    }
-});
+if(toggleInput) {
+    toggleInput.addEventListener("change", (e) => {
+        isCatMode = e.target.checked;
+        if (isCatMode) {
+            document.body.classList.add("cat-mode-active");
+        } else {
+            document.body.classList.remove("cat-mode-active");
+            if (cassette) cassette.style.transform = `translateY(0px)`;
+        }
+    });
+}
 
 let currentMouseX = window.innerWidth / 2;
 let currentMouseY = window.innerHeight / 2;
 
 function updateGlowPosition(x, y) {
-    currentMouseX = x;
-    currentMouseY = y;
-    glow.style.left = currentMouseX + "px";
-    glow.style.top = currentMouseY + "px";
+    if(glow) {
+        currentMouseX = x;
+        currentMouseY = y;
+        glow.style.left = currentMouseX + "px";
+        glow.style.top = currentMouseY + "px";
+    }
 }
 
 document.addEventListener("mousemove", (e) => {
@@ -100,7 +107,7 @@ if(spotlightFrame && oscarBeam) {
 
 
 // ============================================================================
-// 4. FIXED: SPARKLE CONFETTI PARTY POPS BUTTON LAYER RE-ROUTING
+// 4. SPARKLE CONFETTI PARTY POPS BUTTON LAYER RE-ROUTING
 // ============================================================================
 const burstCanvas = document.getElementById("btnBurstCanvas");
 const burstBtnWrapper = document.getElementById("burstBtnWrapper"); 
@@ -231,7 +238,7 @@ if (burstCanvas && burstBtnWrapper) {
 // ============================================================================
 // 5. HYBRID 3D TILT ENGINE & INTEGRATED INSIDE-BOX CARD ANIMATIONS
 // ============================================================================
-const cards = document.querySelectorAll('.js-tilt-card, .portfolio-card');
+const cards = document.querySelectorAll('.js-tilt-card, .portfolio-card, .mg-card-row');
 const animatedCards = document.querySelectorAll('.js-animated-card');
 
 animatedCards.forEach(card => {
@@ -343,7 +350,7 @@ cards.forEach(card => {
 
 
 // ============================================================================
-// 6. CANVAS RENDERING ENGINE & PROOFED TRIPLE-TAP LOGIC (MOBILE DOUBLE FIRE FIX)
+// 6. CANVAS RENDERING ENGINE & PROOFED TRIPLE-TAP LOGIC
 // ============================================================================
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
@@ -352,19 +359,25 @@ let backgroundState = "starfield";
 let inputBuffer = ""; 
 
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    if(canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 }
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+if(canvas) {
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+}
 
 const stars = [];
-for(let i=0; i<60; i++){
-    stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 1.5
-    });
+if(canvas) {
+    for(let i=0; i<60; i++){
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.5
+        });
+    }
 }
 
 const catEmojis = ["🐾", "🐱", "🐈", "💡", "😺", "😸", "😽", "🐈‍⬛"];
@@ -379,8 +392,10 @@ function initMatrixDrops() {
         drops[x] = Math.random() * -100;
     }
 }
-initMatrixDrops();
-window.addEventListener('resize', initMatrixDrops);
+if(canvas) {
+    initMatrixDrops();
+    window.addEventListener('resize', initMatrixDrops);
+}
 
 function toggleBackgroundMode() {
     backgroundState = (backgroundState === "starfield") ? "matrix" : "starfield";
@@ -397,29 +412,25 @@ document.addEventListener("keydown", (e) => {
     if (inputBuffer === "cat") toggleBackgroundMode();
 });
 
-// FIXED: Native touch cancellation layer logic preventing double increment tracking
 let sigClickCount = 0;
 const sigContainer = document.querySelector(".signature-container");
 
 if (sigContainer) {
     sigContainer.style.cursor = "pointer";
-    
     const handleSignatureActivation = (e) => {
-        if (e.type === 'touchstart') {
-            e.preventDefault(); // Silences simulated redundant click events immediately on Android/iOS
-        }
+        if (e.type === 'touchstart') e.preventDefault(); 
         sigClickCount++;
         if (sigClickCount >= 3) {
             toggleBackgroundMode();
             sigClickCount = 0; 
         }
     };
-    
     sigContainer.addEventListener("click", handleSignatureActivation);
     sigContainer.addEventListener("touchstart", handleSignatureActivation, { passive: false });
 }
 
 function animateBackgroundPipeline(){
+    if(!canvas) return;
     if (backgroundState === "starfield") {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         stars.forEach(star => {
@@ -452,7 +463,7 @@ function animateBackgroundPipeline(){
     }
     requestAnimationFrame(animateBackgroundPipeline);
 }
-animateBackgroundPipeline();
+if(canvas) animateBackgroundPipeline();
 
 
 // ============================================================================
@@ -483,7 +494,7 @@ function updateCassette() {
     }
     requestAnimationFrame(updateCassette);
 }
-updateCassette();
+if(cassette) updateCassette();
 
 
 // ============================================================================
@@ -502,7 +513,7 @@ window.addEventListener("scroll", () => {
 
 
 // ============================================================================
-// 9. REAL SIGNATURE AUTOMATIC WRITE-ON LOOP
+// 9. MULTI-PAGE ADAPTIVE REAL SIGNATURE WRITE-ON ENGINE LOOP
 // ============================================================================
 const signaturePath = document.querySelector(".sig-path");
 
