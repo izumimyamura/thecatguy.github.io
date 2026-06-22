@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE CAT GUY | Motion Graphics Showcase</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">THE CATGUY</div>
+        <div class="nav-controls">
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#showreel">Showreel</a>
+                <a href="index.html#portfolio">Portfolio</a>
+                <a href="motion-graphics.html" class="nav-motion-trigger active-page">Motion Graphics</a>
+                <a href="index.html#about">About</a>
+                <a href="index.html#faq">FAQ</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            
+            <button class="egg-glitch-btn" id="eggTriggerBtn">Want Easter Eggs?</button>
+
+            <label class="cat-toggle-wrapper">
+                <input type="checkbox" id="catModeToggle">
+                <span class="cat-slider">
+                    <span class="slider-icon">🐾</span>
+                </span>
+            </label>
+        </div>
+    </nav>
+
+    <canvas id="stars"></canvas>
+    <div class="cursor-glow" id="customCursor"></div>
+
+    <section class="mg-hero">
+        <div class="mg-hero-content">
+            <h1 class="kinetic-animate-text">
+                <span>M</span><span>O</span><span>T</span><span>I</span><span>O</span><span>N</span>
+            </h1>
+            <p class="mg-subtitle">How high-end visual physics and digital node spaces are built.</p>
+        </div>
+    </section>
+
+    <section class="mg-breakdown">
+        <div class="mg-container-grid">
+            <div class="mg-card-row js-tilt-card">
+                <div class="mg-icon-box">🍏</div>
+                <h3>Apple Motion Engine</h3>
+                <p class="mg-tech-label">Real-Time Core Physics</p>
+                <p>Apple Motion handles graphics using a behavior-based vector engine instead of rigid manual keyframing. It utilizes behaviors like 'Attract', 'Repel', and 'Vortex' to map natural fluid movement onto visual assets seamlessly. Because it ties directly into macOS Metal architecture, layers render in real time with hardware-accelerated tracking, vector particles, and 3D space layouts.</p>
+            </div>
+
+            <div class="mg-card-row js-tilt-card">
+                <div class="mg-icon-box">🌀</div>
+                <h3>DaVinci Resolve Fusion</h3>
+                <p class="mg-tech-label">Advanced Node Architecture</p>
+                <p>Unlike old timeline layers, Fusion runs on a node-based architecture. Every transformation, color adjustment, mask, and geometric effect is a connected node inside a procedural flowchart. This prevents layout compression issues and allows you to build complex 3D composites, advanced camera tracking, planar stabilization paths, and expressions with complete mathematical clarity.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact">
+        <div class="signature-container">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" class="sig-svg">
+                <path class="sig-path" d="M 180,310 C 180,310 260,140 255,145 C 250,150 170,265 175,260 C 180,255 285,190 280,195 C 275,200 215,360 215,360 M 235,265 C 245,255 255,255 260,265 C 265,270 270,255 275,255 C 280,255 285,265 295,250 C 305,235 310,255 315,255 C 320,255 325,250 415,235" />
+            </svg>
+            <div class="sig-title-text">KEVIN</div>
+            <div class="sig-subtitle-text">VIDEO EDITOR</div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
