@@ -79,22 +79,91 @@ body {
     opacity: 1;
 }
 
-/* NEW: MOTION GRAPHICS NAV LINK FONT-WEIGHT SHIFTING HOVER HOOK */
 .nav-motion-trigger:hover {
     animation: nav-font-shift 0.4s infinite linear alternate;
     color: #ff8c00 !important;
-}
-
-.active-page {
-    color: #ff8c00 !important;
-    font-weight: 700 !important;
-    opacity: 1 !important;
 }
 
 @keyframes nav-font-shift {
     0% { font-weight: 300; letter-spacing: -0.2px; }
     50% { font-weight: 500; letter-spacing: 0px; }
     100% { font-weight: 700; letter-spacing: 0.5px; }
+}
+
+/* ============================================================================
+   NEW: NAV BAR KINETIC CELL SPLITTING COMPONENT STYLING
+   ============================================================================ */
+.split-nav-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 34px;
+    overflow: visible;
+}
+
+/* Long Master Base State Frame */
+.split-master-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: none;
+}
+
+/* Hidden Matrix Children Container */
+.split-child-matrix {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.9);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Micro-Node Sub Elements */
+.child-node {
+    flex: 1;
+    background: #ff8c00;
+    color: #000000 !important;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-align: center;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.child-node:hover {
+    transform: scale(1.05) translateY(-1px);
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
+}
+
+/* Morph Execution Triggering States on Container Hover */
+.split-nav-container:hover .split-master-btn {
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.split-nav-container:hover .split-child-matrix {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
 }
 
 /* "Want Easter Eggs?" Glitch Button Styling */
@@ -193,7 +262,32 @@ body {
     cursor: pointer;
 }
 
-/* APPLE STYLE iMESSAGE POPUP NOTIFICATION */
+.ad-popup-body {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.ad-popup-body p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+.ad-action-btn {
+    background: #ff8c00;
+    color: #ffffff;
+    border: none;
+    padding: 10px 30px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* APPLE STYLE iMESSAGE POPUP MODAL NOTIFICATION */
 .apple-msg-popup {
     position: fixed;
     top: 90px;
@@ -377,7 +471,6 @@ body.cat-mode-active .cursor-glow {
     opacity: 1;
 }
 
-/* SPARKLE CANVAS LAYER SPECIFICS */
 .special-burst-frame {
     position: relative;
     display: inline-block;
@@ -662,9 +755,7 @@ body.cat-mode-active .cursor-glow {
     opacity: 0.25; 
 }
 
-/* ============================================================================
-   NEW: MOTION GRAPHICS SUB-PAGE ARCHITECTURE STYLING
-   ============================================================================ */
+/* MOTION GRAPHICS SUB-PAGE ARCHITECTURE STYLING */
 .mg-hero {
     min-height: 70vh;
     display: flex;
@@ -685,7 +776,7 @@ body.cat-mode-active .cursor-glow {
     margin-top: 25px;
 }
 
-/* NEW: KINETIC HEADER LETTER BOUNCING ENGINE */
+/* KINETIC HEADER LETTER BOUNCING ENGINE */
 .kinetic-animate-text {
     font-size: 8.5rem;
     font-weight: 700;
@@ -703,7 +794,6 @@ body.cat-mode-active .cursor-glow {
     will-change: transform;
 }
 
-/* Cascade progressive sequence staggered entry times */
 .kinetic-animate-text span:nth-child(1) { animation-delay: 0.0s; }
 .kinetic-animate-text span:nth-child(2) { animation-delay: 0.15s; }
 .kinetic-animate-text span:nth-child(3) { animation-delay: 0.3s; }
@@ -1103,6 +1193,23 @@ body.cat-mode-active .cursor-glow {
 }
 
 @media(max-width: 900px) {
+    .navbar {
+        padding: 15px 4%;
+    }
+    .nav-controls {
+        gap: 12px; 
+    }
+    .split-nav-container {
+        max-width: 140px; /* Adapts split boundaries gracefully to prevent text squashing on narrow columns */
+    }
+    .split-master-btn {
+        font-size: 0.65rem !important;
+        padding: 6px 10px;
+    }
+    .child-node {
+        font-size: 0.65rem !important;
+        padding: 6px 8px;
+    }
     .hero {
         flex-direction: column-reverse;
         justify-content: center;
@@ -1111,7 +1218,7 @@ body.cat-mode-active .cursor-glow {
     }
     .hero-content h1 { font-size: 3.8rem; letter-spacing: -2px; }
     .hero-content p { font-size: 1.2rem; }
-    .kinetic-animate-text { font-size: 4.0rem; } /* Scales kinetic layout typography matrix gracefully on phones */
+    .kinetic-animate-text { font-size: 4.0rem; } 
     .spotlight-beam { display: none !important; } 
     .cassette-frame { margin-bottom: 40px; }
     .cassette { width: 220px; }
