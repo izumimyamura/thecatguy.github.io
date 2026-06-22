@@ -74,20 +74,151 @@ const oscarBeam = document.getElementById("oscarLightBeam");
 
 if(spotlightFrame && oscarBeam) {
     spotlightFrame.addEventListener("mousemove", (e) => {
-        // Line up beam horizontally tracking exact center offset parameters
         oscarBeam.style.left = e.clientX + "px";
     });
 }
 
 
 // ============================================================================
-// 4. HYBRID 3D TILT ENGINE & INTEGRATED INSIDE-BOX CARD ANIMATIONS
+// 4. NEW: PARTY POPPERS, SPARKS, & CURVY WAVY LINE BUTTON ENGINE
+// ============================================================================
+const burstCanvas = document.getElementById("btnBurstCanvas");
+const burstBtn = document.getElementById("burstTargetBtn");
+
+if (burstCanvas && burstBtn) {
+    const burstCtx = burstCanvas.getContext("2d");
+    let burstParticles = [];
+    let isHoveringButton = false;
+    let burstAnimationId = null;
+
+    function resizeBurstCanvas() {
+        burstCanvas.width = burstBtn.offsetWidth + 240;
+        burstCanvas.height = burstBtn.offsetHeight + 240;
+    }
+    resizeBurstCanvas();
+
+    // Particle Object Definitions
+    class PartyParticle {
+        constructor(type) {
+            // Target coordinates centered perfectly relative to the button midpoint
+            this.x = burstCanvas.width / 2;
+            this.y = burstCanvas.height / 2;
+            this.type = type; // Options: 'sparkle', 'popper', 'wavy'
+            
+            const angle = Math.random() * Math.PI * 2;
+            const velocity = 2 + Math.random() * 5;
+            
+            this.vx = Math.cos(angle) * velocity;
+            this.vy = Math.sin(angle) * velocity;
+            this.alpha = 1;
+            this.decay = 0.015 + Math.random() * 0.02;
+            this.color = `hsl(${Math.random() * 360}, 100%, 60%)`; // Radiant rainbow tones
+            this.size = 2 + Math.random() * 4;
+
+            // Specific metrics for wavy trailing lines
+            if(this.type === 'wavy') {
+                this.waveHistory = [];
+                this.waveFrequency = 0.1 + Math.random() * 0.2;
+                this.waveAmplitude = 3 + Math.random() * 6;
+                this.timeStep = Math.random() * 100;
+            }
+        }
+
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            this.alpha -= this.decay;
+
+            if (this.type === 'wavy') {
+                this.timeStep += 0.5;
+                // Add transverse wave oscillations across primary movement vectors
+                const normalX = -this.vy;
+                const normalY = this.vx;
+                const len = Math.sqrt(normalX*normalX + normalY*normalY);
+                const waveOffset = Math.sin(this.timeStep * this.waveFrequency) * this.waveAmplitude;
+                
+                const finalX = this.x + (normalX/len) * waveOffset;
+                const finalY = this.y + (normalY/len) * waveOffset;
+                
+                this.waveHistory.push({x: finalX, y: finalY});
+                if(this.waveHistory.length > 15) this.waveHistory.shift();
+            }
+        }
+
+        draw() {
+            burstCtx.save();
+            burstCtx.globalAlpha = this.alpha;
+            burstCtx.fillStyle = this.color;
+            burstCtx.strokeStyle = this.color;
+
+            if (this.type === 'sparkle') {
+                // Draw 4-point geometric cross stars
+                burstCtx.beginPath();
+                burstCtx.moveTo(this.x, this.y - this.size * 2);
+                burstCtx.lineTo(this.x + this.size, this.y);
+                burstCtx.lineTo(this.x, this.y + this.size * 2);
+                burstCtx.lineTo(this.x - this.size, this.y);
+                burstCtx.closePath();
+                burstCtx.fill();
+            } else if (this.type === 'popper') {
+                // Draw clean festive square confetti cards
+                burstCtx.fillRect(this.x, this.y, this.size * 1.5, this.size * 1.5);
+            } else if (this.type === 'wavy' && this.waveHistory.length > 1) {
+                // Draw flowing curvy ribbon vectors
+                burstCtx.lineWidth = this.size / 2;
+                burstCtx.beginPath();
+                burstCtx.moveTo(this.waveHistory[0].x, this.waveHistory[0].y);
+                for(let i=1; i<this.waveHistory.length; i++) {
+                    burstCtx.lineTo(this.waveHistory[i].x, this.waveHistory[i].y);
+                }
+                burstCtx.stroke();
+            }
+            burstCtx.restore();
+        }
+    }
+
+    function renderBurstPipeline() {
+        burstCtx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
+
+        // Constant trickle injection of party elements if hovering stays active
+        if (isHoveringButton && burstParticles.length < 120) {
+            const types = ['sparkle', 'popper', 'wavy'];
+            burstParticles.push(new PartyParticle(types[Math.floor(Math.random() * types.length)]));
+        }
+
+        burstParticles.forEach((p, index) => {
+            p.update();
+            p.draw();
+            if (p.alpha <= 0) burstParticles.splice(index, 1);
+        });
+
+        if (burstParticles.length > 0 || isHoveringButton) {
+            burstAnimationId = requestAnimationFrame(renderBurstPipeline);
+        }
+    }
+
+    const startBurstTrigger = () => {
+        resizeBurstCanvas();
+        isHoveringButton = true;
+        if (!burstAnimationId) renderBurstPipeline();
+    };
+
+    const stopBurstTrigger = () => {
+        isHoveringButton = false;
+    };
+
+    burstBtn.addEventListener("mouseenter", startBurstTrigger);
+    burstBtn.addEventListener("mouseleave", stopBurstTrigger);
+    burstBtn.addEventListener("touchstart", startBurstTrigger, { passive: true });
+    burstBtn.addEventListener("touchend", stopBurstTrigger);
+}
+
+
+// ============================================================================
+// 5. HYBRID 3D TILT ENGINE & INTEGRATED INSIDE-BOX CARD ANIMATIONS
 // ============================================================================
 const cards = document.querySelectorAll('.js-tilt-card, .portfolio-card');
 const animatedCards = document.querySelectorAll('.js-animated-card');
-
-// Global Tracker for multi-canvas rendering execution loops
-let activeCardCanvasLoop = null;
 
 animatedCards.forEach(card => {
     const cardCanvas = card.querySelector('.card-animation-canvas');
@@ -103,7 +234,6 @@ animatedCards.forEach(card => {
     }
     resizeCardCanvas();
     
-    // Seed flowing matrix parameters
     function setupCardParticles() {
         cardParticles = [];
         for(let i=0; i < 25; i++) {
@@ -120,8 +250,7 @@ animatedCards.forEach(card => {
     function drawCardAnimationLoop() {
         if(!isAnimatingCard) return;
         cardCtx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
-        
-        cardCtx.strokeStyle = 'rgba(0, 113, 227, 0.45)'; // Sleek corporate visual line traces
+        cardCtx.strokeStyle = 'rgba(0, 113, 227, 0.45)';
         cardCtx.lineCap = 'round';
         
         cardParticles.forEach(p => {
@@ -131,13 +260,12 @@ animatedCards.forEach(card => {
             cardCtx.lineTo(p.x, p.y - p.length);
             cardCtx.stroke();
             
-            p.y -= p.speed; // Flows upwards against the background
+            p.y -= p.speed;
             if(p.y < -20) {
                 p.y = cardCanvas.height + 20;
                 p.x = Math.random() * cardCanvas.width;
             }
         });
-        
         requestAnimationFrame(drawCardAnimationLoop);
     }
 
@@ -159,7 +287,6 @@ animatedCards.forEach(card => {
     card.addEventListener('touchend', stopCardEffect);
 });
 
-// Master Layout Structural Tilt Mechanics Bindings Loop
 cards.forEach(card => {
     const bgImage = card.querySelector('.card-bg-image');
     
@@ -192,7 +319,6 @@ cards.forEach(card => {
 
     card.addEventListener('mousemove', (e) => processTiltCalculation(e.clientX, e.clientY));
     card.addEventListener('mouseleave', resetTiltState);
-
     card.addEventListener('touchmove', (e) => {
         if(e.touches.length > 0) {
             processTiltCalculation(e.touches[0].clientX, e.touches[0].clientY);
@@ -203,7 +329,7 @@ cards.forEach(card => {
 
 
 // ============================================================================
-// 5. CANVAS RENDERING ENGINE (STARFIELD VS FIXED CAT-MATRIX RAIN)
+// 6. CANVAS RENDERING ENGINE (STARFIELD VS FIXED CAT-MATRIX RAIN)
 // ============================================================================
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
@@ -257,25 +383,19 @@ document.addEventListener("keydown", (e) => {
     if (inputBuffer === "cat") toggleBackgroundMode();
 });
 
-// FIXED: Bulletproof Double-Fire Prevention Code Matrix mapping parameters
 let sigClickCount = 0;
 const sigContainer = document.querySelector(".signature-container");
 
 if (sigContainer) {
     sigContainer.style.cursor = "pointer";
-    
     const handleSignatureActivation = (e) => {
-        if (e.type === 'touchstart') {
-            e.preventDefault(); // Cuts simulated redundant mouse events instantly on mobile
-        }
-        
+        if (e.type === 'touchstart') e.preventDefault(); 
         sigClickCount++;
         if (sigClickCount >= 3) {
             toggleBackgroundMode();
             sigClickCount = 0; 
         }
     };
-    
     sigContainer.addEventListener("click", handleSignatureActivation);
     sigContainer.addEventListener("touchstart", handleSignatureActivation, { passive: false });
 }
@@ -298,7 +418,6 @@ function animateBackgroundPipeline(){
     } else if (backgroundState === "matrix") {
         ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; 
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
         ctx.fillStyle = "#ff8c00"; 
         ctx.font = fontSize + "px Space Grotesk, sans-serif";
         
@@ -318,7 +437,7 @@ animateBackgroundPipeline();
 
 
 // ============================================================================
-// 6. DUAL-STATE CASSETTE TAPE TRACKING VECTOR ENGINE
+// 7. DUAL-STATE CASSETTE TAPE TRACKING ENGINE
 // ============================================================================
 const cassette = document.querySelector(".cassette");
 let floatFrame = 0;
@@ -349,7 +468,7 @@ updateCassette();
 
 
 // ============================================================================
-// 7. CLOUD PARALLAX ENGINE
+// 8. CLOUD PARALLAX ENGINE
 // ============================================================================
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
@@ -364,7 +483,7 @@ window.addEventListener("scroll", () => {
 
 
 // ============================================================================
-// 8. REAL SIGNATURE AUTOMATIC WRITE-ON LOOP WITH 5s HOLD DELAY
+// 9. REAL SIGNATURE AUTOMATIC WRITE-ON LOOP
 // ============================================================================
 const signaturePath = document.querySelector(".sig-path");
 
@@ -386,7 +505,7 @@ if (signaturePath) {
 
 
 // ============================================================================
-// 9. INTERACTIVE FAQ ACCORDION TOGGLE
+// 10. INTERACTIVE FAQ ACCORDION TOGGLE
 // ============================================================================
 const faqQuestions = document.querySelectorAll('.faq-question');
 
@@ -413,7 +532,7 @@ faqQuestions.forEach(question => {
 
 
 // ============================================================================
-// 10. "WANT EASTER EGGS?" pop-up script loop
+// 11. "WANT EASTER EGGS?" AD SIMULATOR
 // ============================================================================
 let currentAdStep = 1;
 const adOverlay = document.getElementById("adOverlay");
@@ -454,4 +573,37 @@ if(adTriggerBtn && adOverlay && adNextBtn && adCloseBtn) {
     adTriggerBtn.addEventListener("click", launchAdSequence);
     adNextBtn.addEventListener("click", handleAdStepProgression);
     adCloseBtn.addEventListener("click", closeAdOverlayCleanly);
+}
+
+
+// ============================================================================
+// 12. NEW: APPLE STYLE iMESSAGE POPUP TRIGGER INTERACTION
+// ============================================================================
+const contactHeader = document.getElementById("contactHeader");
+const appleMsgNotify = document.getElementById("appleMsgNotify");
+const appleMsgClose = document.getElementById("appleMsgClose");
+let hasFiredMessage = false;
+
+if (contactHeader && appleMsgNotify && appleMsgClose) {
+    const triggerMessageAnimation = (e) => {
+        if(e.type === 'touchstart') e.preventDefault();
+        
+        // Fires notification cleanly if it's currently hidden
+        if(!hasFiredMessage) {
+            appleMsgNotify.classList.add("show");
+            hasFiredMessage = true;
+            
+            // Auto-hide notification softly after 7 seconds if client doesn't dismiss it
+            setTimeout(() => {
+                appleMsgNotify.classList.remove("show");
+            }, 7000);
+        }
+    };
+
+    contactHeader.addEventListener("mouseenter", triggerMessageAnimation);
+    contactHeader.addEventListener("touchstart", triggerMessageAnimation, { passive: false });
+
+    appleMsgClose.addEventListener("click", () => {
+        appleMsgNotify.classList.remove("show");
+    });
 }
