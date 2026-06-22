@@ -59,7 +59,13 @@
     <section class="hero" id="hero">
         <div class="hero-content">
             <h1 class="reveal glitch-text" data-text="CAT GUY">CAT GUY</h1>
-            <p class="reveal">Cinematic Video Editor</p>
+            
+            <!-- Upgraded Oscar-Style Spotlight Subtitle Layout Container -->
+            <div class="spotlight-subtitle-container" id="spotlightTextFrame">
+                <p class="reveal spotlight-text">Cinematic Video Editor</p>
+                <div class="spotlight-beam" id="oscarLightBeam"></div>
+            </div>
+
             <div class="btn-container">
                 <a href="#contact" class="btn">Contact Me</a>
             </div>
@@ -109,7 +115,9 @@
             <p class="section-subtitle">Proven retention edits built across multiple niches.</p>
         </div>
         <div class="portfolio-grid">
-            <div class="portfolio-card js-tilt-card">
+            <!-- Cards now contain micro-canvas structures for custom background animations -->
+            <div class="portfolio-card js-tilt-card js-animated-card">
+                <canvas class="card-animation-canvas"></canvas>
                 <div class="card-bg-image" style="background-image: url('project1-thumb.jpg');"></div>
                 <div class="portfolio-card-content">
                     <span class="portfolio-tag">Cinematic</span>
@@ -117,7 +125,8 @@
                     <p>High-energy color grading and heavy velocity framing shifts.</p>
                 </div>
             </div>
-            <div class="portfolio-card js-tilt-card">
+            <div class="portfolio-card js-tilt-card js-animated-card">
+                <canvas class="card-animation-canvas"></canvas>
                 <div class="card-bg-image" style="background-image: url('project2-thumb.jpg');"></div>
                 <div class="portfolio-card-content">
                     <span class="portfolio-tag">Short-Form</span>
@@ -125,7 +134,8 @@
                     <p>Micro-cut editing style keeping average watch time above 85%.</p>
                 </div>
             </div>
-            <div class="portfolio-card js-tilt-card">
+            <div class="portfolio-card js-tilt-card js-animated-card">
+                <canvas class="card-animation-canvas"></canvas>
                 <div class="card-bg-image" style="background-image: url('project3-thumb.jpg');"></div>
                 <div class="portfolio-card-content">
                     <span class="portfolio-tag">Commercial</span>
