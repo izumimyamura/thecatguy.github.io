@@ -29,7 +29,7 @@ appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
 
 
 // ============================================================================
-// 2. CURSOR SYSTEMS & MULTI-DEVICE COORDINATE TRACKING LOOP
+// 2. CURSOR SYSTEMS & COORDINATE TRACKING LOOPS
 // ============================================================================
 let isCatMode = false;
 const glow = document.getElementById("customCursor");
@@ -55,12 +55,10 @@ function updateGlowPosition(x, y) {
     glow.style.top = currentMouseY + "px";
 }
 
-// Track standard mouse movements
 document.addEventListener("mousemove", (e) => {
     updateGlowPosition(e.clientX, e.clientY);
 });
 
-// Mobile Touch Tracking Override (Snaps cursor directly beneath finger placement)
 document.addEventListener("touchmove", (e) => {
     if(e.touches.length > 0) {
         updateGlowPosition(e.touches[0].clientX, e.touches[0].clientY);
@@ -69,10 +67,99 @@ document.addEventListener("touchmove", (e) => {
 
 
 // ============================================================================
-// 3. HYBRID 3D TILT ENGINE (MOUSE HOVER & MOBILE TOUCH GESTURES)
+// 3. HOLLYWOOD OSCAR-STYLE OSCILLATING SPOTLIGHT RAY TRACKER
+// ============================================================================
+const spotlightFrame = document.getElementById("spotlightTextFrame");
+const oscarBeam = document.getElementById("oscarLightBeam");
+
+if(spotlightFrame && oscarBeam) {
+    spotlightFrame.addEventListener("mousemove", (e) => {
+        // Line up beam horizontally tracking exact center offset parameters
+        oscarBeam.style.left = e.clientX + "px";
+    });
+}
+
+
+// ============================================================================
+// 4. HYBRID 3D TILT ENGINE & INTEGRATED INSIDE-BOX CARD ANIMATIONS
 // ============================================================================
 const cards = document.querySelectorAll('.js-tilt-card, .portfolio-card');
+const animatedCards = document.querySelectorAll('.js-animated-card');
 
+// Global Tracker for multi-canvas rendering execution loops
+let activeCardCanvasLoop = null;
+
+animatedCards.forEach(card => {
+    const cardCanvas = card.querySelector('.card-animation-canvas');
+    if(!cardCanvas) return;
+    
+    const cardCtx = cardCanvas.getContext('2d');
+    let cardParticles = [];
+    let isAnimatingCard = false;
+    
+    function resizeCardCanvas() {
+        cardCanvas.width = card.offsetWidth;
+        cardCanvas.height = card.offsetHeight;
+    }
+    resizeCardCanvas();
+    
+    // Seed flowing matrix parameters
+    function setupCardParticles() {
+        cardParticles = [];
+        for(let i=0; i < 25; i++) {
+            cardParticles.push({
+                x: Math.random() * cardCanvas.width,
+                y: cardCanvas.height + Math.random() * 20,
+                speed: 1.5 + Math.random() * 3,
+                length: 10 + Math.random() * 25,
+                width: 1 + Math.random() * 1.5
+            });
+        }
+    }
+
+    function drawCardAnimationLoop() {
+        if(!isAnimatingCard) return;
+        cardCtx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
+        
+        cardCtx.strokeStyle = 'rgba(0, 113, 227, 0.45)'; // Sleek corporate visual line traces
+        cardCtx.lineCap = 'round';
+        
+        cardParticles.forEach(p => {
+            cardCtx.lineWidth = p.width;
+            cardCtx.beginPath();
+            cardCtx.moveTo(p.x, p.y);
+            cardCtx.lineTo(p.x, p.y - p.length);
+            cardCtx.stroke();
+            
+            p.y -= p.speed; // Flows upwards against the background
+            if(p.y < -20) {
+                p.y = cardCanvas.height + 20;
+                p.x = Math.random() * cardCanvas.width;
+            }
+        });
+        
+        requestAnimationFrame(drawCardAnimationLoop);
+    }
+
+    function startCardEffect() {
+        resizeCardCanvas();
+        setupCardParticles();
+        isAnimatingCard = true;
+        drawCardAnimationLoop();
+    }
+
+    function stopCardEffect() {
+        isAnimatingCard = false;
+        cardCtx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
+    }
+
+    card.addEventListener('mouseenter', startCardEffect);
+    card.addEventListener('mouseleave', stopCardEffect);
+    card.addEventListener('touchstart', startCardEffect, { passive: true });
+    card.addEventListener('touchend', stopCardEffect);
+});
+
+// Master Layout Structural Tilt Mechanics Bindings Loop
 cards.forEach(card => {
     const bgImage = card.querySelector('.card-bg-image');
     
@@ -103,11 +190,9 @@ cards.forEach(card => {
         }
     }
 
-    // Standard Desktop Hover Bounds
     card.addEventListener('mousemove', (e) => processTiltCalculation(e.clientX, e.clientY));
     card.addEventListener('mouseleave', resetTiltState);
 
-    // Mobile Swipe/Touch Listeners
     card.addEventListener('touchmove', (e) => {
         if(e.touches.length > 0) {
             processTiltCalculation(e.touches[0].clientX, e.touches[0].clientY);
@@ -118,7 +203,7 @@ cards.forEach(card => {
 
 
 // ============================================================================
-// 4. CANVAS RENDERING ENGINE (STARFIELD VS CAT-MATRIX RAIN)
+// 5. CANVAS RENDERING ENGINE (STARFIELD VS FIXED CAT-MATRIX RAIN)
 // ============================================================================
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
@@ -134,7 +219,7 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 const stars = [];
-for(let i=0; i<60; i++){ // Kept slightly lower for processing efficiency on older phones
+for(let i=0; i<60; i++){
     stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -172,20 +257,27 @@ document.addEventListener("keydown", (e) => {
     if (inputBuffer === "cat") toggleBackgroundMode();
 });
 
-// Triple Tap/Click Support for Desktop & Mobile Formats
+// FIXED: Bulletproof Double-Fire Prevention Code Matrix mapping parameters
 let sigClickCount = 0;
 const sigContainer = document.querySelector(".signature-container");
+
 if (sigContainer) {
     sigContainer.style.cursor = "pointer";
-    const handleSignatureActivation = () => {
+    
+    const handleSignatureActivation = (e) => {
+        if (e.type === 'touchstart') {
+            e.preventDefault(); // Cuts simulated redundant mouse events instantly on mobile
+        }
+        
         sigClickCount++;
         if (sigClickCount >= 3) {
             toggleBackgroundMode();
             sigClickCount = 0; 
         }
     };
+    
     sigContainer.addEventListener("click", handleSignatureActivation);
-    sigContainer.addEventListener("touchstart", handleSignatureActivation, { passive: true });
+    sigContainer.addEventListener("touchstart", handleSignatureActivation, { passive: false });
 }
 
 function animateBackgroundPipeline(){
@@ -226,7 +318,7 @@ animateBackgroundPipeline();
 
 
 // ============================================================================
-// 5. DUAL-STATE CASSETTE TAPE TRACKING VECTOR ENGINE
+// 6. DUAL-STATE CASSETTE TAPE TRACKING VECTOR ENGINE
 // ============================================================================
 const cassette = document.querySelector(".cassette");
 let floatFrame = 0;
@@ -257,7 +349,7 @@ updateCassette();
 
 
 // ============================================================================
-// 6. CLOUD PARALLAX ENGINE
+// 7. CLOUD PARALLAX ENGINE
 // ============================================================================
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
@@ -272,7 +364,7 @@ window.addEventListener("scroll", () => {
 
 
 // ============================================================================
-// 7. REAL SIGNATURE AUTOMATIC WRITE-ON LOOP WITH 5s HOLD DELAY
+// 8. REAL SIGNATURE AUTOMATIC WRITE-ON LOOP WITH 5s HOLD DELAY
 // ============================================================================
 const signaturePath = document.querySelector(".sig-path");
 
@@ -294,7 +386,7 @@ if (signaturePath) {
 
 
 // ============================================================================
-// 8. INTERACTIVE ACCORDION TOGGLE CODE SETUP
+// 9. INTERACTIVE FAQ ACCORDION TOGGLE
 // ============================================================================
 const faqQuestions = document.querySelectorAll('.faq-question');
 
@@ -321,7 +413,7 @@ faqQuestions.forEach(question => {
 
 
 // ============================================================================
-// 9. "WANT EASTER EGGS?" 4-STEP POP-UP SIMULATOR CONTROL LOOP
+// 10. "WANT EASTER EGGS?" pop-up script loop
 // ============================================================================
 let currentAdStep = 1;
 const adOverlay = document.getElementById("adOverlay");
