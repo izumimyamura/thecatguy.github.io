@@ -199,11 +199,11 @@ body {
     cursor: pointer;
 }
 
-/* NEW: APPLE STYLE iMESSAGE POPUP MODAL NOTIFICATION */
+/* APPLE STYLE iMESSAGE POPUP MODAL NOTIFICATION */
 .apple-msg-popup {
     position: fixed;
     top: 90px;
-    right: -360px; /* Hidden out-of-frame initially */
+    right: -360px; 
     width: 320px;
     background: rgba(28, 28, 30, 0.85);
     backdrop-filter: blur(25px);
@@ -218,7 +218,7 @@ body {
 }
 
 .apple-msg-popup.show {
-    right: 30px; /* Slides smoothly onto frame */
+    right: 30px; 
 }
 
 .apple-msg-header {
@@ -275,7 +275,7 @@ body {
 }
 
 .apple-bubble {
-    background: #007aff; /* Apple Blue Message Spec */
+    background: #007aff; 
     color: white;
     padding: 8px 14px;
     border-radius: 16px;
@@ -383,11 +383,12 @@ body.cat-mode-active .cursor-glow {
     opacity: 1;
 }
 
-/* NEW: SPARKLE CONFETTI PARTY POPS BUTTON LAYER WORK */
+/* SPARKLE CANVAS LAYER SPECIFICS */
 .special-burst-frame {
     position: relative;
     display: inline-block;
     margin-top: 35px;
+    cursor: pointer;
 }
 
 .button-burst-canvas {
@@ -396,14 +397,14 @@ body.cat-mode-active .cursor-glow {
     left: -120px;
     width: calc(100% + 240px);
     height: calc(100% + 240px);
-    pointer-events: none; /* Passes mouse coordinates down into standard button layers */
+    pointer-events: none; 
     z-index: 1;
 }
 
 .btn {
     display: inline-block;
     position: relative;
-    z-index: 5; /* Places button securely on top of canvas fields */
+    z-index: 5; 
     padding: 12px 28px;
     background: #0071e3;
     color: white;
@@ -537,6 +538,7 @@ body.cat-mode-active .cursor-glow {
     opacity: 0;
     transform: translateY(20px);
     will-change: transform, opacity;
+    pointer-events: none; /* Android / iOS Glass Interception Shield Fix */
 }
 
 .video-overlay-text h2 {
@@ -1018,6 +1020,6 @@ body.cat-mode-active .cursor-glow {
     .testimonial-card { padding: 24px; }
     .testimonial-quote { font-size: 1rem; }
     .navbar .logo { font-size: 1rem; }
-    .apple-msg-popup { right: -360px !important; width: 280px; } /* Ensures popup adapts gracefully on micro columns */
+    .apple-msg-popup { right: -360px !important; width: 280px; } 
     .apple-msg-popup.show { right: 15px !important; }
 }
