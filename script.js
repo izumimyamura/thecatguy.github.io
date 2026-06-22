@@ -1,7 +1,7 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // ============================================================================
-// 1. DYNAMIC GSAP SCROLL VIDEO ANIMATION TIMELINE
+// 1. DYNAMIC GSAP SCROLL VIDEO ANIMATION TIMELINE & AUTOPLAY ENFORCER
 // ============================================================================
 const appleTimeline = gsap.timeline({
     scrollTrigger: {
@@ -26,6 +26,26 @@ appleTimeline.to(".step-1", { opacity: 1, y: 0, duration: 1 })
 
              .to(".step-3", { opacity: 1, y: 0, duration: 1 })
              .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
+
+// Android & iOS Low-Power Playback Loop Override
+const premiumVideo = document.querySelector(".featured-video");
+if (premiumVideo) {
+    premiumVideo.muted = true;
+    premiumVideo.defaultMuted = true;
+    
+    const playAttempt = premiumVideo.play();
+    if (playAttempt !== undefined) {
+        playAttempt.catch(() => {
+            const forcePlayOnInteraction = () => {
+                premiumVideo.play();
+                document.removeEventListener("click", forcePlayOnInteraction);
+                document.removeEventListener("touchstart", forcePlayOnInteraction);
+            };
+            document.addEventListener("click", forcePlayOnInteraction);
+            document.addEventListener("touchstart", forcePlayOnInteraction, { passive: true });
+        });
+    }
+}
 
 
 // ============================================================================
@@ -80,30 +100,28 @@ if(spotlightFrame && oscarBeam) {
 
 
 // ============================================================================
-// 4. NEW: PARTY POPPERS, SPARKS, & CURVY WAVY LINE BUTTON ENGINE
+// 4. FIXED: SPARKLE CONFETTI PARTY POPS BUTTON LAYER RE-ROUTING
 // ============================================================================
 const burstCanvas = document.getElementById("btnBurstCanvas");
-const burstBtn = document.getElementById("burstTargetBtn");
+const burstBtnWrapper = document.getElementById("burstBtnWrapper"); 
 
-if (burstCanvas && burstBtn) {
+if (burstCanvas && burstBtnWrapper) {
     const burstCtx = burstCanvas.getContext("2d");
     let burstParticles = [];
     let isHoveringButton = false;
     let burstAnimationId = null;
 
     function resizeBurstCanvas() {
-        burstCanvas.width = burstBtn.offsetWidth + 240;
-        burstCanvas.height = burstBtn.offsetHeight + 240;
+        burstCanvas.width = burstBtnWrapper.offsetWidth + 240;
+        burstCanvas.height = burstBtnWrapper.offsetHeight + 240;
     }
     resizeBurstCanvas();
 
-    // Particle Object Definitions
     class PartyParticle {
         constructor(type) {
-            // Target coordinates centered perfectly relative to the button midpoint
             this.x = burstCanvas.width / 2;
             this.y = burstCanvas.height / 2;
-            this.type = type; // Options: 'sparkle', 'popper', 'wavy'
+            this.type = type; 
             
             const angle = Math.random() * Math.PI * 2;
             const velocity = 2 + Math.random() * 5;
@@ -112,10 +130,9 @@ if (burstCanvas && burstBtn) {
             this.vy = Math.sin(angle) * velocity;
             this.alpha = 1;
             this.decay = 0.015 + Math.random() * 0.02;
-            this.color = `hsl(${Math.random() * 360}, 100%, 60%)`; // Radiant rainbow tones
+            this.color = `hsl(${Math.random() * 360}, 100%, 60%)`; 
             this.size = 2 + Math.random() * 4;
 
-            // Specific metrics for wavy trailing lines
             if(this.type === 'wavy') {
                 this.waveHistory = [];
                 this.waveFrequency = 0.1 + Math.random() * 0.2;
@@ -131,7 +148,6 @@ if (burstCanvas && burstBtn) {
 
             if (this.type === 'wavy') {
                 this.timeStep += 0.5;
-                // Add transverse wave oscillations across primary movement vectors
                 const normalX = -this.vy;
                 const normalY = this.vx;
                 const len = Math.sqrt(normalX*normalX + normalY*normalY);
@@ -152,7 +168,6 @@ if (burstCanvas && burstBtn) {
             burstCtx.strokeStyle = this.color;
 
             if (this.type === 'sparkle') {
-                // Draw 4-point geometric cross stars
                 burstCtx.beginPath();
                 burstCtx.moveTo(this.x, this.y - this.size * 2);
                 burstCtx.lineTo(this.x + this.size, this.y);
@@ -161,10 +176,8 @@ if (burstCanvas && burstBtn) {
                 burstCtx.closePath();
                 burstCtx.fill();
             } else if (this.type === 'popper') {
-                // Draw clean festive square confetti cards
                 burstCtx.fillRect(this.x, this.y, this.size * 1.5, this.size * 1.5);
             } else if (this.type === 'wavy' && this.waveHistory.length > 1) {
-                // Draw flowing curvy ribbon vectors
                 burstCtx.lineWidth = this.size / 2;
                 burstCtx.beginPath();
                 burstCtx.moveTo(this.waveHistory[0].x, this.waveHistory[0].y);
@@ -180,7 +193,6 @@ if (burstCanvas && burstBtn) {
     function renderBurstPipeline() {
         burstCtx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
 
-        // Constant trickle injection of party elements if hovering stays active
         if (isHoveringButton && burstParticles.length < 120) {
             const types = ['sparkle', 'popper', 'wavy'];
             burstParticles.push(new PartyParticle(types[Math.floor(Math.random() * types.length)]));
@@ -194,6 +206,8 @@ if (burstCanvas && burstBtn) {
 
         if (burstParticles.length > 0 || isHoveringButton) {
             burstAnimationId = requestAnimationFrame(renderBurstPipeline);
+        } else {
+            burstAnimationId = null;
         }
     }
 
@@ -207,10 +221,10 @@ if (burstCanvas && burstBtn) {
         isHoveringButton = false;
     };
 
-    burstBtn.addEventListener("mouseenter", startBurstTrigger);
-    burstBtn.addEventListener("mouseleave", stopBurstTrigger);
-    burstBtn.addEventListener("touchstart", startBurstTrigger, { passive: true });
-    burstBtn.addEventListener("touchend", stopBurstTrigger);
+    burstBtnWrapper.addEventListener("mouseenter", startBurstTrigger);
+    burstBtnWrapper.addEventListener("mouseleave", stopBurstTrigger);
+    burstBtnWrapper.addEventListener("touchstart", startBurstTrigger, { passive: true });
+    burstBtnWrapper.addEventListener("touchend", stopBurstTrigger);
 }
 
 
@@ -329,7 +343,7 @@ cards.forEach(card => {
 
 
 // ============================================================================
-// 6. CANVAS RENDERING ENGINE (STARFIELD VS FIXED CAT-MATRIX RAIN)
+// 6. CANVAS RENDERING ENGINE & PROOFED TRIPLE-TAP LOGIC (MOBILE DOUBLE FIRE FIX)
 // ============================================================================
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
@@ -383,19 +397,24 @@ document.addEventListener("keydown", (e) => {
     if (inputBuffer === "cat") toggleBackgroundMode();
 });
 
+// FIXED: Native touch cancellation layer logic preventing double increment tracking
 let sigClickCount = 0;
 const sigContainer = document.querySelector(".signature-container");
 
 if (sigContainer) {
     sigContainer.style.cursor = "pointer";
+    
     const handleSignatureActivation = (e) => {
-        if (e.type === 'touchstart') e.preventDefault(); 
+        if (e.type === 'touchstart') {
+            e.preventDefault(); // Silences simulated redundant click events immediately on Android/iOS
+        }
         sigClickCount++;
         if (sigClickCount >= 3) {
             toggleBackgroundMode();
             sigClickCount = 0; 
         }
     };
+    
     sigContainer.addEventListener("click", handleSignatureActivation);
     sigContainer.addEventListener("touchstart", handleSignatureActivation, { passive: false });
 }
@@ -577,7 +596,7 @@ if(adTriggerBtn && adOverlay && adNextBtn && adCloseBtn) {
 
 
 // ============================================================================
-// 12. NEW: APPLE STYLE iMESSAGE POPUP TRIGGER INTERACTION
+// 12. APPLE STYLE iMESSAGE POPUP TRIGGER INTERACTION
 // ============================================================================
 const contactHeader = document.getElementById("contactHeader");
 const appleMsgNotify = document.getElementById("appleMsgNotify");
@@ -588,12 +607,10 @@ if (contactHeader && appleMsgNotify && appleMsgClose) {
     const triggerMessageAnimation = (e) => {
         if(e.type === 'touchstart') e.preventDefault();
         
-        // Fires notification cleanly if it's currently hidden
         if(!hasFiredMessage) {
             appleMsgNotify.classList.add("show");
             hasFiredMessage = true;
             
-            // Auto-hide notification softly after 7 seconds if client doesn't dismiss it
             setTimeout(() => {
                 appleMsgNotify.classList.remove("show");
             }, 7000);
