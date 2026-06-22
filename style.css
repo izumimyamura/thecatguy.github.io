@@ -98,7 +98,7 @@ body {
     100% { font-weight: 700; letter-spacing: 0.5px; }
 }
 
-/* KINETIC CELL SPLITTING COMPONENT STYLING */
+/* KINETIC CELL SPLITTING NAV COMPONENT STYLING */
 .split-nav-container {
     position: relative;
     display: flex;
@@ -757,9 +757,7 @@ body.cat-mode-active .cursor-glow {
     opacity: 0.25; 
 }
 
-/* ============================================================================
-   NEW: PRE WORKED MOTION DESIGN TIMELINE TRACK TRIGGER SYSTEM
-   ============================================================================ */
+/* MOTION DESIGN TIMELINE TRACK TRIGGER SYSTEM */
 .mg-portal-lane {
     width: 100%;
     padding: 0 10%;
@@ -769,7 +767,7 @@ body.cat-mode-active .cursor-glow {
 
 .timeline-accent-bar {
     width: 100%;
-    height: 26px;
+    height: 32px; /* Expanded slightly to create comfortable dragging padding fields */
     background: #1c1c1e;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: none;
@@ -779,22 +777,35 @@ body.cat-mode-active .cursor-glow {
     padding: 0 20px;
     justify-content: space-between;
     position: relative;
+    cursor: ew-resize; /* Changes cursor to a horizontal scrubbing indicator layout map */
+    overflow: hidden;
+    user-select: none; /* Prevents text highlights during click and drag operations */
 }
 
 .time-readout {
     font-size: 0.65rem;
     font-family: monospace;
-    color: #86868b;
+    color: #ffffff;
     letter-spacing: 1px;
+    background: #000000;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10;
 }
 
+/* UPGRADED: Absolute long track designed to scroll infinitely behind window masks */
 .timeline-ticks {
-    flex: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4000px; /* Long canvas grid background layout tracking slide values */
     height: 100%;
-    margin: 0 30px;
-    opacity: 0.15;
+    opacity: 0.25;
     background-image: linear-gradient(to right, #ffffff 1px, transparent 1px);
-    background-size: 12px 100%;
+    background-size: 16px 100%;
+    pointer-events: none;
+    will-change: transform;
 }
 
 .keyframe-diamond {
@@ -803,6 +814,8 @@ body.cat-mode-active .cursor-glow {
     background: #ff8c00;
     transform: rotate(45deg);
     box-shadow: 0 0 10px rgba(255,140,0,0.6);
+    position: relative;
+    z-index: 10;
 }
 
 .mg-portal-wrapper {
@@ -847,7 +860,6 @@ body.cat-mode-active .cursor-glow {
     transition: letter-spacing 0.3s cubic-bezier(0.16, 1, 0.3, 1), font-weight 0.2s ease;
 }
 
-/* Duplicating Offset Ghost Trail */
 .mg-portal-glitch-layer {
     position: absolute;
     inset: 0;
@@ -864,10 +876,9 @@ body.cat-mode-active .cursor-glow {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Staggered Multi-Effect Hover Responses */
 .mg-premium-portal-btn:hover .mg-portal-main-text {
     letter-spacing: 7px;
-    font-weight: 300; /* Font weight shifts downward smoothly */
+    font-weight: 300; 
     color: #ff8c00;
     text-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
 }
@@ -879,7 +890,6 @@ body.cat-mode-active .cursor-glow {
     letter-spacing: 7px;
 }
 
-/* Vector crosshair corners mapping timeline blueprints */
 .vector-crosshair {
     position: absolute;
     width: 6px;
