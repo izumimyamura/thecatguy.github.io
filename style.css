@@ -79,6 +79,14 @@ body {
     opacity: 1;
 }
 
+.nav-motion-trigger {
+    color: #f5f5f7;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 400;
+    transition: opacity 0.3s;
+}
+
 .nav-motion-trigger:hover {
     animation: nav-font-shift 0.4s infinite linear alternate;
     color: #ff8c00 !important;
@@ -90,9 +98,7 @@ body {
     100% { font-weight: 700; letter-spacing: 0.5px; }
 }
 
-/* ============================================================================
-   NEW: NAV BAR KINETIC CELL SPLITTING COMPONENT STYLING
-   ============================================================================ */
+/* KINETIC CELL SPLITTING COMPONENT STYLING */
 .split-nav-container {
     position: relative;
     display: flex;
@@ -101,7 +107,6 @@ body {
     overflow: visible;
 }
 
-/* Long Master Base State Frame */
 .split-master-btn {
     background: rgba(255, 255, 255, 0.08);
     color: #ffffff;
@@ -118,7 +123,6 @@ body {
     pointer-events: none;
 }
 
-/* Hidden Matrix Children Container */
 .split-child-matrix {
     position: absolute;
     inset: 0;
@@ -130,7 +134,6 @@ body {
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Micro-Node Sub Elements */
 .child-node {
     flex: 1;
     background: #ff8c00;
@@ -154,7 +157,6 @@ body {
     box-shadow: 0 0 15px rgba(255, 140, 0, 0.4);
 }
 
-/* Morph Execution Triggering States on Container Hover */
 .split-nav-container:hover .split-master-btn {
     opacity: 0;
     transform: scale(0.8);
@@ -401,7 +403,7 @@ body.cat-mode-active .cursor-glow {
     transform: translate(-20px, -20px);
 }
 
-/* Hero Section Layout Styles */
+/* Hero Section */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -755,6 +757,143 @@ body.cat-mode-active .cursor-glow {
     opacity: 0.25; 
 }
 
+/* ============================================================================
+   NEW: PRE WORKED MOTION DESIGN TIMELINE TRACK TRIGGER SYSTEM
+   ============================================================================ */
+.mg-portal-lane {
+    width: 100%;
+    padding: 0 10%;
+    background: #000000;
+    margin: 40px auto 60px auto;
+}
+
+.timeline-accent-bar {
+    width: 100%;
+    height: 26px;
+    background: #1c1c1e;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
+    position: relative;
+}
+
+.time-readout {
+    font-size: 0.65rem;
+    font-family: monospace;
+    color: #86868b;
+    letter-spacing: 1px;
+}
+
+.timeline-ticks {
+    flex: 1;
+    height: 100%;
+    margin: 0 30px;
+    opacity: 0.15;
+    background-image: linear-gradient(to right, #ffffff 1px, transparent 1px);
+    background-size: 12px 100%;
+}
+
+.keyframe-diamond {
+    width: 8px;
+    height: 8px;
+    background: #ff8c00;
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px rgba(255,140,0,0.6);
+}
+
+.mg-portal-wrapper {
+    width: 100%;
+    background: #141415;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 45px;
+    border-radius: 0 0 12px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mg-premium-portal-btn {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 65px;
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    transition: border-color 0.3s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mg-premium-portal-btn:hover {
+    border-color: #ff8c00;
+    transform: scale(1.02);
+}
+
+.mg-portal-main-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 4px;
+    position: relative;
+    z-index: 10;
+    transition: letter-spacing 0.3s cubic-bezier(0.16, 1, 0.3, 1), font-weight 0.2s ease;
+}
+
+/* Duplicating Offset Ghost Trail */
+.mg-portal-glitch-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ff8c00;
+    letter-spacing: 4px;
+    opacity: 0;
+    z-index: 5;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Staggered Multi-Effect Hover Responses */
+.mg-premium-portal-btn:hover .mg-portal-main-text {
+    letter-spacing: 7px;
+    font-weight: 300; /* Font weight shifts downward smoothly */
+    color: #ff8c00;
+    text-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+}
+
+.mg-premium-portal-btn:hover .mg-portal-glitch-layer {
+    content: attr(data-text);
+    opacity: 0.35;
+    transform: translate(-4px, 3px) scale(1.02);
+    letter-spacing: 7px;
+}
+
+/* Vector crosshair corners mapping timeline blueprints */
+.vector-crosshair {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: border-color 0.3s ease;
+}
+.mg-premium-portal-btn:hover .vector-crosshair { border-color: #ff8c00; }
+
+.cv-top-left  { top: 4px; left: 4px; border-right: none; border-bottom: none; }
+.cv-top-right { top: 4px; right: 4px; border-left: none; border-bottom: none; }
+.cv-bot-left  { bottom: 4px; left: 4px; border-right: none; border-top: none; }
+.cv-bot-right { bottom: 4px; right: 4px; border-left: none; border-top: none; }
+
 /* MOTION GRAPHICS SUB-PAGE ARCHITECTURE STYLING */
 .mg-hero {
     min-height: 70vh;
@@ -776,7 +915,6 @@ body.cat-mode-active .cursor-glow {
     margin-top: 25px;
 }
 
-/* KINETIC HEADER LETTER BOUNCING ENGINE */
 .kinetic-animate-text {
     font-size: 8.5rem;
     font-weight: 700;
@@ -1200,7 +1338,7 @@ body.cat-mode-active .cursor-glow {
         gap: 12px; 
     }
     .split-nav-container {
-        max-width: 140px; /* Adapts split boundaries gracefully to prevent text squashing on narrow columns */
+        max-width: 140px; 
     }
     .split-master-btn {
         font-size: 0.65rem !important;
@@ -1209,6 +1347,16 @@ body.cat-mode-active .cursor-glow {
     .child-node {
         font-size: 0.65rem !important;
         padding: 6px 8px;
+    }
+    .mg-portal-lane {
+        padding: 0 5%;
+    }
+    .mg-portal-wrapper {
+        padding: 24px 15px;
+    }
+    .mg-premium-portal-btn .mg-portal-main-text,
+    .mg-premium-portal-btn .mg-portal-glitch-layer {
+        font-size: 1rem !important;
     }
     .hero {
         flex-direction: column-reverse;
