@@ -31,7 +31,6 @@ if(videoContainerSelector) {
                  .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
 }
 
-// Android & iOS Low-Power Mode Playback Loop Override (Targeted exclusively to video.mp4 streams)
 const premiumVideo = document.querySelector(".featured-video");
 if (premiumVideo) {
     premiumVideo.muted = true;
@@ -513,7 +512,7 @@ window.addEventListener("scroll", () => {
 
 
 // ============================================================================
-// 9. MULTI-PAGE ADAPTIVE REAL SIGNATURE WRITE-ON ENGINE LOOP
+// 9. REAL SIGNATURE AUTOMATIC WRITE-ON ENGINE LOOP
 // ============================================================================
 const signaturePath = document.querySelector(".sig-path");
 
