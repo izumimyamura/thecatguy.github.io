@@ -36,7 +36,6 @@
         </div>
     </nav>
 
-    <!-- Simulation Ad Pop-up Container Overlay Layer -->
     <div class="ad-popup-overlay" id="adOverlay">
         <div class="ad-popup-box">
             <div class="ad-popup-header">
@@ -50,7 +49,6 @@
         </div>
     </div>
 
-    <!-- NEW: Apple iOS iMessage Notification Popup Wrapper -->
     <div class="apple-msg-popup" id="appleMsgNotify">
         <div class="apple-msg-header">
             <div class="apple-msg-avatar">🐾</div>
@@ -68,7 +66,6 @@
     <canvas id="stars"></canvas>
     <div class="cursor-glow" id="customCursor"></div>
 
-    <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-content">
             <h1 class="reveal glitch-text" data-text="CAT GUY">CAT GUY</h1>
@@ -78,8 +75,7 @@
                 <div class="spotlight-beam" id="oscarLightBeam"></div>
             </div>
 
-            <!-- NEW: Upgraded Interactive Sparkle Burst Layout Button Frame Wrapper -->
-            <div class="btn-container special-burst-frame">
+            <div class="btn-container special-burst-frame" id="burstBtnWrapper">
                 <canvas class="button-burst-canvas" id="btnBurstCanvas"></canvas>
                 <a href="#contact" class="btn" id="burstTargetBtn">Contact Me</a>
             </div>
@@ -96,12 +92,13 @@
         </div>
     </section>
 
-    <!-- Apple-Style Scroll Video Container -->
     <section class="apple-video-container" id="showreel">
         <div class="video-sticky-wrapper">
             <div class="video-scale-target">
-                <video class="featured-video" autoplay muted loop playsinline>
-                    <source src="video.mov" type="video/video">
+                <video class="featured-video" autoplay muted loop playsinline preload="auto">
+                    <source src="video.mp4" type="video/mp4">
+                    <source src="video.mov" type="video/quicktime">
+                    Your browser does not support the video tag.
                 </video>
                 
                 <div class="video-overlay-text step-1">
@@ -122,7 +119,6 @@
         </div>
     </section>
 
-    <!-- Portfolio Section -->
     <section class="portfolio" id="portfolio">
         <div class="section-header">
             <h2>Selected Work</h2>
@@ -159,7 +155,6 @@
         </div>
     </section>
 
-    <!-- About Section with Interactive 3D Bento Grid Layout -->
     <section class="about" id="about">
         <div class="about-header">
             <h2>About Me</h2>
@@ -210,7 +205,6 @@
         </div>
     </section>
 
-    <!-- FAQ Accordion Section -->
     <section class="faq" id="faq">
         <div class="section-header">
             <h2>Frequently Asked Questions</h2>
@@ -238,7 +232,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="cloud cloud-bottom scroll-parallax" data-speed="-0.5">
             <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
@@ -246,7 +239,6 @@
             </svg>
         </div>
 
-        <!-- Target Hook class linked inside the JS notification module trigger -->
         <h2 class="contact-header-target" id="contactHeader">Contact</h2>
         <p>Email: kevin123kevinl123@gmail.com</p>
         <p class="contact-link-wrapper">
