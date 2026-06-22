@@ -767,7 +767,7 @@ body.cat-mode-active .cursor-glow {
 
 .timeline-accent-bar {
     width: 100%;
-    height: 32px; /* Expanded slightly to create comfortable dragging padding fields */
+    height: 32px; 
     background: #1c1c1e;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: none;
@@ -777,9 +777,9 @@ body.cat-mode-active .cursor-glow {
     padding: 0 20px;
     justify-content: space-between;
     position: relative;
-    cursor: ew-resize; /* Changes cursor to a horizontal scrubbing indicator layout map */
+    cursor: ew-resize; 
     overflow: hidden;
-    user-select: none; /* Prevents text highlights during click and drag operations */
+    user-select: none; 
 }
 
 .time-readout {
@@ -794,12 +794,11 @@ body.cat-mode-active .cursor-glow {
     z-index: 10;
 }
 
-/* UPGRADED: Absolute long track designed to scroll infinitely behind window masks */
 .timeline-ticks {
     position: absolute;
     top: 0;
     left: 0;
-    width: 4000px; /* Long canvas grid background layout tracking slide values */
+    width: 4000px; 
     height: 100%;
     opacity: 0.25;
     background-image: linear-gradient(to right, #ffffff 1px, transparent 1px);
@@ -984,6 +983,16 @@ body.cat-mode-active .cursor-glow {
     font-size: 3rem;
     margin-bottom: 25px;
     transform: translateZ(30px);
+}
+
+/* NEW: Custom Matte Apple SVG Vector Sizing Dimensions */
+.apple-vector-logo {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0 4px 10px rgba(255, 255, 255, 0.1)); /* Soft vector isolation halo */
 }
 
 .mg-card-row h3 {
