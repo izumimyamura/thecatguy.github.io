@@ -296,15 +296,15 @@ animatedCards.forEach(card => {
         drawCardAnimationLoop();
     }
 
-    function stopCardEffect() {
+    function setupCardLeaveEffect() {
         isAnimatingCard = false;
         cardCtx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
     }
 
     card.addEventListener('mouseenter', startCardEffect);
-    card.addEventListener('mouseleave', stopCardEffect);
+    card.addEventListener('mouseleave', setupCardLeaveEffect);
     card.addEventListener('touchstart', startCardEffect, { passive: true });
-    card.addEventListener('touchend', stopCardEffect);
+    card.addEventListener('touchend', setupCardLeaveEffect);
 });
 
 cards.forEach(card => {
@@ -633,4 +633,98 @@ if (contactHeader && appleMsgNotify && appleMsgClose) {
     appleMsgClose.addEventListener("click", () => {
         appleMsgNotify.classList.remove("show");
     });
+}
+
+
+// ============================================================================
+// 13. NEW: INFINITE TIMELINE DRAG & CROSS-PLATFORM HAPTIC SCRUBBING SYSTEM
+// ============================================================================
+const scrubZone = document.getElementById("interactiveTimelineBar");
+const ticksTrack = document.getElementById("timelineTicksTrack");
+const readoutText = document.getElementById("scrubTimecode");
+
+if (scrubZone && ticksTrack && readoutText) {
+    let isDraggingTrack = false;
+    let baselineStartX = 0;
+    let trackCurrentTranslateX = -1000; // Centers long tick array behind view masks
+    let simulationFrameCount = 24 * 12;  // Matches 00:00:24:12 baseline text string parameters
+    let lastRegisteredStepX = 0;
+
+    // Safety Trigger: Sends hardware feedback pulses to Android components natively
+    function triggerHapticPulse() {
+        if (window.navigator && window.navigator.vibrate) {
+            window.navigator.vibrate(8); // High-fidelity 8 millisecond clicking tick
+        }
+    }
+
+    // Calculates timeline coordinates smoothly and builds matching timecode readouts
+    function executeScrubMovement(deltaOffsetValue) {
+        trackCurrentTranslateX += deltaOffsetValue;
+        
+        // Loop container background seamlessly so it never breaks bounds
+        if (trackCurrentTranslateX > 0) trackCurrentTranslateX = -2000;
+        if (trackCurrentTranslateX < -3000) trackCurrentTranslateX = -1000;
+        
+        ticksTrack.style.transform = `translateX(${trackCurrentTranslateX}px)`;
+
+        // Trigger step counter boundaries for frame adjustments
+        if (Math.abs(trackCurrentTranslateX - lastRegisteredStepX) > 14) {
+            if (deltaOffsetValue > 0) {
+                simulationFrameCount++;
+            } else {
+                simulationFrameCount--;
+                if (simulationFrameCount < 0) simulationFrameCount = 24 * 60 * 60; // Max baseline bounding bounds
+            }
+            
+            lastRegisteredStepX = trackCurrentTranslateX;
+            triggerHapticPulse(); // Pulses hardware exactly as frame tick transitions cross line paths
+
+            // Frame-to-Timecode Parsing Engine
+            let calculatedFrames = simulationFrameCount % 24;
+            let calculatedSeconds = Math.floor(simulationFrameCount / 24) % 60;
+            let calculatedMinutes = Math.floor(simulationFrameCount / (24 * 60)) % 60;
+            let calculatedHours = Math.floor(simulationFrameCount / (24 * 60 * 60)) % 24;
+
+            // Formats trailing zero variables elegantly
+            let formatZ = (val) => String(val).padStart(2, '0');
+            readoutText.innerText = `TC ${formatZ(calculatedHours)}:${formatZ(calculatedMinutes)}:${formatZ(calculatedSeconds)}:${formatZ(calculatedFrames)}`;
+        }
+    }
+
+    // Desktop Click Down Actions
+    scrubZone.addEventListener("mousedown", (e) => {
+        isDraggingTrack = true;
+        baselineStartX = e.clientX;
+        scrubZone.style.cursor = "ew-resize";
+    });
+
+    // Mobile Touch Down Actions
+    scrubZone.addEventListener("touchstart", (e) => {
+        isDraggingTrack = true;
+        baselineStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    // Global Movement Window Monitoring Tracking Filters
+    document.addEventListener("mousemove", (e) => {
+        if (!isDraggingTrack) return;
+        let movementDeltaX = e.clientX - baselineStartX;
+        baselineStartX = e.clientX;
+        executeScrubMovement(movementDeltaX);
+    });
+
+    document.addEventListener("touchmove", (e) => {
+        if (!isDraggingTrack || e.touches.length === 0) return;
+        let movementDeltaX = e.touches[0].clientX - baselineStartX;
+        baselineStartX = e.touches[0].clientX;
+        executeScrubMovement(movementDeltaX);
+    }, { passive: true });
+
+    // Release Reset Triggers
+    const terminateDragState = () => {
+        isDraggingTrack = false;
+        if(scrubZone) scrubZone.style.cursor = "ew-resize";
+    };
+
+    document.addEventListener("mouseup", terminateDragState);
+    document.addEventListener("touchend", terminateDragState);
 }
