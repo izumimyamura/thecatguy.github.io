@@ -16,7 +16,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Premium Navigation Control Elements */
+/* Premium Navigation Elements */
 .navbar {
     position: fixed;
     top: 0;
@@ -78,7 +78,7 @@ body {
     100% { font-weight: 700; letter-spacing: 0.5px; }
 }
 
-/* NEW: WANNA HIRE NAV BAR GLOW PILL BUTTON */
+/* WANNA HIRE NAV BAR BUTTON */
 .nav-hire-btn {
     background: #ff8c00;
     color: #000000 !important;
@@ -97,7 +97,7 @@ body {
     box-shadow: 0 0 25px rgba(255, 140, 0, 0.6);
 }
 
-/* KINETIC NAVIGATION CELL SPLITTING COMPONENT */
+/* KINETIC CELL SPLITTING NAV COMPONENTS */
 .split-nav-container {
     position: relative;
     display: flex;
@@ -151,9 +151,7 @@ body {
 .split-nav-container:hover .split-master-btn { opacity: 0; transform: scale(0.8); }
 .split-nav-container:hover .split-child-matrix { opacity: 1; pointer-events: auto; transform: scale(1); }
 
-/* ============================================================================
-   NEW: INTERACTIVE MONEY EMOTICONS ERUPTION PORTAL STYLING
-   ============================================================================ */
+/* MONEY EMOTICONS ERUPTION GRAPHICS */
 .money-trigger-container {
     position: relative;
     width: 100%;
@@ -191,14 +189,12 @@ body {
 }
 
 .btn-money-rain:hover {
-    border-color: #24c855; /* Changes to a crisp financial transaction green */
+    border-color: #24c855; 
     background: rgba(36, 200, 85, 0.05);
     transform: translateY(-2px);
 }
 
-/* ============================================================================
-   NEW: HIRE PORTAL LAYOUT MAPPING STYLES
-   ============================================================================ */
+/* HIRE ONBOARDING SYSTEM PORTAL STYLING */
 .hire-portal-body {
     background: radial-gradient(circle at top right, #141415 0%, #000000 100%);
     min-height: 100vh;
@@ -281,33 +277,9 @@ body {
     box-shadow: 0 0 12px rgba(255, 140, 0, 0.2);
 }
 
-.channel-dropdown-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.dynamic-input-field {
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.form-submit-matrix-btn {
-    background: #ffffff;
-    color: #000000;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    border: none;
-    padding: 16px;
-    border-radius: 14px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s, transform 0.1s ease;
-}
-
-.form-submit-matrix-btn:hover {
-    background: #ff8c00;
-    transform: translateY(-1px);
-}
+.channel-dropdown-wrapper { position: relative; width: 100%; }
+.form-submit-matrix-btn { background: #ffffff; color: #000000; font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; border: none; padding: 16px; border-radius: 14px; cursor: pointer; margin-top: 10px; transition: background 0.3s, transform 0.1s ease; }
+.form-submit-matrix-btn:hover { background: #ff8c00; transform: translateY(-1px); }
 
 /* Core Infrastructure Elements (From previous updates) */
 .egg-glitch-btn { background: #ffffff; color: #000000; border: 1px solid #ffffff; padding: 6px 14px; border-radius: 20px; font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); will-change: filter, transform; }
@@ -332,7 +304,7 @@ body {
 .apple-msg-sender { font-size: 0.85rem; font-weight: 600; color: #ffffff; }
 .apple-msg-app { font-size: 0.7rem; color: #8e8e93; }
 .apple-msg-close { position: absolute; right: 0; top: 50%; transform: translateY(-50%); background: rgba(255, 255, 255, 0.1); border: none; color: #aeaea3; width: 18px; height: 18px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 0.8rem; cursor: pointer; }
-.apple-bubble { background: #007aff; color: white; padding: 8px 14px; border-radius: 16px; font-size: 0.85rem; display: inline-block; max-width: 100%; line-height: 1.4; position: relative; }
+.apple-bubble { background: #007aff; color: white; padding: 8px 14px; border-radius: 16px; font-size: 0.85rem; display: inline-block; max-width: 100%; line-height: 1.4; relative; }
 .cursor-glow { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(255, 140, 0, 0.08), rgba(255, 140, 0, 0)); pointer-events: none; border-radius: 50%; transform: translate(-50%, -50%); z-index: 9999; }
 .hero { min-height: 100vh; display: flex; justify-content: space-between; align-items: center; padding: 0 10%; position: relative; background: #000000; }
 .hero-content { position: relative; z-index: 2; }
@@ -467,7 +439,7 @@ body {
 @media(max-width: 900px) {
     .navbar { padding: 15px 4%; }
     .nav-controls { gap: 10px; }
-    .nav-motion-trigger { display: none !important; } /* Clears workspace bar layouts to optimize navbar real estate */
+    .nav-motion-trigger { display: none !important; } 
     .split-nav-container { max-width: 130px; }
     .split-master-btn { font-size: 0.6rem !important; padding: 6px 8px; }
     .child-node { font-size: 0.6rem !important; padding: 6px 6px; }
