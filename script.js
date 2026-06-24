@@ -715,7 +715,6 @@ if (scrubZone && ticksTrack && readoutText) {
         if(scrubZone) scrubZone.style.cursor = "ew-resize";
     };
 
-    document.mouseup = terminateDragState;
     document.addEventListener("mouseup", terminateDragState);
     document.addEventListener("touchend", terminateDragState);
 }
@@ -808,14 +807,13 @@ if (moneyZone && moneyCanvas) {
 
 
 // ============================================================================
-// 15. FIXED: MULTI-PAGE DEFENSIVE INTAKE & DIRECT INSTAGRAM ROUTING ENGINE
+// 15. UPDATED: DEFENSIVE INTERCEPTION LOGIC REDIRECTING TO INSTAGRAM PROFILE
 // ============================================================================
 const selectionMenu = document.getElementById("contactChannelSelect");
 const inputLabel = document.getElementById("dynamicFieldLabel");
 const inputField = document.getElementById("dynamicFieldInput");
 const clientFormElement = document.getElementById("clientIntakeForm");
 
-// Protects dropdown configuration loops on main page landing sections
 if (selectionMenu && inputLabel && inputField) {
     const valueMapGuide = {
         instagram: { label: "Your Instagram Handle", holder: "@username" },
@@ -836,12 +834,11 @@ if (selectionMenu && inputLabel && inputField) {
     });
 }
 
-// FIXED: Captures intake values and intercepts routing directly to your Instagram Direct Message chat thread
+// CONVERTED: Intercepts form submit vectors and loads your main public feed page
 if (clientFormElement) {
     clientFormElement.addEventListener("submit", (e) => {
-        e.preventDefault(); // Silences default browser refresh loops
+        e.preventDefault(); 
         
-        // Pack data safely into memory logs
         const clientName = document.getElementById("clientNameInput") ? document.getElementById("clientNameInput").value : "";
         const companyName = document.getElementById("companyNameInput") ? document.getElementById("companyNameInput").value : "";
         const pickedChannel = selectionMenu ? selectionMenu.value : "";
@@ -849,7 +846,7 @@ if (clientFormElement) {
 
         console.log("Timeline Onboarding Intent Captured:", { clientName, companyName, pickedChannel, handleDetail });
 
-        // Instantly maps redirection string directly into your live Instagram chat thread space
-        window.location.href = "https://instagram.com/direct/t/thecatguy.editz/";
+        // Redirects your clients directly to your main Instagram profile feed wall cleanly
+        window.location.href = "https://www.instagram.com/thecatguy.editz/";
     });
 }
