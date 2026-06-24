@@ -718,3 +718,119 @@ if (scrubZone && ticksTrack && readoutText) {
     document.addEventListener("mouseup", terminateDragState);
     document.addEventListener("touchend", terminateDragState);
 }
+
+
+// ============================================================================
+// 14. NEW: DYNAMIC JUMPING MONEY EMOTICONS PARTICLE CANVAS PIPELINE
+// ============================================================================
+const moneyZone = document.getElementById("moneyLaunchZone");
+const moneyCanvas = document.getElementById("moneyCanvasMesh");
+
+if (moneyZone && moneyCanvas) {
+    const mCtx = moneyCanvas.getContext("2d");
+    let cashArray = [];
+    let isHoveringZone = false;
+    let loopId = null;
+
+    function resizeMoneyCanvas() {
+        moneyCanvas.width = moneyZone.offsetWidth + 200;
+        moneyCanvas.height = moneyZone.offsetHeight + 300;
+    }
+
+    const assetTokens = ["💵", "💸", "💰", "💲"];
+
+    class MoneyToken {
+        constructor() {
+            this.x = moneyCanvas.width / 2 + (Math.random() * 60 - 30);
+            this.y = moneyCanvas.height - 40;
+            this.token = assetTokens[Math.floor(Math.random() * assetTokens.length)];
+            this.size = 18 + Math.random() * 12;
+            
+            // Vector parameters configuring a true physics-based vertical upward arc jump
+            this.vx = Math.random() * 6 - 3;
+            this.vy = -(6 + Math.random() * 7);
+            this.gravity = 0.22;
+            this.alpha = 1;
+            this.spinAngle = Math.random() * Math.PI;
+            this.spinSpeed = Math.random() * 0.06 - 0.03;
+        }
+        update() {
+            this.vy += this.gravity;
+            this.x += this.vx;
+            this.y += this.vy;
+            this.spinAngle += this.spinSpeed;
+            if (this.vy > 2) this.alpha -= 0.02; // Begins soft fading routine during descent tracking
+        }
+        draw() {
+            mCtx.save();
+            mCtx.globalAlpha = Math.max(0, this.alpha);
+            mCtx.translate(this.x, this.y);
+            mCtx.rotate(this.spinAngle);
+            mCtx.font = `${this.size}px serif`;
+            mCtx.fillText(this.token, -this.size/2, this.size/2);
+            mCtx.restore();
+        }
+    }
+
+    function processRenderLoop() {
+        mCtx.clearRect(0, 0, moneyCanvas.width, moneyCanvas.height);
+
+        if (isHoveringZone && cashArray.length < 70) {
+            cashArray.push(new MoneyToken());
+        }
+
+        cashArray.forEach((item, index) => {
+            item.update();
+            item.draw();
+            if (item.alpha <= 0 || item.y > moneyCanvas.height) cashArray.splice(index, 1);
+        });
+
+        if (cashArray.length > 0 || isHoveringZone) {
+            loopId = requestAnimationFrame(processRenderLoop);
+        } else {
+            loopId = null;
+        }
+    }
+
+    moneyZone.addEventListener("mouseenter", () => {
+        resizeMoneyCanvas();
+        isHoveringZone = true;
+        if (!loopId) processRenderLoop();
+    });
+
+    moneyZone.addEventListener("mouseleave", () => { isHoveringZone = false; });
+    moneyZone.addEventListener("touchstart", () => {
+        resizeMoneyCanvas();
+        isHoveringZone = true;
+        if (!loopId) processRenderLoop();
+    }, { passive: true });
+    moneyZone.addEventListener("touchend", () => { isHoveringZone = false; });
+}
+
+
+// ============================================================================
+// 15. NEW: ONBOARDING FIELD DYNAMIC CHANNEL DROPDOWN ENGINE MAPPING
+// ============================================================================
+const selectionMenu = document.getElementById("contactChannelSelect");
+const inputLabel = document.getElementById("dynamicFieldLabel");
+const inputField = document.getElementById("dynamicFieldInput");
+
+if (selectionMenu && inputLabel && inputField) {
+    const valueMapGuide = {
+        instagram: { label: "Your Instagram Handle", holder: "@username" },
+        linkedin: { label: "Your LinkedIn Profile URL", holder: "https://linkedin.com/in/username" },
+        phone: { label: "Your Phone / WhatsApp Number", holder: "+1 (555) 000-0000" },
+        email: { label: "Your Corporate Email Address", holder: "name@company.com" }
+    };
+
+    selectionMenu.addEventListener("change", (e) => {
+        const pickedCoordinates = valueMapGuide[e.target.value];
+        if (pickedCoordinates) {
+            inputLabel.innerText = pickedCoordinates.label;
+            inputField.placeholder = pickedCoordinates.holder;
+            inputField.disabled = false;
+            inputField.value = "";
+            inputField.focus();
+        }
+    });
+}
