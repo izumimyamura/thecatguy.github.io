@@ -1,5 +1,5 @@
 gsap.registerPlugin(ScrollTrigger);
-
+ 
 // ============================================================================
 // 1. DYNAMIC GSAP SCROLL VIDEO ANIMATION TIMELINE & AUTOPLAY FORCING ENGINE
 // ============================================================================
