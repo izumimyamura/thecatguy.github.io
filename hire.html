@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,28 +30,28 @@
     <canvas id="stars"></canvas>
     <div class="cursor-glow" id="customCursor"></div>
 
-    <!-- Interactive Client Intake Form Field Block Frame -->
+    <!-- Onboarding Form Section -->
     <section class="onboarding-form-section">
         <div class="form-container-card">
             <h2>Let's Launch Your Project 🚀</h2>
-            <p class="form-instructions-subtitle">Fill out your background coordinates and I will sync back up within 12 hours.</p>
+            <p class="form-instructions-subtitle">Fill out your background data below. Submitting will launch an instant redirect straight to my Instagram DM chat hub!</p>
             
-            <!-- Structural Form Layout Framework Matrix Link -->
-            <form action="https://formspree.io/f/your-id" method="POST" class="premium-intake-form">
+            <!-- FIXED: Intercepts submission pipeline cleanly using local form ID tracking handles -->
+            <form id="clientIntakeForm" class="premium-intake-form">
                 <div class="form-group-row">
                     <label>Your Name / Contact Officer</label>
-                    <input type="text" name="client_name" required placeholder="e.g., Alex Mercer" autocomplete="off">
+                    <input type="text" id="clientNameInput" required placeholder="e.g., Alex Mercer" autocomplete="off">
                 </div>
 
                 <div class="form-group-row">
                     <label>Company / Studio Designation</label>
-                    <input type="text" name="company_name" required placeholder="e.g., Apex Media Studios" autocomplete="off">
+                    <input type="text" id="companyNameInput" required placeholder="e.g., Apex Media Studios" autocomplete="off">
                 </div>
 
                 <div class="form-group-row">
                     <label>Select Your Preferred Communications Channel</label>
                     <div class="channel-dropdown-wrapper">
-                        <select id="contactChannelSelect" name="preferred_channel" required>
+                        <select id="contactChannelSelect" required>
                             <option value="" disabled selected>-- Choose Option --</option>
                             <option value="instagram">Instagram ID</option>
                             <option value="linkedin">LinkedIn Profile URL</option>
@@ -62,10 +61,10 @@
                     </div>
                 </div>
 
-                <!-- Variable input field that updates automatically depending on selection coordinates -->
-                <div class="form-group-row dynamic-input-field" id="dynamicInputGroup">
+                <!-- FIXED: Initial field starts generic so it is immediately editable and never bugs out on mobile browsers -->
+                <div class="form-group-row" id="dynamicInputGroup">
                     <label id="dynamicFieldLabel">Contact Handle Detail</label>
-                    <input type="text" id="dynamicFieldInput" name="contact_detail" required placeholder="Please select a channel first..." disabled autocomplete="off">
+                    <input type="text" id="dynamicFieldInput" required placeholder="Select a channel above first..." autocomplete="off">
                 </div>
 
                 <button type="submit" class="form-submit-matrix-btn">SUBMIT TIMELINE REQUEST</button>
