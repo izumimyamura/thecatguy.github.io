@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>THE CAT GUY | Hire Onboarding Portal</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="hire-portal-body">
+
+    <nav class="navbar">
+        <div class="logo">THE CATGUY</div>
+        <div class="nav-controls">
+            <div class="split-nav-container">
+                <div class="split-master-btn">← RETURN TO TIMELINE</div>
+                <div class="split-child-matrix">
+                    <a href="index.html" class="child-node">Main Page</a>
+                    <a href="index.html#showreel" class="child-node">Showreel</a>
+                    <a href="index.html#portfolio" class="child-node">Selected Work</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <canvas id="stars"></canvas>
+    <div class="cursor-glow" id="customCursor"></div>
+
+    <!-- Interactive Client Intake Form Field Block Frame -->
+    <section class="onboarding-form-section">
+        <div class="form-container-card">
+            <h2>Let's Launch Your Project 🚀</h2>
+            <p class="form-instructions-subtitle">Fill out your background coordinates and I will sync back up within 12 hours.</p>
+            
+            <!-- Structural Form Layout Framework Matrix Link -->
+            <form action="https://formspree.io/f/your-id" method="POST" class="premium-intake-form">
+                <div class="form-group-row">
+                    <label>Your Name / Contact Officer</label>
+                    <input type="text" name="client_name" required placeholder="e.g., Alex Mercer" autocomplete="off">
+                </div>
+
+                <div class="form-group-row">
+                    <label>Company / Studio Designation</label>
+                    <input type="text" name="company_name" required placeholder="e.g., Apex Media Studios" autocomplete="off">
+                </div>
+
+                <div class="form-group-row">
+                    <label>Select Your Preferred Communications Channel</label>
+                    <div class="channel-dropdown-wrapper">
+                        <select id="contactChannelSelect" name="preferred_channel" required>
+                            <option value="" disabled selected>-- Choose Option --</option>
+                            <option value="instagram">Instagram ID</option>
+                            <option value="linkedin">LinkedIn Profile URL</option>
+                            <option value="phone">Phone / WhatsApp Number</option>
+                            <option value="email">Email Address</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Variable input field that updates automatically depending on selection coordinates -->
+                <div class="form-group-row dynamic-input-field" id="dynamicInputGroup">
+                    <label id="dynamicFieldLabel">Contact Handle Detail</label>
+                    <input type="text" id="dynamicFieldInput" name="contact_detail" required placeholder="Please select a channel first..." disabled autocomplete="off">
+                </div>
+
+                <button type="submit" class="form-submit-matrix-btn">SUBMIT TIMELINE REQUEST</button>
+            </form>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
