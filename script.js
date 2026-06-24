@@ -1,5 +1,5 @@
 gsap.registerPlugin(ScrollTrigger);
- 
+
 // ============================================================================
 // 1. DYNAMIC GSAP SCROLL VIDEO ANIMATION TIMELINE & AUTOPLAY FORCING ENGINE
 // ============================================================================
@@ -715,13 +715,14 @@ if (scrubZone && ticksTrack && readoutText) {
         if(scrubZone) scrubZone.style.cursor = "ew-resize";
     };
 
+    document.mouseup = terminateDragState;
     document.addEventListener("mouseup", terminateDragState);
     document.addEventListener("touchend", terminateDragState);
 }
 
 
 // ============================================================================
-// 14. NEW: DYNAMIC JUMPING MONEY EMOTICONS PARTICLE CANVAS PIPELINE
+// 14. DYNAMIC JUMPING MONEY EMOTICONS PARTICLE CANVAS PIPELINE
 // ============================================================================
 const moneyZone = document.getElementById("moneyLaunchZone");
 const moneyCanvas = document.getElementById("moneyCanvasMesh");
@@ -745,8 +746,6 @@ if (moneyZone && moneyCanvas) {
             this.y = moneyCanvas.height - 40;
             this.token = assetTokens[Math.floor(Math.random() * assetTokens.length)];
             this.size = 18 + Math.random() * 12;
-            
-            // Vector parameters configuring a true physics-based vertical upward arc jump
             this.vx = Math.random() * 6 - 3;
             this.vy = -(6 + Math.random() * 7);
             this.gravity = 0.22;
@@ -759,7 +758,7 @@ if (moneyZone && moneyCanvas) {
             this.x += this.vx;
             this.y += this.vy;
             this.spinAngle += this.spinSpeed;
-            if (this.vy > 2) this.alpha -= 0.02; // Begins soft fading routine during descent tracking
+            if (this.vy > 2) this.alpha -= 0.02; 
         }
         draw() {
             mCtx.save();
@@ -809,12 +808,14 @@ if (moneyZone && moneyCanvas) {
 
 
 // ============================================================================
-// 15. NEW: ONBOARDING FIELD DYNAMIC CHANNEL DROPDOWN ENGINE MAPPING
+// 15. FIXED: MULTI-PAGE DEFENSIVE INTAKE & DIRECT INSTAGRAM ROUTING ENGINE
 // ============================================================================
 const selectionMenu = document.getElementById("contactChannelSelect");
 const inputLabel = document.getElementById("dynamicFieldLabel");
 const inputField = document.getElementById("dynamicFieldInput");
+const clientFormElement = document.getElementById("clientIntakeForm");
 
+// Protects dropdown configuration loops on main page landing sections
 if (selectionMenu && inputLabel && inputField) {
     const valueMapGuide = {
         instagram: { label: "Your Instagram Handle", holder: "@username" },
@@ -832,5 +833,23 @@ if (selectionMenu && inputLabel && inputField) {
             inputField.value = "";
             inputField.focus();
         }
+    });
+}
+
+// FIXED: Captures intake values and intercepts routing directly to your Instagram Direct Message chat thread
+if (clientFormElement) {
+    clientFormElement.addEventListener("submit", (e) => {
+        e.preventDefault(); // Silences default browser refresh loops
+        
+        // Pack data safely into memory logs
+        const clientName = document.getElementById("clientNameInput") ? document.getElementById("clientNameInput").value : "";
+        const companyName = document.getElementById("companyNameInput") ? document.getElementById("companyNameInput").value : "";
+        const pickedChannel = selectionMenu ? selectionMenu.value : "";
+        const handleDetail = inputField ? inputField.value : "";
+
+        console.log("Timeline Onboarding Intent Captured:", { clientName, companyName, pickedChannel, handleDetail });
+
+        // Instantly maps redirection string directly into your live Instagram chat thread space
+        window.location.href = "https://instagram.com/direct/t/thecatguy.editz/";
     });
 }
