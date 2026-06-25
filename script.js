@@ -81,7 +81,7 @@ if (heroSection && window.innerWidth > 900) {
 }
 
 // ============================================================================
-// NEW: SCROLL DETECTOR FOR APPLE MUSIC GLASS NAVBAR TRANSFORMATION
+// SCROLL DETECTOR FOR APPLE MUSIC GLASS NAVBAR TRANSFORMATION
 // ============================================================================
 const appNavbar = document.getElementById("masterAppNavbar");
 window.addEventListener("scroll", () => {
@@ -433,7 +433,7 @@ if(canvas) animateBackgroundPipeline();
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
     parallaxElements.forEach(el => {
-        el.style.transform = `translateY(${-(window.pageYOffset * el.getAttribute("data-speed"))}px)`;
+        el.style.transform = `translateY(${export const scrolled = window.pageYOffset * el.getAttribute("data-speed")}px)`;
     });
 });
 
@@ -584,18 +584,16 @@ if (clientFormElement) {
 
 
 // ============================================================================
-// NEW: CINEMATIC KINETIC FILMSPAN CORRIDOR COLLAPSE ACTION (IMAGE_410585.JPG)
+// CINEMATIC KINETIC FILMSPAN CORRIDOR COLLAPSE ACTION (IMAGE_410585.JPG)
 // ============================================================================
 const collapseTriggerBtn = document.getElementById("ribbonCollapseBtn");
 const filmstripTrack = document.getElementById("filmstripTrack");
 
 if (collapseTriggerBtn && filmstripTrack) {
     collapseTriggerBtn.addEventListener("click", () => {
-        // Softly toggles the scale layer to pop into the exact panoramic matrix layout
         filmstripTrack.classList.toggle("total-zoomed-state");
         filmstripTrack.classList.toggle("zoomed-out-mosaic");
 
-        // Swap out text copy elements contextually to match active mode state paths
         if (filmstripTrack.classList.contains("zoomed-out-mosaic")) {
             collapseTriggerBtn.innerText = "Zoom Back In 🔍";
         } else {
