@@ -116,7 +116,7 @@ if(spotlightFrame && oscarBeam) {
 
 
 // ============================================================================
-// 4. SPARKLE CONFETTI PARTY POPS BUTTON LAYER RE-ROUTING
+// 4. RESTORED: SPARKLE CONFETTI PARTY POPS BUTTON CANVAS PIPELINE
 // ============================================================================
 const burstCanvas = document.getElementById("btnBurstCanvas");
 const burstBtnWrapper = document.getElementById("burstBtnWrapper"); 
@@ -233,7 +233,7 @@ if (burstCanvas && burstBtnWrapper) {
 
 
 // ============================================================================
-// 5. HYBRID 3D TILT ENGINE & INTEGRATED INSIDE-BOX CARD ANIMATIONS
+// 5. RESTORED: PORTFOLIO CARD HOVER MOUSE-TILT 3D MATRIX EFFECT
 // ============================================================================
 const cards = document.querySelectorAll('.js-tilt-card, .portfolio-card, .mg-card-row');
 cards.forEach(card => {
@@ -245,7 +245,7 @@ cards.forEach(card => {
         const rotateX = ((y / rect.height) - 0.5) * -20;
         const rotateY = ((x / rect.width) - 0.5) * 20;
         card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        if (bgImage) bgImage.style.transform = `scale(1.15) translate3d(((x / rect.width) - 0.5) * -15px, ((y / rect.height) - 0.5) * -15px, -10px)`;
+        if (bgImage) bgImage.style.transform = `scale(1.15) translate3d(${((x / rect.width) - 0.5) * -15}px, ${((y / rect.height) - 0.5) * -15}px, -10px)`;
     }
     function resetTiltState() {
         card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
@@ -486,7 +486,7 @@ if (clientFormElement) {
 
 
 // ============================================================================
-// CINEMATIC KINETIC FILMSSPAN CORRIDOR COLLAPSE ACTION (IMAGE_410585.JPG)
+// CINEMATIC KINETIC FILMSPAN CORRIDOR COLLAPSE ACTION (IMAGE_410585.JPG)
 // ============================================================================
 const collapseTriggerBtn = document.getElementById("ribbonCollapseBtn");
 const filmstripTrack = document.getElementById("filmstripTrack");
