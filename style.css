@@ -31,7 +31,7 @@ body {
     background: #ff8c00;
 }
 
-/* Navbar Base State */
+/* Navbar Base Full-Width Fixed State */
 .navbar {
     position: fixed;
     top: 0;
@@ -49,7 +49,7 @@ body {
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* APPLE MUSIC FLOATING BOTTOM CAPSULE DOCK */
+/* APPLE MUSIC FLOATING BOTTOM CAPSULE DOCK ON SCROLL */
 .navbar.apple-music-style {
     top: auto !important;
     bottom: 30px !important;
@@ -117,17 +117,29 @@ body {
     100% { font-weight: 700; letter-spacing: 0.5px; }
 }
 
+/* FIXED: Unified Sizing Alignment Rules for Navbar Pills */
+.nav-hire-btn,
+.egg-glitch-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px; /* Matched precise height values */
+    padding: 0 16px !important; /* Matched horizontal padding rules */
+    border-radius: 20px !important;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease, filter 0.2s ease;
+}
+
 .nav-hire-btn {
     background: #ff8c00;
     color: #000000 !important;
-    text-decoration: none;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 6px 16px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
+    border: none;
     box-shadow: 0 0 15px rgba(255, 140, 0, 0.2);
-    transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
 }
 
 .nav-hire-btn:hover {
@@ -135,61 +147,33 @@ body {
     box-shadow: 0 0 25px rgba(255, 140, 0, 0.6);
 }
 
-/* MONEY CANVAS CONTAINER */
-.money-trigger-container {
-    position: relative;
-    width: 100%;
-    max-width: 440px;
-    margin: 40px 0;
-    display: inline-block;
+.egg-glitch-btn {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
 }
 
-.money-canvas {
-    position: absolute;
-    top: -150px;
-    left: -100px;
-    width: calc(100% + 200px);
-    height: calc(100% + 200px);
-    pointer-events: none;
-    z-index: 1;
+.egg-glitch-btn:hover {
+    transform: scale(1.05) skew(-3deg);
+    filter: invert(1); 
+    animation: button-jitter 0.15s infinite linear;
 }
 
-.btn-money-rain {
-    display: block;
-    position: relative;
-    z-index: 5;
-    background: #1c1c1e;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    text-align: center;
-    padding: 18px 30px;
-    border: 2px solid #3a3a3c;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transition: border-color 0.3s, background 0.3s, transform 0.1s ease-out;
+@keyframes button-jitter {
+    0% { transform: scale(1.05) translate(1px, -1px) skew(-3deg); }
+    50% { transform: scale(1.05) translate(-1px, 1px) skew(-3deg); }
+    100% { transform: scale(1.05) translate(0, 0) skew(-3deg); }
 }
 
-.btn-money-rain:hover {
-    border-color: #24c855; 
-    background: rgba(36, 200, 85, 0.05);
-    transform: translateY(-2px);
-}
+/* Money Components */
+.money-trigger-container { position: relative; width: 100%; max-width: 440px; margin: 40px 0; display: inline-block; }
+.money-canvas { position: absolute; top: -150px; left: -100px; width: calc(100% + 200px); height: calc(100% + 200px); pointer-events: none; z-index: 1; }
+.btn-money-rain { display: block; position: relative; z-index: 5; background: #1c1c1e; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 1rem; letter-spacing: 1px; text-align: center; padding: 18px 30px; border: 2px solid #3a3a3c; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); transition: border-color 0.3s, background 0.3s, transform 0.1s ease-out; }
+.btn-money-rain:hover { border-color: #24c855; background: rgba(36, 200, 85, 0.05); transform: translateY(-2px); }
 
-/* HIRE FORM MODAL WRAPPERS */
-.hire-portal-body { background: radial-gradient(circle at top right, #141415 0%, #000000 100%); min-height: 100vh; }
-.onboarding-form-section { display: flex; justify-content: center; align-items: center; padding: 120px 10% 60px 10%; }
-.premium-intake-form { display: flex; flex-direction: column; gap: 24px; }
-.form-group-row { display: flex; flex-direction: column; gap: 8px; }
-.form-group-row label { font-size: 0.85rem; font-weight: 600; color: #e8e8ed; letter-spacing: 0.5px; text-transform: uppercase; }
-.premium-intake-form input[type="text"], .premium-intake-form select { width: 100%; background: #000000; border: 1px solid rgba(255, 255, 255, 0.15); color: #ffffff; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; padding: 14px 20px; border-radius: 12px; outline: none; }
-.premium-intake-form input[type="text"]:focus, .premium-intake-form select:focus { border-color: #ff8c00; box-shadow: 0 0 12px rgba(255, 140, 0, 0.2); }
-
-/* Hero Section Base Styles - Restored to flat, standard alignments */
+/* FIXED: Hero Section Layout Space Bounds Calibrated */
 .hero {
-    min-height: 100vh; /* Reset from 120vh back to snug fold wrap */
+    min-height: 100vh; /* Removed excessive blank spacing */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -197,21 +181,39 @@ body {
     position: relative;
     background: #000000;
     overflow: hidden;
-    z-index: 2; 
 }
 
+/* FIXED: Re-enforced text placement bounds */
 .hero-content { 
     position: relative; 
     z-index: 5 !important; 
-    opacity: 1 !important; 
-    visibility: visible !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
-.hero-content h1 { font-size: 7.5rem; font-weight: 700; line-height: 0.95; letter-spacing: -4px; background: linear-gradient(180deg, #ffffff 40%, #a1a1a6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* RESTORED: Text scale and dynamic kinetic animations */
+.hero-content h1 { 
+    font-size: 7.5rem; 
+    font-weight: 700; 
+    line-height: 0.95; 
+    letter-spacing: -4px; 
+    background: linear-gradient(180deg, #ffffff 40%, #a1a1a6 100%); 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+}
+
 .spotlight-subtitle-container { position: relative; display: inline-block; margin-top: 15px; padding: 10px 0; overflow: visible; }
 .spotlight-text { font-size: 1.5rem; color: #86868b; font-weight: 400; transition: color 0.3s ease; position: relative; z-index: 5; cursor: default; }
 .spotlight-subtitle-container:hover .spotlight-text { color: #ffffff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
 .spotlight-beam { position: fixed; top: 0; left: 0; width: 140px; height: 100vh; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(255, 140, 0, 0.08) 40%, rgba(0, 0, 0, 0) 100%); clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%); pointer-events: none; z-index: 3; opacity: 0; transform: translateX(-50%); mix-blend-mode: screen; filter: blur(1px); transition: opacity 0.3s ease; }
 .spotlight-subtitle-container:hover .spotlight-beam { opacity: 1; }
+
+/* RESTORED: Full Contact Me Burst Button Parameters */
+.special-burst-frame { position: relative; display: inline-block; margin-top: 35px; cursor: pointer; z-index: 10; }
+.button-burst-canvas { position: absolute; top: -120px; left: -120px; width: calc(100% + 240px); height: calc(100% + 240px); pointer-events: none; z-index: 1; }
+.btn { display: inline-block; position: relative; z-index: 5; padding: 12px 28px; background: #0071e3; color: white; text-decoration: none; font-weight: 400; font-size: 0.95rem; border-radius: 30px; transition: background 0.2s, transform 0.1s ease-out; }
+.btn:hover { background: #147ce5; transform: scale(1.02); }
 
 .cassette-frame { display: flex; justify-content: center; align-items: center; transform: rotate(90deg) !important; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7)); z-index: 5; }
 .cassette { width: 320px; }
@@ -263,20 +265,39 @@ body {
 .section-header { max-width: 800px; margin-bottom: 60px; }
 .section-subtitle { font-size: 1.4rem; color: #86868b; margin-top: 10px; }
 
-/* Portfolio Grid */
+/* RESTORED: Full 3D Interactive Hover and Glow Matrix for Selected Work Cards */
 .portfolio { padding: 140px 10% 40px 10%; background: #000000; position: relative; }
 .portfolio h2 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1.5px; }
 .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; perspective: 1000px; }
-.portfolio-card { position: relative; height: 420px !important; background: #1c1c1e; border-radius: 28px; overflow: hidden; display: flex; align-items: flex-end; transform-style: preserve-3d; cursor: pointer; will-change: transform; }
-.card-animation-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 0.4s ease; }
-.portfolio-card:hover .card-animation-canvas, .portfolio-card:active .card-animation-canvas { opacity: 1; }
+
+.portfolio-card { 
+    position: relative; 
+    height: 420px !important; 
+    background: #1c1c1e; 
+    border-radius: 28px; 
+    overflow: hidden; 
+    display: flex; 
+    align-items: flex-end; 
+    transform-style: preserve-3d; 
+    cursor: pointer; 
+    will-change: transform; 
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-card:hover {
+    border-color: rgba(0, 113, 227, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 113, 227, 0.15);
+}
+
 .portfolio-card-content { position: relative; padding: 35px; z-index: 3; transform: translateZ(40px); pointer-events: none; }
 .portfolio-tag { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #0071e3; background: rgba(0, 113, 227, 0.15); padding: 6px 14px; border-radius: 20px; margin-bottom: 15px; }
 .portfolio-card h3 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
 .portfolio-card p { font-size: 1rem; color: #a1a1a6; line-height: 1.4; }
 .portfolio-card .card-bg-image { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.45; transition: opacity 0.4s ease, transform 0.4s ease; transform: scale(1) translateZ(-10px); z-index: 2; }
+.portfolio-card:hover .card-bg-image { opacity: 0.25; }
 
-/* DRAGGABLE TIMEWORK RULER BAR COMPONENT ACCENTS */
+/* Draggable Timeline Components */
 .mg-portal-lane { width: 100%; padding: 0 10%; background: #000000; margin: 40px auto 60px auto; }
 .timeline-accent-bar { width: 100%; height: 32px; background: #1c1c1e; border: 1px solid rgba(255, 255, 255, 0.05); border-bottom: none; border-radius: 12px 12px 0 0; display: flex; align-items: center; padding: 0 20px; justify-content: space-between; position: relative; cursor: ew-resize; overflow: hidden; user-select: none; }
 .time-readout { font-size: 0.65rem; font-family: monospace; color: #ffffff; letter-spacing: 1px; background: #000000; padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.1); z-index: 10; }
@@ -290,7 +311,7 @@ body {
 .mg-premium-portal-btn:hover .mg-portal-main-text { letter-spacing: 7px; font-weight: 300; color: #ff8c00; text-shadow: 0 0 10px rgba(255, 140, 0, 0.4); }
 .mg-premium-portal-btn:hover .mg-portal-glitch-layer { content: attr(data-text); opacity: 0.35; transform: translate(-4px, 3px) scale(1.02); letter-spacing: 7px; }
 
-/* CINEMATIC KINETIC FILMSPAN 3D FLYING CORRIDOR */
+/* Cinematic Ribbon Mosaic Corridor */
 .ribbon-gallery-section { width: 100%; background: #000000; padding: 100px 0; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
 .ribbon-btn-wrap { margin-bottom: 50px; z-index: 20; }
 .ribbon-zoom-trigger-btn { background: #ffffff; color: #000000; border: none; font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; padding: 15px 38px; border-radius: 30px; cursor: pointer; box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15); transition: background 0.3s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -305,7 +326,7 @@ body {
 .ribbon-video-column video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .ribbon-video-column:hover { transform: scale(1.04); z-index: 10; }
 
-/* Bento Layout elements */
+/* Bento Card Grid Elements */
 .about, .faq, .contact { padding: 140px 10%; background: #000000; position: relative; }
 .about h2, .faq h2, .contact h2 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1.5px; }
 .about-header { max-width: 800px; margin-bottom: 50px; }
@@ -352,7 +373,7 @@ body {
 .sig-title-text { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 400; letter-spacing: 6px; color: #ffffff; margin-top: -30px; text-transform: uppercase; opacity: 0; }
 .sig-subtitle-text { font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; font-weight: 300; letter-spacing: 2px; color: #86868b; margin-top: 2px; text-transform: uppercase; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 4px; display: inline-block; width: 110px; opacity: 0; }
 
-/* Premium Apple Notification Layer Modals Layout Isolation */
+/* Apple-Style Notification Overlays */
 .apple-msg-popup { 
     position: fixed; 
     top: 100px !important; 
@@ -380,7 +401,7 @@ body {
     .split-nav-container { max-width: 130px; }
     .split-master-btn { font-size: 0.6rem !important; padding: 6px 8px; }
     .child-node { font-size: 0.6rem !important; padding: 6px 6px; }
-    .nav-hire-btn { font-size: 0.65rem !important; padding: 6px 12px; }
+    .nav-hire-btn, .egg-glitch-btn { font-size: 0.65rem !important; height: 28px; padding: 0 12px !important; }
     .teaser-flex-matrix { grid-template-columns: 1fr; display: grid; gap: 20px; }
     .teaser-lane-card { height: 320px; }
     .ribbon-viewport-mask { height: 360px; perspective: 600px; }
