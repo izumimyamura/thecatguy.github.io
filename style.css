@@ -49,7 +49,7 @@ body {
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* NEW: APPLE MUSIC FLOATING GLASS NAVIGATION CONTROL TRANSITION SLIDER */
+/* APPLE MUSIC FLOATING GLASS NAVIGATION CONTROL TRANSITION SLIDER */
 .navbar.apple-music-style {
     top: 20px;
     left: 50%;
@@ -429,12 +429,12 @@ body {
 .portfolio-card .card-bg-image { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.45; transition: opacity 0.4s ease, transform 0.4s ease; transform: scale(1) translateZ(-10px); z-index: 2; }
 
 /* ============================================================================
-   NEW: CINEMATIC KINETIC FILMSTRIP MASK MATRIX (IMAGE_410585.JPG)
+   UPGRADED: CINEMATIC KINETIC FILMSPAN 3D FLYING CORRIDOR (IMAGE_410585.JPG)
    ============================================================================ */
 .ribbon-gallery-section {
     width: 100%;
     background: #000000;
-    padding: 80px 0;
+    padding: 100px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -442,7 +442,7 @@ body {
 }
 
 .ribbon-btn-wrap {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     z-index: 20;
 }
 
@@ -453,10 +453,10 @@ body {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    padding: 14px 35px;
+    padding: 15px 38px;
     border-radius: 30px;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
     transition: background 0.3s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -467,44 +467,62 @@ body {
 
 .ribbon-viewport-mask {
     width: 100vw;
-    height: 600px;
+    height: 650px;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     position: relative;
+    /* Establishes the 3D perspective field context */
+    perspective: 1200px;
 }
 
-/* Base filmstrip corridor containing side-by-side video tracks */
+/* Base filmstrip container */
 .ribbon-filmstrip-corridor {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     height: 100%;
     align-items: center;
     will-change: transform;
-    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Initial Total Zoomed-In Immersive Layout State */
+/* NEW: Total Zoomed state pushes track past camera bounds into depth space */
 .ribbon-filmstrip-corridor.total-zoomed-state {
-    transform: scale(2.8) translate3d(0, 0, 0);
+    transform: translateZ(600px) rotateX(12deg);
 }
 
-/* Transition Zoomed-Out State perfectly mirroring image_410585.jpg */
+/* NEW: Zoomed-out state lands flat on screen matching image_410585.jpg layout exactly */
 .ribbon-filmstrip-corridor.zoomed-out-mosaic {
-    transform: scale(0.9) translate3d(0, 0, 0);
+    transform: translateZ(0px) rotateX(0deg) scale(0.95);
 }
 
 .ribbon-video-column {
-    width: 160px; /* Precise aspect ratio scaling matches image_410585.jpg column shapes */
+    width: 165px; 
     height: 520px;
-    border-radius: 4px;
+    border-radius: 6px;
     overflow: hidden;
     background: #141415;
     flex-shrink: 0;
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
-    transition: transform 0.3s ease, filter 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease;
+    will-change: transform;
+}
+
+/* NEW: Stagger out individual card anchors along Z depth to make them fly from outside the face/screen */
+.ribbon-filmstrip-corridor.total-zoomed-state .ribbon-video-column:nth-child(even) {
+    transform: translateZ(250px) translateY(-40px);
+}
+.ribbon-filmstrip-corridor.total-zoomed-state .ribbon-video-column:nth-child(odd) {
+    transform: translateZ(450px) translateY(40px);
+}
+
+/* Land cleanly back in uniform inline array upon toggle */
+.ribbon-filmstrip-corridor.zoomed-out-mosaic .ribbon-video-column {
+    transform: translateZ(0) translateY(0);
 }
 
 .ribbon-video-column video {
@@ -515,8 +533,9 @@ body {
 }
 
 .ribbon-video-column:hover {
-    transform: scale(1.04);
-    z-index: 10;
+    transform: scale(1.05) translateZ(30px) !important;
+    box-shadow: 0 40px 80px rgba(255, 140, 0, 0.35);
+    border-color: rgba(255, 140, 0, 0.4);
 }
 
 /* Bento Layout elements */
@@ -529,7 +548,6 @@ body {
 .tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1200px; perspective: 1000px; }
 .tech-card { position: relative; background: #1c1c1e; border-radius: 28px; overflow: hidden; z-index: 1; transform-style: preserve-3d; will-change: transform; }
 .card-content { position: relative; padding: 40px 30px; z-index: 3; pointer-events: none; transform: translateZ(30px); }
-.card-bg-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.75) 100%); }
 .tech-card h3 { font-size: 1.8rem; margin-bottom: 6px; font-weight: 700; letter-spacing: -0.5px; }
 .tech-tag { display: inline-block; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #ff8c00; margin-bottom: 20px; font-weight: 500; }
 .tech-card p:not(.tech-tag) { font-size: 1.05rem; color: #a1a1a6; line-height: 1.5; }
@@ -577,10 +595,12 @@ body {
     .nav-hire-btn { font-size: 0.65rem !important; padding: 6px 12px; }
     .teaser-flex-matrix { grid-template-columns: 1fr; display: grid; gap: 20px; }
     .teaser-lane-card { height: 320px; }
-    .ribbon-viewport-mask { height: 360px; }
-    .ribbon-filmstrip-corridor.total-zoomed-state { transform: scale(1.8); }
-    .ribbon-filmstrip-corridor.zoomed-out-mosaic { transform: scale(0.5); }
-    .ribbon-video-column { width: 75px; height: 300px; }
+    .ribbon-viewport-mask { height: 380px; perspective: 600px; }
+    .ribbon-filmstrip-corridor.total-zoomed-state { transform: translateZ(280px) rotateX(8deg); }
+    .ribbon-filmstrip-corridor.zoomed-out-mosaic { transform: translateZ(0) scale(0.65); }
+    .ribbon-video-column { width: 75px; height: 320px; }
+    .ribbon-filmstrip-corridor.total-zoomed-state .ribbon-video-column:nth-child(even) { transform: translateZ(60px) translateY(-15px); }
+    .ribbon-filmstrip-corridor.total-zoomed-state .ribbon-video-column:nth-child(odd) { transform: translateZ(120px) translateY(15px); }
     .money-trigger-container { max-width: 100%; }
     .btn-money-rain { font-size: 0.85rem; padding: 14px 20px; }
     .form-container-card { padding: 30px 20px; border-radius: 24px; }
