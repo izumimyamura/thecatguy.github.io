@@ -81,12 +81,12 @@ if (heroSection && window.innerWidth > 900) {
 }
 
 // ============================================================================
-// SCROLL DETECTOR FOR APPLE MUSIC GLASS NAVBAR TRANSFORMATION
+// FIXED: TRANSFORMS NAVBAR DYNAMICALLY Past 120px Screen offsets
 // ============================================================================
 const appNavbar = document.getElementById("masterAppNavbar");
 window.addEventListener("scroll", () => {
     if (appNavbar) {
-        if (window.scrollY > 80) {
+        if (window.scrollY > 120) {
             appNavbar.classList.add("apple-music-style");
         } else {
             appNavbar.classList.remove("apple-music-style");
@@ -267,73 +267,6 @@ if (burstCanvas && burstBtnWrapper) {
 // 5. HYBRID 3D TILT ENGINE & INTEGRATED INSIDE-BOX CARD ANIMATIONS
 // ============================================================================
 const cards = document.querySelectorAll('.js-tilt-card, .portfolio-card, .mg-card-row');
-const animatedCards = document.querySelectorAll('.js-animated-card');
-
-animatedCards.forEach(card => {
-    const cardCanvas = card.querySelector('.card-animation-canvas');
-    if(!cardCanvas) return;
-    const cardCtx = cardCanvas.getContext('2d');
-    let cardParticles = [];
-    let isAnimatingCard = false;
-    
-    function resizeCardCanvas() {
-        cardCanvas.width = card.offsetWidth;
-        cardCanvas.height = card.offsetHeight;
-    }
-    resizeCardCanvas();
-    
-    function setupCardParticles() {
-        cardParticles = [];
-        for(let i=0; i < 25; i++) {
-            cardParticles.push({
-                x: Math.random() * cardCanvas.width,
-                y: cardCanvas.height + Math.random() * 20,
-                speed: 1.5 + Math.random() * 3,
-                length: 10 + Math.random() * 25,
-                width: 1 + Math.random() * 1.5
-            });
-        }
-    }
-
-    function drawCardAnimationLoop() {
-        if(!isAnimatingCard) return;
-        cardCtx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
-        cardCtx.strokeStyle = 'rgba(0, 113, 227, 0.45)';
-        cardCtx.lineCap = 'round';
-        
-        cardParticles.forEach(p => {
-            cardCtx.lineWidth = p.width;
-            cardCtx.beginPath();
-            cardCtx.moveTo(p.x, p.y);
-            cardCtx.lineTo(p.x, p.y - p.length);
-            cardCtx.stroke();
-            p.y -= p.speed;
-            if(p.y < -20) {
-                p.y = cardCanvas.height + 20;
-                p.x = Math.random() * cardCanvas.width;
-            }
-        });
-        requestAnimationFrame(drawCardAnimationLoop);
-    }
-
-    function startCardEffect() {
-        resizeCardCanvas();
-        setupCardParticles();
-        isAnimatingCard = true;
-        drawCardAnimationLoop();
-    }
-
-    function setupCardLeaveEffect() {
-        isAnimatingCard = false;
-        cardCtx.clearRect(0, 0, cardCanvas.width, cardCanvas.height);
-    }
-
-    card.addEventListener('mouseenter', startCardEffect);
-    card.addEventListener('mouseleave', setupCardLeaveEffect);
-    card.addEventListener('touchstart', startCardEffect, { passive: true });
-    card.addEventListener('touchend', setupCardLeaveEffect);
-});
-
 cards.forEach(card => {
     const bgImage = card.querySelector('.card-bg-image');
     function processTiltCalculation(clientX, clientY) {
@@ -433,7 +366,7 @@ if(canvas) animateBackgroundPipeline();
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
     parallaxElements.forEach(el => {
-        el.style.transform = `translateY(${export const scrolled = window.pageYOffset * el.getAttribute("data-speed")}px)`;
+        el.style.transform = `translateY(${window.pageYOffset * el.getAttribute("data-speed")}px)`;
     });
 });
 
