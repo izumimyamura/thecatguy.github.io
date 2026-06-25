@@ -31,7 +31,7 @@ if(videoContainerSelector) {
                  .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
 }
 
-const premiumVideo = document.querySelectorAll(".featured-video, .teaser-lane-card video");
+const premiumVideo = document.querySelectorAll(".featured-video, .teaser-lane-card video, .ribbon-video-column video");
 premiumVideo.forEach(vid => {
     vid.muted = true;
     vid.defaultMuted = true;
@@ -51,7 +51,7 @@ premiumVideo.forEach(vid => {
 
 
 // ============================================================================
-// 2. NEW: IGLOO.INC STYLE HIGH-INTERACTIVE 3D MOUSE COORDINATE ORBIT MATRIX
+// 2. IGLOO.INC STYLE HIGH-INTERACTIVE 3D MOUSE COORDINATE ORBIT MATRIX
 // ============================================================================
 const heroSection = document.getElementById("hero");
 const orbitLayers = document.querySelectorAll(".dynamic-3d-rotate");
@@ -59,7 +59,6 @@ const orbitLayers = document.querySelectorAll(".dynamic-3d-rotate");
 if (heroSection && window.innerWidth > 900) {
     heroSection.addEventListener("mousemove", (e) => {
         const boundRect = heroSection.getBoundingClientRect();
-        // Calculate coordinate displacements from the center midpoint
         const mouseDeltaX = e.clientX - (boundRect.left + boundRect.width / 2);
         const mouseDeltaY = e.clientY - (boundRect.top + boundRect.height / 2);
 
@@ -70,18 +69,31 @@ if (heroSection && window.innerWidth > 900) {
             const translateShiftX = mouseDeltaX * rotationalDepthFactor * 0.15;
             const translateShiftY = mouseDeltaY * rotationalDepthFactor * 0.15;
 
-            // Applies simultaneous 3D axis tilting and linear depth shifts
             layer.style.transform = `translate3d(${translateShiftX}px, ${translateShiftY}px, 0) rotateX(${finalTiltX}deg) rotateY(${finalTiltY}deg)`;
         });
     });
 
-    // Reset components softly when pointer focus breaks bounds
     heroSection.addEventListener("mouseleave", () => {
         orbitLayers.forEach(layer => {
             layer.style.transform = `translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)`;
         });
     });
 }
+
+// ============================================================================
+// NEW: SCROLL DETECTOR FOR APPLE MUSIC GLASS NAVBAR TRANSFORMATION
+// ============================================================================
+const appNavbar = document.getElementById("masterAppNavbar");
+window.addEventListener("scroll", () => {
+    if (appNavbar) {
+        if (window.scrollY > 80) {
+            appNavbar.classList.add("apple-music-style");
+        } else {
+            appNavbar.classList.remove("apple-music-style");
+        }
+    }
+});
+
 
 let isCatMode = false;
 const glow = document.getElementById("customCursor");
@@ -157,10 +169,8 @@ if (burstCanvas && burstBtnWrapper) {
             this.x = burstCanvas.width / 2;
             this.y = burstCanvas.height / 2;
             this.type = type; 
-            
             const angle = Math.random() * Math.PI * 2;
             const velocity = 2 + Math.random() * 5;
-            
             this.vx = Math.cos(angle) * velocity;
             this.vy = Math.sin(angle) * velocity;
             this.alpha = 1;
@@ -187,11 +197,7 @@ if (burstCanvas && burstBtnWrapper) {
                 const normalY = this.vx;
                 const len = Math.sqrt(normalX*normalX + normalY*normalY);
                 const waveOffset = Math.sin(this.timeStep * this.waveFrequency) * this.waveAmplitude;
-                
-                const finalX = this.x + (normalX/len) * waveOffset;
-                const finalY = this.y + (normalY/len) * waveOffset;
-                
-                this.waveHistory.push({x: finalX, y: finalY});
+                this.waveHistory.push({x: this.x + (normalX/len) * waveOffset, y: this.y + (normalY/len) * waveOffset});
                 if(this.waveHistory.length > 15) this.waveHistory.shift();
             }
         }
@@ -227,18 +233,15 @@ if (burstCanvas && burstBtnWrapper) {
 
     function renderBurstPipeline() {
         burstCtx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
-
         if (isHoveringButton && burstParticles.length < 120) {
             const types = ['sparkle', 'popper', 'wavy'];
             burstParticles.push(new PartyParticle(types[Math.floor(Math.random() * types.length)]));
         }
-
         burstParticles.forEach((p, index) => {
             p.update();
             p.draw();
             if (p.alpha <= 0) burstParticles.splice(index, 1);
         });
-
         if (burstParticles.length > 0 || isHoveringButton) {
             burstAnimationId = requestAnimationFrame(renderBurstPipeline);
         } else {
@@ -252,10 +255,7 @@ if (burstCanvas && burstBtnWrapper) {
         if (!burstAnimationId) renderBurstPipeline();
     };
 
-    const stopBurstTrigger = () => {
-        isHoveringButton = false;
-    };
-
+    const stopBurstTrigger = () => { isHoveringButton = false; };
     burstBtnWrapper.addEventListener("mouseenter", startBurstTrigger);
     burstBtnWrapper.addEventListener("mouseleave", stopBurstTrigger);
     burstBtnWrapper.addEventListener("touchstart", startBurstTrigger, { passive: true });
@@ -272,7 +272,6 @@ const animatedCards = document.querySelectorAll('.js-animated-card');
 animatedCards.forEach(card => {
     const cardCanvas = card.querySelector('.card-animation-canvas');
     if(!cardCanvas) return;
-    
     const cardCtx = cardCanvas.getContext('2d');
     let cardParticles = [];
     let isAnimatingCard = false;
@@ -308,7 +307,6 @@ animatedCards.forEach(card => {
             cardCtx.moveTo(p.x, p.y);
             cardCtx.lineTo(p.x, p.y - p.length);
             cardCtx.stroke();
-            
             p.y -= p.speed;
             if(p.y < -20) {
                 p.y = cardCanvas.height + 20;
@@ -338,42 +336,21 @@ animatedCards.forEach(card => {
 
 cards.forEach(card => {
     const bgImage = card.querySelector('.card-bg-image');
-    
     function processTiltCalculation(clientX, clientY) {
         const rect = card.getBoundingClientRect();
         const x = clientX - rect.left; 
         const y = clientY - rect.top;
-        
-        const cardWidth = rect.width;
-        const cardHeight = rect.height;
-        
-        const rotateX = ((y / cardHeight) - 0.5) * -20;
-        const rotateY = ((x / cardWidth) - 0.5) * 20;
-        
-        const moveX = ((x / cardWidth) - 0.5) * -15;
-        const moveY = ((y / cardHeight) - 0.5) * -15;
-        
+        const rotateX = ((y / rect.height) - 0.5) * -20;
+        const rotateY = ((x / rect.width) - 0.5) * 20;
         card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        if (bgImage) {
-            bgImage.style.transform = `scale(1.15) translate3d(${moveX}px, ${moveY}px, -10px)`;
-        }
+        if (bgImage) bgImage.style.transform = `scale(1.15) translate3d(((x / rect.width) - 0.5) * -15px, ((y / rect.height) - 0.5) * -15px, -10px)`;
     }
-    
     function resetTiltState() {
         card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
-        if (bgImage) {
-            bgImage.style.transform = `scale(1.15) translate3d(0px, 0px, -10px)`;
-        }
+        if (bgImage) bgImage.style.transform = `scale(1.15) translate3d(0, 0, -10px)`;
     }
-
     card.addEventListener('mousemove', (e) => processTiltCalculation(e.clientX, e.clientY));
     card.addEventListener('mouseleave', resetTiltState);
-    card.addEventListener('touchmove', (e) => {
-        if(e.touches.length > 0) {
-            processTiltCalculation(e.touches[0].clientX, e.touches[0].clientY);
-        }
-    }, { passive: true });
-    card.addEventListener('touchend', resetTiltState);
 });
 
 
@@ -382,30 +359,17 @@ cards.forEach(card => {
 // ============================================================================
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
-
 let backgroundState = "starfield"; 
 let inputBuffer = ""; 
 
 function resizeCanvas() {
-    if(canvas) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
+    if(canvas) { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 }
-if(canvas) {
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-}
+if(canvas) { resizeCanvas(); window.addEventListener('resize', resizeCanvas); }
 
 const stars = [];
 if(canvas) {
-    for(let i=0; i<60; i++){
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 1.5
-        });
-    }
+    for(let i=0; i<60; i++){ stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.5 }); }
 }
 
 const catEmojis = ["🐾", "🐱", "🐈", "💡", "😺", "😸", "😽", "🐈‍⬛"];
@@ -414,23 +378,14 @@ let columns = Math.floor(window.innerWidth / fontSize);
 let drops = [];
 
 function initMatrixDrops() {
-    columns = Math.floor(window.innerWidth / fontSize);
-    drops = [];
-    for (let x = 0; x < columns; x++) {
-        drops[x] = Math.random() * -100;
-    }
+    columns = Math.floor(window.innerWidth / fontSize); drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = Math.random() * -100;
 }
-if(canvas) {
-    initMatrixDrops();
-    window.addEventListener('resize', initMatrixDrops);
-}
+if(canvas) { initMatrixDrops(); window.addEventListener('resize', initMatrixDrops); }
 
 function toggleBackgroundMode() {
     backgroundState = (backgroundState === "starfield") ? "matrix" : "starfield";
-    inputBuffer = ""; 
-    if (backgroundState === "matrix") {
-        initMatrixDrops();
-    }
+    inputBuffer = ""; if (backgroundState === "matrix") initMatrixDrops();
 }
 
 document.addEventListener("keydown", (e) => {
@@ -442,19 +397,11 @@ document.addEventListener("keydown", (e) => {
 
 let sigClickCount = 0;
 const sigContainer = document.querySelector(".signature-container");
-
 if (sigContainer) {
-    sigContainer.style.cursor = "pointer";
-    const handleSignatureActivation = (e) => {
-        if (e.type === 'touchstart') e.preventDefault(); 
+    sigContainer.addEventListener("click", () => {
         sigClickCount++;
-        if (sigClickCount >= 3) {
-            toggleBackgroundMode();
-            sigClickCount = 0; 
-        }
-    };
-    sigContainer.addEventListener("click", handleSignatureActivation);
-    sigContainer.addEventListener("touchstart", handleSignatureActivation, { passive: false });
+        if (sigClickCount >= 3) { toggleBackgroundMode(); sigClickCount = 0; }
+    });
 }
 
 function animateBackgroundPipeline(){
@@ -462,30 +409,16 @@ function animateBackgroundPipeline(){
     if (backgroundState === "starfield") {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         stars.forEach(star => {
-            ctx.beginPath();
-            ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-            ctx.fill();
-
-            star.y += 0.1;
-            if(star.y > canvas.height){
-                star.y = 0;
-                star.x = Math.random() * canvas.width;
-            }
+            ctx.beginPath(); ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; ctx.fill(); star.y += 0.1;
+            if(star.y > canvas.height){ star.y = 0; star.x = Math.random() * canvas.width; }
         });
     } else if (backgroundState === "matrix") {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; 
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#ff8c00"; 
-        ctx.font = fontSize + "px Space Grotesk, sans-serif";
-        
+        ctx.fillStyle = "rgba(0, 0, 0, 0.08)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ff8c00"; ctx.font = fontSize + "px Space Grotesk, sans-serif";
         for (let i = 0; i < drops.length; i++) {
-            const text = catEmojis[Math.floor(Math.random() * catEmojis.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
+            ctx.fillText(catEmojis[Math.floor(Math.random() * catEmojis.length)], i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
             drops[i]++;
         }
     }
@@ -495,35 +428,12 @@ if(canvas) animateBackgroundPipeline();
 
 
 // ============================================================================
-// 7. DUAL-STATE CASSETTE TAPE TRACKING ENGINE
-// ============================================================================
-const cassette = document.querySelector(".cassette");
-let floatFrame = 0;
-
-function updateCassette() {
-    floatFrame += 0.02;
-    
-    if (cassette && !isCatMode) {
-        // Keeps soft floating loop active natively if orbit matrix tracking is asleep
-        const floatY = Math.sin(floatFrame) * 10;
-        cassette.style.transform = `translateY(${floatY}px)`;
-    }
-    requestAnimationFrame(updateCassette);
-}
-if(cassette) updateCassette();
-
-
-// ============================================================================
 // 8. CLOUD PARALLAX ENGINE
 // ============================================================================
 window.addEventListener("scroll", () => {
     const parallaxElements = document.querySelectorAll(".scroll-parallax");
-    const scrolled = window.pageYOffset;
-
     parallaxElements.forEach(el => {
-        const speed = el.getAttribute("data-speed");
-        const yPos = -(scrolled * speed);
-        el.style.transform = `translateY(${yPos}px)`;
+        el.style.transform = `translateY(${-(window.pageYOffset * el.getAttribute("data-speed"))}px)`;
     });
 });
 
@@ -532,20 +442,14 @@ window.addEventListener("scroll", () => {
 // 9. REAL SIGNATURE AUTOMATIC WRITE-ON ENGINE LOOP
 // ============================================================================
 const signaturePath = document.querySelector(".sig-path");
-
 if (signaturePath) {
     const pathLength = signaturePath.getTotalLength();
-    signaturePath.style.strokeDasharray = pathLength;
-    signaturePath.style.strokeDashoffset = pathLength;
-
+    signaturePath.style.strokeDasharray = pathLength; signaturePath.style.strokeDashoffset = pathLength;
     const signatureTimeline = gsap.timeline({ repeat: -1 });
-
-    signatureTimeline
-        .set(signaturePath, { strokeDashoffset: pathLength })
+    signatureTimeline.set(signaturePath, { strokeDashoffset: pathLength })
         .to(signaturePath, { strokeDashoffset: 0, duration: 2.5, ease: "power2.inOut" })
         .fromTo([".sig-title-text", ".sig-subtitle-text"], { opacity: 0 }, { opacity: 1, duration: 0.5, stagger: 0.1 }, "-=0.5")
-        .to({}, { duration: 5 })
-        .to([".sig-title-text", ".sig-subtitle-text"], { opacity: 0, duration: 0.3 })
+        .to({}, { duration: 5 }).to([".sig-title-text", ".sig-subtitle-text"], { opacity: 0, duration: 0.3 })
         .to(signaturePath, { strokeDashoffset: pathLength, duration: 1.2, ease: "power2.in" });
 }
 
@@ -554,25 +458,16 @@ if (signaturePath) {
 // 10. INTERACTIVE FAQ ACCORDION TOGGLE
 // ============================================================================
 const faqQuestions = document.querySelectorAll('.faq-question');
-
 faqQuestions.forEach(question => {
     question.addEventListener('click', () => {
-        const item = question.parentElement;
-        const answer = item.querySelector('.faq-answer');
-        
+        const item = question.parentElement; const answer = item.querySelector('.faq-answer');
         document.querySelectorAll('.faq-item').forEach(otherItem => {
             if (otherItem !== item && otherItem.classList.contains('active')) {
-                otherItem.classList.remove('active');
-                otherItem.querySelector('.faq-answer').style.maxHeight = '0';
+                otherItem.classList.remove('active'); otherItem.querySelector('.faq-answer').style.maxHeight = '0';
             }
         });
-        
         item.classList.toggle('active');
-        if (item.classList.contains('active')) {
-            answer.style.maxHeight = answer.scrollHeight + "px";
-        } else {
-            answer.style.maxHeight = "0";
-        }
+        answer.style.maxHeight = item.classList.contains('active') ? answer.scrollHeight + "px" : "0";
     });
 });
 
@@ -586,39 +481,12 @@ const adMessageText = document.getElementById("adMessageText");
 const adTriggerBtn = document.getElementById("eggTriggerBtn");
 const adNextBtn = document.getElementById("adNextBtn");
 const adCloseBtn = document.getElementById("adCloseBtn");
+const adScriptArray = { 1: "There is no easter egg here.", 2: "Seriously, why are you still clicking? Stop.", 3: "This is completely empty. Go back and watch the showreel.", 4: "Fine. You win! Go down to the very bottom and tap the handwritten signature 3 times." };
 
-const adScriptArray = {
-    1: "There is no easter egg here.",
-    2: "Seriously, why are you still clicking? Stop.",
-    3: "This is completely empty. Go back and watch the showreel.",
-    4: "Fine. You win! Go down to the very bottom and tap the handwritten signature 3 times."
-};
-
-function launchAdSequence() {
-    currentAdStep = 1;
-    adMessageText.innerText = adScriptArray[currentAdStep];
-    adNextBtn.innerText = "Next";
-    adOverlay.classList.add("active");
-}
-
-function handleAdStepProgression() {
-    currentAdStep++;
-    if (currentAdStep <= 4) {
-        adMessageText.innerText = adScriptArray[currentAdStep];
-        if (currentAdStep === 4) adNextBtn.innerText = "Got It";
-    } else {
-        closeAdOverlayCleanly();
-    }
-}
-
-function closeAdOverlayCleanly() {
-    adOverlay.classList.remove("active");
-}
-
-if(adTriggerBtn && adOverlay && adNextBtn && adCloseBtn) {
-    adTriggerBtn.addEventListener("click", launchAdSequence);
-    adNextBtn.addEventListener("click", handleAdStepProgression);
-    adCloseBtn.addEventListener("click", closeAdOverlayCleanly);
+if(adTriggerBtn) {
+    adTriggerBtn.addEventListener("click", () => { currentAdStep = 1; adMessageText.innerText = adScriptArray[currentAdStep]; adNextBtn.innerText = "Next"; adOverlay.classList.add("active"); });
+    adNextBtn.addEventListener("click", () => { currentAdStep++; if (currentAdStep <= 4) { adMessageText.innerText = adScriptArray[currentAdStep]; if (currentAdStep === 4) adNextBtn.innerText = "Got It"; } else { adOverlay.classList.remove("active"); } });
+    adCloseBtn.addEventListener("click", () => adOverlay.classList.remove("active"));
 }
 
 
@@ -630,26 +498,11 @@ const appleMsgNotify = document.getElementById("appleMsgNotify");
 const appleMsgClose = document.getElementById("appleMsgClose");
 let hasFiredMessage = false;
 
-if (contactHeader && appleMsgNotify && appleMsgClose) {
-    const triggerMessageAnimation = (e) => {
-        if(e.type === 'touchstart') e.preventDefault();
-        
-        if(!hasFiredMessage) {
-            appleMsgNotify.classList.add("show");
-            hasFiredMessage = true;
-            
-            setTimeout(() => {
-                appleMsgNotify.classList.remove("show");
-            }, 7000);
-        }
-    };
-
-    contactHeader.addEventListener("mouseenter", triggerMessageAnimation);
-    contactHeader.addEventListener("touchstart", triggerMessageAnimation, { passive: false });
-
-    appleMsgClose.addEventListener("click", () => {
-        appleMsgNotify.classList.remove("show");
+if (contactHeader && appleMsgNotify) {
+    contactHeader.addEventListener("mouseenter", () => {
+        if(!hasFiredMessage) { appleMsgNotify.classList.add("show"); hasFiredMessage = true; setTimeout(() => { appleMsgNotify.classList.remove("show"); }, 7000); }
     });
+    appleMsgClose.addEventListener("click", () => appleMsgNotify.classList.remove("show"));
 }
 
 
@@ -661,79 +514,22 @@ const ticksTrack = document.getElementById("timelineTicksTrack");
 const readoutText = document.getElementById("scrubTimecode");
 
 if (scrubZone && ticksTrack && readoutText) {
-    let isDraggingTrack = false;
-    let baselineStartX = 0;
-    let trackCurrentTranslateX = -1000; 
-    let simulationFrameCount = 24 * 12;  
-    let lastRegisteredStepX = 0;
-
-    function triggerHapticPulse() {
-        if (window.navigator && window.navigator.vibrate) {
-            window.navigator.vibrate(8); 
-        }
-    }
-
+    let isDraggingTrack = false; let baselineStartX = 0; let trackCurrentTranslateX = -1000; let simulationFrameCount = 24 * 12; let lastRegisteredStepX = 0;
+    function triggerHapticPulse() { if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(8); }
     function executeScrubMovement(deltaOffsetValue) {
         trackCurrentTranslateX += deltaOffsetValue;
-        
-        if (trackCurrentTranslateX > 0) trackCurrentTranslateX = -2000;
-        if (trackCurrentTranslateX < -3000) trackCurrentTranslateX = -1000;
-        
+        if (trackCurrentTranslateX > 0) trackCurrentTranslateX = -2000; if (trackCurrentTranslateX < -3000) trackCurrentTranslateX = -1000;
         ticksTrack.style.transform = `translateX(${trackCurrentTranslateX}px)`;
-
         if (Math.abs(trackCurrentTranslateX - lastRegisteredStepX) > 14) {
-            if (deltaOffsetValue > 0) {
-                simulationFrameCount++;
-            } else {
-                simulationFrameCount--;
-                if (simulationFrameCount < 0) simulationFrameCount = 24 * 60 * 60; 
-            }
-            
-            lastRegisteredStepX = trackCurrentTranslateX;
-            triggerHapticPulse(); 
-
-            let calculatedFrames = simulationFrameCount % 24;
-            let calculatedSeconds = Math.floor(simulationFrameCount / 24) % 60;
-            let calculatedMinutes = Math.floor(simulationFrameCount / (24 * 60)) % 60;
-            let calculatedHours = Math.floor(simulationFrameCount / (24 * 60 * 60)) % 24;
-
-            let formatZ = (val) => String(val).padStart(2, '0');
-            readoutText.innerText = `TC ${formatZ(calculatedHours)}:${formatZ(calculatedMinutes)}:${formatZ(calculatedSeconds)}:${formatZ(calculatedFrames)}`;
+            if (deltaOffsetValue > 0) { simulationFrameCount++; } else { simulationFrameCount--; if (simulationFrameCount < 0) simulationFrameCount = 24 * 60 * 60; }
+            lastRegisteredStepX = trackCurrentTranslateX; triggerHapticPulse();
+            let cf = simulationFrameCount % 24, cs = Math.floor(simulationFrameCount / 24) % 60, cm = Math.floor(simulationFrameCount / (24 * 60)) % 60, ch = Math.floor(simulationFrameCount / (24 * 60 * 60)) % 24;
+            let fZ = (val) => String(val).padStart(2, '0'); readoutText.innerText = `TC ${fZ(ch)}:${fZ(cm)}:${fZ(cs)}:${fZ(cf)}`;
         }
     }
-
-    scrubZone.addEventListener("mousedown", (e) => {
-        isDraggingTrack = true;
-        baselineStartX = e.clientX;
-        scrubZone.style.cursor = "ew-resize";
-    });
-
-    scrubZone.addEventListener("touchstart", (e) => {
-        isDraggingTrack = true;
-        baselineStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    document.addEventListener("mousemove", (e) => {
-        if (!isDraggingTrack) return;
-        let movementDeltaX = e.clientX - baselineStartX;
-        baselineStartX = e.clientX;
-        executeScrubMovement(movementDeltaX);
-    });
-
-    document.addEventListener("touchmove", (e) => {
-        if (!isDraggingTrack || e.touches.length === 0) return;
-        let movementDeltaX = e.touches[0].clientX - baselineStartX;
-        baselineStartX = e.touches[0].clientX;
-        executeScrubMovement(movementDeltaX);
-    }, { passive: true });
-
-    const terminateDragState = () => {
-        isDraggingTrack = false;
-        if(scrubZone) scrubZone.style.cursor = "ew-resize";
-    };
-
-    document.addEventListener("mouseup", terminateDragState);
-    document.addEventListener("touchend", terminateDragState);
+    scrubZone.addEventListener("mousedown", (e) => { isDraggingTrack = true; baselineStartX = e.clientX; });
+    document.addEventListener("mousemove", (e) => { if (isDraggingTrack) { executeScrubMovement(e.clientX - baselineStartX); baselineStartX = e.clientX; } });
+    document.addEventListener("mouseup", () => isDraggingTrack = false);
 }
 
 
@@ -744,82 +540,27 @@ const moneyZone = document.getElementById("moneyLaunchZone");
 const moneyCanvas = document.getElementById("moneyCanvasMesh");
 
 if (moneyZone && moneyCanvas) {
-    const mCtx = moneyCanvas.getContext("2d");
-    let cashArray = [];
-    let isHoveringZone = false;
-    let loopId = null;
-
-    function resizeMoneyCanvas() {
-        moneyCanvas.width = moneyZone.offsetWidth + 200;
-        moneyCanvas.height = moneyZone.offsetHeight + 300;
-    }
-
+    const mCtx = moneyCanvas.getContext("2d"); let cashArray = []; let isHoveringZone = false; let loopId = null;
+    function resizeMoneyCanvas() { moneyCanvas.width = moneyZone.offsetWidth + 200; moneyCanvas.height = moneyZone.offsetHeight + 300; }
     const assetTokens = ["💵", "💸", "💰", "💲"];
-
     class MoneyToken {
         constructor() {
-            this.x = moneyCanvas.width / 2 + (Math.random() * 60 - 30);
-            this.y = moneyCanvas.height - 40;
-            this.token = assetTokens[Math.floor(Math.random() * assetTokens.length)];
-            this.size = 18 + Math.random() * 12;
-            this.vx = Math.random() * 6 - 3;
-            this.vy = -(6 + Math.random() * 7);
-            this.gravity = 0.22;
-            this.alpha = 1;
-            this.spinAngle = Math.random() * Math.PI;
-            this.spinSpeed = Math.random() * 0.06 - 0.03;
+            this.x = moneyCanvas.width / 2 + (Math.random() * 60 - 30); this.y = moneyCanvas.height - 40;
+            this.token = assetTokens[Math.floor(Math.random() * assetTokens.length)]; this.size = 18 + Math.random() * 12;
+            this.vx = Math.random() * 6 - 3; this.vy = -(6 + Math.random() * 7); this.gravity = 0.22; this.alpha = 1;
+            this.spinAngle = Math.random() * Math.PI; this.spinSpeed = Math.random() * 0.06 - 0.03;
         }
-        update() {
-            this.vy += this.gravity;
-            this.x += this.vx;
-            this.y += this.vy;
-            this.spinAngle += this.spinSpeed;
-            if (this.vy > 2) this.alpha -= 0.02; 
-        }
-        draw() {
-            mCtx.save();
-            mCtx.globalAlpha = Math.max(0, this.alpha);
-            mCtx.translate(this.x, this.y);
-            mCtx.rotate(this.spinAngle);
-            mCtx.font = `${this.size}px serif`;
-            mCtx.fillText(this.token, -this.size/2, this.size/2);
-            mCtx.restore();
-        }
+        update() { this.vy += this.gravity; this.x += this.vx; this.y += this.vy; this.spinAngle += this.spinSpeed; if (this.vy > 2) this.alpha -= 0.02; }
+        draw() { mCtx.save(); mCtx.globalAlpha = Math.max(0, this.alpha); mCtx.translate(this.x, this.y); mCtx.rotate(this.spinAngle); mCtx.font = `${this.size}px serif`; mCtx.fillText(this.token, -this.size/2, this.size/2); mCtx.restore(); }
     }
-
     function processRenderLoop() {
         mCtx.clearRect(0, 0, moneyCanvas.width, moneyCanvas.height);
-
-        if (isHoveringZone && cashArray.length < 70) {
-            cashArray.push(new MoneyToken());
-        }
-
-        cashArray.forEach((item, index) => {
-            item.update();
-            item.draw();
-            if (item.alpha <= 0 || item.y > moneyCanvas.height) cashArray.splice(index, 1);
-        });
-
-        if (cashArray.length > 0 || isHoveringZone) {
-            loopId = requestAnimationFrame(processRenderLoop);
-        } else {
-            loopId = null;
-        }
+        if (isHoveringZone && cashArray.length < 70) cashArray.push(new MoneyToken());
+        cashArray.forEach((item, index) => { item.update(); item.draw(); if (item.alpha <= 0 || item.y > moneyCanvas.height) cashArray.splice(index, 1); });
+        loopId = (cashArray.length > 0 || isHoveringZone) ? requestAnimationFrame(processRenderLoop) : null;
     }
-
-    moneyZone.addEventListener("mouseenter", () => {
-        resizeMoneyCanvas();
-        isHoveringZone = true;
-        if (!loopId) processRenderLoop();
-    });
-
-    moneyZone.addEventListener("mouseleave", () => { isHoveringZone = false; });
-    moneyZone.addEventListener("touchstart", () => {
-        resizeMoneyCanvas();
-        isHoveringZone = true;
-        if (!loopId) processRenderLoop();
-    }, { passive: true });
-    moneyZone.addEventListener("touchend", () => { isHoveringZone = false; });
+    moneyZone.addEventListener("mouseenter", () => { resizeMoneyCanvas(); isHoveringZone = true; if (!loopId) processRenderLoop(); });
+    moneyZone.addEventListener("mouseleave", () => isHoveringZone = false);
 }
 
 
@@ -832,35 +573,33 @@ const inputField = document.getElementById("dynamicFieldInput");
 const clientFormElement = document.getElementById("clientIntakeForm");
 
 if (selectionMenu && inputLabel && inputField) {
-    const valueMapGuide = {
-        instagram: { label: "Your Instagram Handle", holder: "@username" },
-        linkedin: { label: "Your LinkedIn Profile URL", holder: "https://linkedin.com/in/username" },
-        phone: { label: "Your Phone / WhatsApp Number", holder: "+1 (555) 000-0000" },
-        email: { label: "Your Corporate Email Address", holder: "name@company.com" }
-    };
-
+    const valueMapGuide = { instagram: { label: "Your Instagram Handle", holder: "@username" }, linkedin: { label: "Your LinkedIn Profile URL", holder: "https://linkedin.com/in/username" }, phone: { label: "Your Phone / WhatsApp Number", holder: "+1 (555) 000-0000" }, email: { label: "Your Corporate Email Address", holder: "name@company.com" } };
     selectionMenu.addEventListener("change", (e) => {
-        const pickedCoordinates = valueMapGuide[e.target.value];
-        if (pickedCoordinates) {
-            inputLabel.innerText = pickedCoordinates.label;
-            inputField.placeholder = pickedCoordinates.holder;
-            inputField.disabled = false;
-            inputField.value = "";
-            inputField.focus();
-        }
+        const pc = valueMapGuide[e.target.value]; if (pc) { inputLabel.innerText = pc.label; inputField.placeholder = pc.holder; inputField.disabled = false; inputField.value = ""; inputField.focus(); }
     });
 }
-
 if (clientFormElement) {
-    clientFormElement.addEventListener("submit", (e) => {
-        e.preventDefault(); 
-        
-        const clientName = document.getElementById("clientNameInput") ? document.getElementById("clientNameInput").value : "";
-        const companyName = document.getElementById("companyNameInput") ? document.getElementById("companyNameInput").value : "";
-        const pickedChannel = selectionMenu ? selectionMenu.value : "";
-        const handleDetail = inputField ? inputField.value : "";
+    clientFormElement.addEventListener("submit", (e) => { e.preventDefault(); window.location.href = "https://www.instagram.com/thecatguy.editz/"; });
+}
 
-        console.log("Timeline Onboarding Intent Captured:", { clientName, companyName, pickedChannel, handleDetail });
-        window.location.href = "https://www.instagram.com/thecatguy.editz/";
+
+// ============================================================================
+// NEW: CINEMATIC KINETIC FILMSPAN CORRIDOR COLLAPSE ACTION (IMAGE_410585.JPG)
+// ============================================================================
+const collapseTriggerBtn = document.getElementById("ribbonCollapseBtn");
+const filmstripTrack = document.getElementById("filmstripTrack");
+
+if (collapseTriggerBtn && filmstripTrack) {
+    collapseTriggerBtn.addEventListener("click", () => {
+        // Softly toggles the scale layer to pop into the exact panoramic matrix layout
+        filmstripTrack.classList.toggle("total-zoomed-state");
+        filmstripTrack.classList.toggle("zoomed-out-mosaic");
+
+        // Swap out text copy elements contextually to match active mode state paths
+        if (filmstripTrack.classList.contains("zoomed-out-mosaic")) {
+            collapseTriggerBtn.innerText = "Zoom Back In 🔍";
+        } else {
+            collapseTriggerBtn.innerText = "Wanna see all reels?";
+        }
     });
 }
