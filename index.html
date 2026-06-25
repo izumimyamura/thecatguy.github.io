@@ -13,17 +13,16 @@
 </head>
 <body>
 
-    <nav class="navbar" id="masterAppNavbar">
+    <nav class="navbar">
         <div class="logo">THE CATGUY</div>
         <div class="nav-controls">
             <div class="nav-links">
-                <a href="#hero" class="core-link">Home</a>
-                <a href="#showreel" class="core-link">Showreel</a>
-                <a href="#teaser-reel" class="collapsible-link">Teasers</a>
-                <a href="#portfolio" class="collapsible-link">Portfolio</a>
-                <a href="#about" class="collapsible-link">About</a>
-                <a href="#faq" class="collapsible-link">FAQ</a>
-                <a href="#contact" class="core-link">Contact</a>
+                <a href="#hero">Home</a>
+                <a href="#showreel">Showreel</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#about">About</a>
+                <a href="#faq">FAQ</a>
+                <a href="#contact">Contact</a>
             </div>
             
             <a href="motion-graphics.html" class="nav-motion-trigger">Motion Graphics</a>
@@ -39,21 +38,19 @@
         </div>
     </nav>
 
-    <!-- Simulation Ad Pop-up Container Overlay Layer -->
     <div class="ad-popup-overlay" id="adOverlay">
         <div class="ad-popup-box">
             <div class="ad-popup-header">
                 <span class="ad-title">⚠️ SYSTEM_ALERT.EXE</span>
                 <button class="ad-close-btn" id="adCloseBtn">&times;</button>
             </div>
-            <div class="ad-popup-box-body">
+            <div class="ad-popup-body">
                 <p id="adMessageText">There is no easter egg here.</p>
                 <button class="ad-action-btn" id="adNextBtn">Next</button>
             </div>
         </div>
     </div>
 
-    <!-- Apple Style iMessage Notification Popup Wrapper -->
     <div class="apple-msg-popup" id="appleMsgNotify">
         <div class="apple-msg-header">
             <div class="apple-msg-avatar">🐾</div>
@@ -71,7 +68,6 @@
     <canvas id="stars"></canvas>
     <div class="cursor-glow" id="customCursor"></div>
 
-    <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-content">
             <h1 class="reveal glitch-text" data-text="CAT GUY">CAT GUY</h1>
@@ -91,12 +87,6 @@
             <img src="cassette.png" class="cassette" alt="Cassette">
         </div>
         
-        <!-- NEW: THANOS SNAP SCROLL DISINTEGRATION MODULE INTERFACE CONTAINER -->
-        <div class="thanos-snap-scroll-zone" id="snapContainer">
-            <canvas id="thanosSnapCanvas"></canvas>
-            <div class="snap-raw-text" id="snapLabelText">SCROLL DOWN</div>
-        </div>
-
         <div class="cloud cloud-top scroll-parallax" data-speed="-0.3">
             <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
                 <path d="M120 150 C120 120, 150 90, 200 90 C220 90, 240 100, 250 110 C270 80, 330 80, 360 110 C380 90, 430 90, 450 120 C470 120, 490 140, 480 160 C480 180, 450 190, 400 190 L150 190 C120 190, 120 170, 120 150 Z" />
@@ -104,7 +94,6 @@
         </div>
     </section>
 
-    <!-- Apple-Style Scroll Video Container -->
     <section class="apple-video-container" id="showreel">
         <div class="video-sticky-wrapper">
             <div class="video-scale-target">
@@ -131,36 +120,6 @@
         </div>
     </section>
 
-    <!-- Showcase Teaser Grid -->
-    <section class="teaser-showcase" id="teaser-reel">
-        <div class="section-header">
-            <h2>Active Timeline Teasers</h2>
-            <p class="section-subtitle">Real-time uncompressed raw timeline tracks playing natively.</p>
-        </div>
-        
-        <div class="teaser-flex-matrix">
-            <div class="teaser-lane-card">
-                <video autoplay muted loop playsinline preload="auto">
-                    <source src="video.mp4" type="video/mp4">
-                </video>
-                <div class="teaser-lane-meta">
-                    <span class="lane-timestamp">TRACK_01 // 60FPS</span>
-                    <h3>High-Velocity Ramping</h3>
-                </div>
-            </div>
-            <div class="teaser-lane-card">
-                <video autoplay muted loop playsinline preload="auto">
-                    <source src="video.mp4" type="video/mp4">
-                </video>
-                <div class="teaser-lane-meta">
-                    <span class="lane-timestamp">TRACK_02 // 4K_RAW</span>
-                    <h3>Sound Design Matrix</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Portfolio Section -->
     <section class="portfolio" id="portfolio">
         <div class="section-header">
             <h2>Selected Work</h2>
@@ -197,7 +156,6 @@
         </div>
     </section>
 
-    <!-- About Section with Bento Grid Layout -->
     <section class="about" id="about">
         <div class="about-header">
             <h2>About Me</h2>
@@ -248,7 +206,6 @@
         </div>
     </section>
 
-    <!-- Draggable Timeline Strip Segment -->
     <div class="mg-portal-lane">
         <div class="timeline-accent-bar" id="interactiveTimelineBar" title="Click and Drag to Scrub Timecode Lines">
             <span class="time-readout" id="scrubTimecode">TC 00:00:24:12</span>
@@ -267,7 +224,6 @@
         </div>
     </div>
 
-    <!-- FAQ Accordion Section -->
     <section class="faq" id="faq">
         <div class="section-header">
             <h2>Frequently Asked Questions</h2>
@@ -295,32 +251,6 @@
         </div>
     </section>
 
-    <!-- Cinematic 3D Depth Ribbon Space Corridor -->
-    <section class="ribbon-gallery-section" id="reelsRibbonSpace">
-        <div class="ribbon-btn-wrap">
-            <button class="ribbon-zoom-trigger-btn" id="ribbonCollapseBtn">Wanna see all reels?</button>
-        </div>
-        
-        <div class="ribbon-viewport-mask">
-            <!-- UPDATED: Dynamic video fields mapped cleanly to sequential files (video1.mp4 to video12.mp4) -->
-            <div class="ribbon-filmstrip-corridor total-zoomed-state" id="filmstripTrack">
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video1.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video2.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video3.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video4.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video5.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video6.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video7.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video8.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video9.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video10.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video11.mp4" type="video/mp4"></video></div>
-                <div class="ribbon-video-column"><video autoplay muted loop playsinline><source src="video12.mp4" type="video/mp4"></video></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="cloud cloud-bottom scroll-parallax" data-speed="-0.5">
             <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
@@ -335,7 +265,6 @@
             <a href="https://www.instagram.com/thecatguy.editz/" target="_blank" rel="noopener noreferrer" class="contact-link">Instagram: @thecatguy.editz</a>
         </p>
 
-        <!-- Money Particle Rain Canvas Container -->
         <div class="money-trigger-container" id="moneyLaunchZone">
             <canvas class="money-canvas" id="moneyCanvasMesh"></canvas>
             <a href="hire.html" class="btn-money-rain">💼 START A PROJECT WITH ME 💸</a>
