@@ -116,7 +116,7 @@ if(spotlightFrame && oscarBeam) {
 
 
 // ============================================================================
-// 4. RESTORED: SPARKLE CONFETTI PARTY POPS BUTTON CANVAS PIPELINE
+// 4. SPARKLE CONFETTI PARTY POPS BUTTON CANVAS PIPELINE
 // ============================================================================
 const burstCanvas = document.getElementById("btnBurstCanvas");
 const burstBtnWrapper = document.getElementById("burstBtnWrapper"); 
@@ -233,7 +233,7 @@ if (burstCanvas && burstBtnWrapper) {
 
 
 // ============================================================================
-// 5. RESTORED: PORTFOLIO CARD HOVER MOUSE-TILT 3D MATRIX EFFECT
+// 5. PORTFOLIO CARD HOVER MOUSE-TILT 3D MATRIX EFFECT
 // ============================================================================
 const cards = document.querySelectorAll('.js-tilt-card, .portfolio-card, .mg-card-row');
 cards.forEach(card => {
@@ -502,4 +502,89 @@ if (collapseTriggerBtn && filmstripTrack) {
             collapseTriggerBtn.innerText = "Wanna see all reels?";
         }
     });
+}
+
+// ============================================================================
+// NEW: ADVANCED INTEGRATED THANOS DISINTEGRATION SNAP SYSTEM FOR SCROLL LABEL
+// ============================================================================
+const snapTextLabel = document.getElementById("snapLabelText");
+const snapCanvas = document.getElementById("thanosSnapCanvas");
+
+if (snapTextLabel && snapCanvas) {
+    const sCtx = snapCanvas.getContext("2d");
+    let snapParticles = [];
+    let hasSnapped = false;
+
+    function initSnapCanvas() {
+        snapCanvas.width = 300;
+        snapCanvas.height = 80;
+    }
+    initSnapCanvas();
+
+    function createDustFromText() {
+        if (hasSnapped) return;
+        hasSnapped = true;
+
+        // Render text temporary directly to local coordinate memory box matrices
+        sCtx.fillStyle = "#ff8c00";
+        sCtx.font = "bold 14px 'Space Grotesk', sans-serif";
+        sCtx.textBaseline = "middle";
+        sCtx.textAlign = "center";
+        sCtx.fillText("SCROLL DOWN", snapCanvas.width / 2, snapCanvas.height / 2);
+
+        // Scan render pixels to create coordinate particles arrays
+        try {
+            const rawImgData = sCtx.getImageData(0, 0, snapCanvas.width, snapCanvas.height);
+            sCtx.clearRect(0, 0, snapCanvas.width, snapCanvas.height);
+            snapTextLabel.style.opacity = "0"; // Hide base text cleanly
+
+            for (let y = 0; y < snapCanvas.height; y += 2) {
+                for (let x = 0; x < snapCanvas.width; x += 2) {
+                    const pixelIndex = (y * snapCanvas.width + x) * 4;
+                    if (rawImgData.data[pixelIndex + 3] > 120) { // Pixel pixel alpha verification thresholds
+                        snapParticles.push({
+                            x: x,
+                            y: y,
+                            vx: (Math.random() - 0.3) * 2 + 1.5, // Force horizontal wind drift parameters
+                            vy: (Math.random() - 0.5) * 1.5 - 1, // Ascending floating tracks
+                            alpha: 1,
+                            decay: 0.008 + Math.random() * 0.015
+                        });
+                    }
+                }
+            }
+            animateSnapDust();
+        } catch(e) {
+            snapTextLabel.style.opacity = "0";
+        }
+    }
+
+    function animateSnapDust() {
+        sCtx.clearRect(0, 0, snapCanvas.width, snapCanvas.height);
+        let activeElements = false;
+
+        snapParticles.forEach(p => {
+            if (p.alpha > 0) {
+                activeElements = true;
+                sCtx.fillStyle = `rgba(255, 140, 0, ${p.alpha})`;
+                sCtx.fillRect(p.x, p.y, 1.5, 1.5);
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= p.decay;
+            }
+        });
+
+        if (activeElements) {
+            requestAnimationFrame(animateSnapDust);
+        } else {
+            document.getElementById("snapContainer").style.display = "none";
+        }
+    }
+
+    // Intercept scroll vector loops to trigger snap script instantly
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 15 && !hasSnapped) {
+            createDustFromText();
+        }
+    }, { passive: true });
 }
