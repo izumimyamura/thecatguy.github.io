@@ -81,7 +81,7 @@ if (heroSection && window.innerWidth > 900) {
 }
 
 // ============================================================================
-// FIXED: SCROLL DETECTOR FOR APPLE MUSIC GLASS NAVBAR TRANSFORMATION
+// FIXED SCROLL DETECTOR FOR APPLE MUSIC GLASS NAVBAR TRANSFORMATION
 // ============================================================================
 const appNavbar = document.getElementById("masterAppNavbar");
 window.addEventListener("scroll", () => {
@@ -440,7 +440,7 @@ if (contactHeader && appleMsgNotify) {
 
 
 // ============================================================================
-// 13. FIXED: INFINITE TIMELINE DRAG & CROSS-PLATFORM HAPTIC SCRUBBING SYSTEM
+// 13. INFINITE TIMELINE DRAG & CROSS-PLATFORM HAPTIC SCRUBBING SYSTEM
 // ============================================================================
 const scrubZone = document.getElementById("interactiveTimelineBar");
 const ticksTrack = document.getElementById("timelineTicksTrack");
