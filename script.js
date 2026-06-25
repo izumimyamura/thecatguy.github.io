@@ -31,15 +31,15 @@ if(videoContainerSelector) {
                  .to(".step-3", { opacity: 0, y: -20, duration: 1 }, "+=0.8");
 }
 
-const premiumVideo = document.querySelector(".featured-video");
-if (premiumVideo) {
-    premiumVideo.muted = true;
-    premiumVideo.defaultMuted = true;
-    premiumVideo.setAttribute("muted", "");
-    premiumVideo.setAttribute("playsinline", "");
+const premiumVideo = document.querySelectorAll(".featured-video, .teaser-lane-card video");
+premiumVideo.forEach(vid => {
+    vid.muted = true;
+    vid.defaultMuted = true;
+    vid.setAttribute("muted", "");
+    vid.setAttribute("playsinline", "");
     
     const forceVideoPlay = () => {
-        premiumVideo.play().catch(err => console.log("Retrying playback stream..."));
+        vid.play().catch(err => console.log("Retrying playback stream..."));
     };
 
     forceVideoPlay();
@@ -47,12 +47,42 @@ if (premiumVideo) {
     document.addEventListener("touchstart", forceVideoPlay, { once: true, passive: true });
     document.addEventListener("click", forceVideoPlay, { once: true });
     document.addEventListener("scroll", forceVideoPlay, { once: true, passive: true });
+});
+
+
+// ============================================================================
+// 2. NEW: IGLOO.INC STYLE HIGH-INTERACTIVE 3D MOUSE COORDINATE ORBIT MATRIX
+// ============================================================================
+const heroSection = document.getElementById("hero");
+const orbitLayers = document.querySelectorAll(".dynamic-3d-rotate");
+
+if (heroSection && window.innerWidth > 900) {
+    heroSection.addEventListener("mousemove", (e) => {
+        const boundRect = heroSection.getBoundingClientRect();
+        // Calculate coordinate displacements from the center midpoint
+        const mouseDeltaX = e.clientX - (boundRect.left + boundRect.width / 2);
+        const mouseDeltaY = e.clientY - (boundRect.top + boundRect.height / 2);
+
+        orbitLayers.forEach(layer => {
+            const rotationalDepthFactor = layer.getAttribute("data-depth");
+            const finalTiltX = mouseDeltaY * rotationalDepthFactor * -0.05;
+            const finalTiltY = mouseDeltaX * rotationalDepthFactor * 0.05;
+            const translateShiftX = mouseDeltaX * rotationalDepthFactor * 0.15;
+            const translateShiftY = mouseDeltaY * rotationalDepthFactor * 0.15;
+
+            // Applies simultaneous 3D axis tilting and linear depth shifts
+            layer.style.transform = `translate3d(${translateShiftX}px, ${translateShiftY}px, 0) rotateX(${finalTiltX}deg) rotateY(${finalTiltY}deg)`;
+        });
+    });
+
+    // Reset components softly when pointer focus breaks bounds
+    heroSection.addEventListener("mouseleave", () => {
+        orbitLayers.forEach(layer => {
+            layer.style.transform = `translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)`;
+        });
+    });
 }
 
-
-// ============================================================================
-// 2. CURSOR SYSTEMS & COORDINATE TRACKING LOOPS
-// ============================================================================
 let isCatMode = false;
 const glow = document.getElementById("customCursor");
 const toggleInput = document.getElementById("catModeToggle");
@@ -64,7 +94,6 @@ if(toggleInput) {
             document.body.classList.add("cat-mode-active");
         } else {
             document.body.classList.remove("cat-mode-active");
-            if (cassette) cassette.style.transform = `translateY(0px)`;
         }
     });
 }
@@ -474,22 +503,10 @@ let floatFrame = 0;
 function updateCassette() {
     floatFrame += 0.02;
     
-    if (cassette) {
-        if (isCatMode) {
-            const rect = cassette.getBoundingClientRect();
-            const cassetteCenterX = rect.left + rect.width / 2;
-            const cassetteCenterY = rect.top + rect.height / 2;
-            
-            const targetX = (currentMouseX - cassetteCenterX) * 0.12;
-            const targetY = (currentMouseY - cassetteCenterY) * -0.12;
-            
-            cassette.style.transform = `translate3d(${targetX * 0.2}px, ${-targetY * 0.2}px, 0) rotateY(${targetX}deg) rotateX(${targetY}deg)`;
-        } else {
-            const floatY = Math.sin(floatFrame) * 10;
-            const normalizedX = (currentMouseX / window.innerWidth - 0.5) * 20;
-            const normalizedY = (currentMouseY / window.innerHeight - 0.5) * 20;
-            cassette.style.transform = `translateY(${floatY}px) rotateY(${normalizedX}deg) rotateX(${-normalizedY}deg)`;
-        }
+    if (cassette && !isCatMode) {
+        // Keeps soft floating loop active natively if orbit matrix tracking is asleep
+        const floatY = Math.sin(floatFrame) * 10;
+        cassette.style.transform = `translateY(${floatY}px)`;
     }
     requestAnimationFrame(updateCassette);
 }
@@ -807,7 +824,7 @@ if (moneyZone && moneyCanvas) {
 
 
 // ============================================================================
-// 15. UPDATED: DEFENSIVE INTERCEPTION LOGIC REDIRECTING TO INSTAGRAM PROFILE
+// 15. DEFENSIVE INTERCEPTION LOGIC REDIRECTING TO INSTAGRAM PROFILE
 // ============================================================================
 const selectionMenu = document.getElementById("contactChannelSelect");
 const inputLabel = document.getElementById("dynamicFieldLabel");
@@ -834,7 +851,6 @@ if (selectionMenu && inputLabel && inputField) {
     });
 }
 
-// CONVERTED: Intercepts form submit vectors and loads your main public feed page
 if (clientFormElement) {
     clientFormElement.addEventListener("submit", (e) => {
         e.preventDefault(); 
@@ -845,8 +861,6 @@ if (clientFormElement) {
         const handleDetail = inputField ? inputField.value : "";
 
         console.log("Timeline Onboarding Intent Captured:", { clientName, companyName, pickedChannel, handleDetail });
-
-        // Redirects your clients directly to your main Instagram profile feed wall cleanly
         window.location.href = "https://www.instagram.com/thecatguy.editz/";
     });
 }
