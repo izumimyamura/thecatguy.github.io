@@ -45,7 +45,7 @@ body {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    z-index: 10000; /* Increased layer priority score to ensure total rendering on top of grids */
+    z-index: 10000; 
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -54,7 +54,7 @@ body {
     top: auto !important;
     bottom: 30px !important;
     left: 50% !important;
-    width: auto !important; /* Changes from full-width to dynamic content auto-sizing */
+    width: auto !important; 
     min-width: 520px;
     max-width: 90% !important;
     transform: translateX(-50%) translate3d(0, 0, 0) !important;
@@ -72,7 +72,6 @@ body {
     transition: opacity 0.3s ease;
 }
 
-/* Hides Logo text completely inside the tiny Apple Music Capsule mode to save layout space */
 .navbar.apple-music-style .logo {
     display: none !important;
 }
@@ -99,16 +98,8 @@ body {
 }
 
 .nav-links a:hover { opacity: 1; }
-
-/* NEW: OPTIMIZATION CLASSES FOR CAPSULE LINKS */
-.nav-links .collapsible-link {
-    display: inline-block;
-}
-
-/* FIXED/NEW: Strips out FAQ, About, Teasers, and Portfolio links upon capsule transformation activation */
-.navbar.apple-music-style .nav-links .collapsible-link {
-    display: none !important;
-}
+.nav-links .collapsible-link { display: inline-block; }
+.navbar.apple-music-style .nav-links .collapsible-link { display: none !important; }
 
 .nav-motion-trigger {
     color: #f5f5f7;
@@ -196,9 +187,9 @@ body {
 .premium-intake-form input[type="text"], .premium-intake-form select { width: 100%; background: #000000; border: 1px solid rgba(255, 255, 255, 0.15); color: #ffffff; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; padding: 14px 20px; border-radius: 12px; outline: none; }
 .premium-intake-form input[type="text"]:focus, .premium-intake-form select:focus { border-color: #ff8c00; box-shadow: 0 0 12px rgba(255, 140, 0, 0.2); }
 
-/* Hero Section Base Styles */
+/* Hero Section Base Styles - Restored to flat, standard alignments */
 .hero {
-    min-height: 120vh; 
+    min-height: 100vh; /* Reset from 120vh back to snug fold wrap */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -206,26 +197,12 @@ body {
     position: relative;
     background: #000000;
     overflow: hidden;
-    perspective: 1400px;
-    z-index: 2; /* Isolated index level to stop element masking rules */
+    z-index: 2; 
 }
 
-.container-3d-frame { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; pointer-events: none; z-index: 1; }
-.mesh-sphere { position: absolute; border-radius: 50%; border: 1px dashed rgba(255, 140, 0, 0.12); will-change: transform; }
-.ring-1 { width: 350px; height: 340px; animation: smoothOrbit3D 20s infinite linear; }
-.ring-2 { width: 550px; height: 530px; border-color: rgba(255, 255, 255, 0.04); border-style: solid; animation: smoothOrbit3D 35s infinite linear reverse; }
-.ring-3 { width: 800px; height: 760px; animation: smoothOrbit3D 50s infinite linear; }
-
-@keyframes smoothOrbit3D {
-    0% { transform: rotateX(20deg) rotateY(0deg) rotateZ(0deg); }
-    100% { transform: rotateX(20deg) rotateY(360deg) rotateZ(360deg); }
-}
-
-/* FIXED: Re-enforced solid visibility metrics for core text content headers */
 .hero-content { 
     position: relative; 
     z-index: 5 !important; 
-    transition: transform 0.1s ease-out; 
     opacity: 1 !important; 
     visibility: visible !important;
 }
@@ -236,8 +213,8 @@ body {
 .spotlight-beam { position: fixed; top: 0; left: 0; width: 140px; height: 100vh; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25) 0%, rgba(255, 140, 0, 0.08) 40%, rgba(0, 0, 0, 0) 100%); clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%); pointer-events: none; z-index: 3; opacity: 0; transform: translateX(-50%); mix-blend-mode: screen; filter: blur(1px); transition: opacity 0.3s ease; }
 .spotlight-subtitle-container:hover .spotlight-beam { opacity: 1; }
 
-.cassette-frame { display: flex; justify-content: center; align-items: center; transform: rotate(90deg) !important; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7)); z-index: 5; transition: transform 0.1s ease-out; }
-.cassette { width: 320px; will-change: transform; }
+.cassette-frame { display: flex; justify-content: center; align-items: center; transform: rotate(90deg) !important; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.7)); z-index: 5; }
+.cassette { width: 320px; }
 
 /* Apple-Style Scroll Video Container Text Overlays */
 .apple-video-container { position: relative; height: 450vh; background: #000000; }
@@ -375,10 +352,10 @@ body {
 .sig-title-text { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 400; letter-spacing: 6px; color: #ffffff; margin-top: -30px; text-transform: uppercase; opacity: 0; }
 .sig-subtitle-text { font-family: 'Space Grotesk', sans-serif; font-size: 0.65rem; font-weight: 300; letter-spacing: 2px; color: #86868b; margin-top: 2px; text-transform: uppercase; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 4px; display: inline-block; width: 110px; opacity: 0; }
 
-/* FIXED: Premium Apple Notification Layer Modals Layout Isolation */
+/* Premium Apple Notification Layer Modals Layout Isolation */
 .apple-msg-popup { 
     position: fixed; 
-    top: 100px !important; /* Displaces down securely away from primary full width fixed navigation bounds */
+    top: 100px !important; 
     right: -360px; 
     width: 320px; 
     background: rgba(28, 28, 30, 0.85); 
@@ -388,7 +365,7 @@ body {
     border-radius: 18px; 
     padding: 14px; 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-    z-index: 999999 !important; /* Maximum absolute priority weight depth mapping */
+    z-index: 999999 !important; 
     transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
 }
@@ -399,7 +376,7 @@ body {
     .navbar { padding: 15px 4%; }
     .navbar.apple-music-style { bottom: 15px !important; min-width: calc(100% - 30px) !important; padding: 10px 15px !important; }
     .nav-controls { gap: 10px; }
-    .nav-motion-trigger, .mesh-sphere, .navbar.apple-music-style .nav-links { display: none !important; } 
+    .nav-motion-trigger, .navbar.apple-music-style .nav-links { display: none !important; } 
     .split-nav-container { max-width: 130px; }
     .split-master-btn { font-size: 0.6rem !important; padding: 6px 8px; }
     .child-node { font-size: 0.6rem !important; padding: 6px 6px; }
@@ -429,8 +406,5 @@ body {
     .about h2, .portfolio h2, .faq h2, .contact h2 { font-size: 2.4rem; }
     .video-overlay-text h2 { font-size: 2.1rem; letter-spacing: -1px; }
     .video-overlay-text p { font-size: 1rem; }
-    .faq-question { font-size: 1.1rem; padding: 20px 0; }
-    .testimonial-card { padding: 24px; }
-    .testimonial-quote { font-size: 1rem; }
     .navbar .logo { font-size: 1rem; }
 }
