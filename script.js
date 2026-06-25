@@ -49,39 +49,8 @@ premiumVideo.forEach(vid => {
     document.addEventListener("scroll", forceVideoPlay, { once: true, passive: true });
 });
 
-
 // ============================================================================
-// 2. IGLOO.INC STYLE HIGH-INTERACTIVE 3D MOUSE COORDINATE ORBIT MATRIX
-// ============================================================================
-const heroSection = document.getElementById("hero");
-const orbitLayers = document.querySelectorAll(".dynamic-3d-rotate");
-
-if (heroSection && window.innerWidth > 900) {
-    heroSection.addEventListener("mousemove", (e) => {
-        const boundRect = heroSection.getBoundingClientRect();
-        const mouseDeltaX = e.clientX - (boundRect.left + boundRect.width / 2);
-        const mouseDeltaY = e.clientY - (boundRect.top + boundRect.height / 2);
-
-        orbitLayers.forEach(layer => {
-            const rotationalDepthFactor = layer.getAttribute("data-depth");
-            const finalTiltX = mouseDeltaY * rotationalDepthFactor * -0.05;
-            const finalTiltY = mouseDeltaX * rotationalDepthFactor * 0.05;
-            const translateShiftX = mouseDeltaX * rotationalDepthFactor * 0.15;
-            const translateShiftY = mouseDeltaY * rotationalDepthFactor * 0.15;
-
-            layer.style.transform = `translate3d(${translateShiftX}px, ${translateShiftY}px, 0) rotateX(${finalTiltX}deg) rotateY(${finalTiltY}deg)`;
-        });
-    });
-
-    heroSection.addEventListener("mouseleave", () => {
-        orbitLayers.forEach(layer => {
-            layer.style.transform = `translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)`;
-        });
-    });
-}
-
-// ============================================================================
-// FIXED SCROLL DETECTOR FOR APPLE MUSIC GLASS NAVBAR TRANSFORMATION
+// SCROLL DETECTOR FOR APPLE MUSIC GLASS NAVBAR TRANSFORMATION
 // ============================================================================
 const appNavbar = document.getElementById("masterAppNavbar");
 window.addEventListener("scroll", () => {
@@ -517,7 +486,7 @@ if (clientFormElement) {
 
 
 // ============================================================================
-// CINEMATIC KINETIC FILMSPAN CORRIDOR COLLAPSE ACTION (IMAGE_410585.JPG)
+// CINEMATIC KINETIC FILMSSPAN CORRIDOR COLLAPSE ACTION (IMAGE_410585.JPG)
 // ============================================================================
 const collapseTriggerBtn = document.getElementById("ribbonCollapseBtn");
 const filmstripTrack = document.getElementById("filmstripTrack");
