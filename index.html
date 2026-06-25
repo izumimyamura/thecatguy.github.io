@@ -19,6 +19,7 @@
             <div class="nav-links">
                 <a href="#hero">Home</a>
                 <a href="#showreel">Showreel</a>
+                <a href="#teaser-reel">Teasers</a>
                 <a href="#portfolio">Portfolio</a>
                 <a href="#about">About</a>
                 <a href="#faq">FAQ</a>
@@ -44,7 +45,7 @@
                 <span class="ad-title">⚠️ SYSTEM_ALERT.EXE</span>
                 <button class="ad-close-btn" id="adCloseBtn">&times;</button>
             </div>
-            <div class="ad-popup-body">
+            <div class="ad-popup-box-body">
                 <p id="adMessageText">There is no easter egg here.</p>
                 <button class="ad-action-btn" id="adNextBtn">Next</button>
             </div>
@@ -69,7 +70,13 @@
     <div class="cursor-glow" id="customCursor"></div>
 
     <section class="hero" id="hero">
-        <div class="hero-content">
+        <div class="orbit-3d-ambient-mesh container-3d-frame">
+            <div class="mesh-sphere ring-1 dynamic-3d-rotate" data-depth="0.1"></div>
+            <div class="mesh-sphere ring-2 dynamic-3d-rotate" data-depth="0.3"></div>
+            <div class="mesh-sphere ring-3 dynamic-3d-rotate" data-depth="0.5"></div>
+        </div>
+
+        <div class="hero-content dynamic-3d-rotate" data-depth="0.2">
             <h1 class="reveal glitch-text" data-text="CAT GUY">CAT GUY</h1>
             
             <div class="spotlight-subtitle-container" id="spotlightTextFrame">
@@ -83,7 +90,7 @@
             </div>
         </div>
         
-        <div class="cassette-frame">
+        <div class="cassette-frame dynamic-3d-rotate" data-depth="0.4">
             <img src="cassette.png" class="cassette" alt="Cassette">
         </div>
         
@@ -115,6 +122,34 @@
                 <div class="video-overlay-text step-3">
                     <h2>Hollywood Grading.</h2>
                     <p>Dynamic node structures giving your film true depth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="teaser-showcase" id="teaser-reel">
+        <div class="section-header">
+            <h2>Active Timeline Teasers</h2>
+            <p class="section-subtitle">Real-time uncompressed raw timeline tracks playing natively.</p>
+        </div>
+        
+        <div class="teaser-flex-matrix">
+            <div class="teaser-lane-card">
+                <video autoplay muted loop playsinline preload="auto">
+                    <source src="video.mp4" type="video/mp4">
+                </video>
+                <div class="teaser-lane-meta">
+                    <span class="lane-timestamp">TRACK_01 // 60FPS</span>
+                    <h3>High-Velocity Ramping</h3>
+                </div>
+            </div>
+            <div class="teaser-lane-card">
+                <video autoplay muted loop playsinline preload="auto">
+                    <source src="video.mp4" type="video/mp4">
+                </video>
+                <div class="teaser-lane-meta">
+                    <span class="lane-timestamp">TRACK_02 // 4K_RAW</span>
+                    <h3>Sound Design Matrix</h3>
                 </div>
             </div>
         </div>
