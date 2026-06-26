@@ -337,7 +337,7 @@ body {
 .video-overlay-text p { font-size: 1.4rem; color: #e8e8ed; max-width: 600px; line-height: 1.4; }
 .section-header { max-width: 800px; margin-bottom: 60px; }
 .section-subtitle { font-size: 1.4rem; color: #86868b; margin-top: 10px; }
-.portfolio { padding: 140px 10% 40px 10%; background: #000000; position: relative; }
+.portfolio { padding: 140px 10%; background: #000000; position: relative; }
 .portfolio h2 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1.5px; }
 .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; perspective: 1000px; }
 .portfolio-card { position: relative; height: 420px; background: #1c1c1e; border-radius: 28px; overflow: hidden; display: flex; align-items: flex-end; transform-style: preserve-3d; cursor: pointer; will-change: transform; }
@@ -467,4 +467,83 @@ body {
     .navbar .logo { font-size: 1rem; }
     .apple-msg-popup { right: -360px !important; width: 280px; } 
     .apple-msg-popup.show { right: 15px !important; }
+}
+
+/* ============================================================================
+   APPLE-STYLE MULTI-VIDEO CAROUSEL CONTROLS
+   ============================================================================ */
+.video-nav-controls {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 50;
+    background: rgba(28, 28, 30, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 12px 24px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.video-scale-target:hover .video-nav-controls {
+    opacity: 1; 
+}
+
+.video-nav-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #ffffff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.video-nav-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.video-nav-btn:hover {
+    background: #ffffff;
+    color: #000000;
+    transform: scale(1.1);
+}
+
+.video-indicators {
+    display: flex;
+    gap: 8px;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: #ffffff;
+    width: 24px; 
+    border-radius: 4px;
+}
+
+@media(max-width: 900px) {
+    .video-nav-controls { 
+        opacity: 1; 
+        bottom: 25px; 
+        padding: 10px 20px; 
+    }
+    .video-nav-btn { width: 36px; height: 36px; }
 }
