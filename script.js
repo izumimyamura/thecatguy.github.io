@@ -39,7 +39,10 @@ if (premiumVideo) {
     premiumVideo.setAttribute("playsinline", "");
     
     const forceVideoPlay = () => {
-        premiumVideo.play().catch(err => console.log("Retrying playback stream..."));
+        let playPromise = premiumVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(err => console.log("Retrying playback stream..."));
+        }
     };
 
     forceVideoPlay();
@@ -50,7 +53,7 @@ if (premiumVideo) {
 }
 
 // ============================================================================
-// 1.5 APPLE STYLE MULTI-VIDEO CAROUSEL ENGINE
+// 1.5 APPLE STYLE MULTI-VIDEO CAROUSEL ENGINE (WITH AUTO-ADVANCE)
 // ============================================================================
 const videoPlaylist = ['video.mp4', 'video2.mp4', 'video3.mp4'];
 let currentVideoIndex = 0;
@@ -99,6 +102,12 @@ if (premiumVideo && prevBtn && nextBtn) {
 
     nextBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+        updateVideoSource(currentVideoIndex);
+    });
+
+    // Automatically advance to the next video when the current one finishes
+    premiumVideo.addEventListener('ended', () => {
         currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
         updateVideoSource(currentVideoIndex);
     });
