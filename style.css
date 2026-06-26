@@ -281,7 +281,7 @@ body {
 .form-submit-matrix-btn { background: #ffffff; color: #000000; font-family: 'Space Grotesk', sans-serif; font-size: 0.95rem; font-weight: 700; border: none; padding: 16px; border-radius: 14px; cursor: pointer; margin-top: 10px; transition: background 0.3s, transform 0.1s ease; }
 .form-submit-matrix-btn:hover { background: #ff8c00; transform: translateY(-1px); }
 
-/* Core Infrastructure Elements (From previous updates) */
+/* Core Infrastructure Elements */
 .egg-glitch-btn { background: #ffffff; color: #000000; border: 1px solid #ffffff; padding: 6px 14px; border-radius: 20px; font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); will-change: filter, transform; }
 .egg-glitch-btn:hover { transform: scale(1.05) skew(-3deg); filter: invert(1); border-color: #000000; animation: button-jitter 0.15s infinite linear; }
 @keyframes button-jitter { 0% { transform: scale(1.05) translate(1px, -1px) skew(-3deg); } 50% { transform: scale(1.05) translate(-1px, 1px) skew(-3deg); } 100% { transform: scale(1.05) translate(0, 0) skew(-3deg); } }
@@ -480,19 +480,15 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-    z-index: 50;
+    z-index: 99999; /* Forced to the very top layer */
     background: rgba(28, 28, 30, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     padding: 12px 24px;
     border-radius: 40px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.video-scale-target:hover .video-nav-controls {
-    opacity: 1; 
+    opacity: 1; /* Always visible */
+    pointer-events: auto; /* Forces clicks to register */
 }
 
 .video-nav-btn {
@@ -541,7 +537,6 @@ body {
 
 @media(max-width: 900px) {
     .video-nav-controls { 
-        opacity: 1; 
         bottom: 25px; 
         padding: 10px 20px; 
     }
