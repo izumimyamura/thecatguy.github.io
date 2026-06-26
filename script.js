@@ -49,6 +49,60 @@ if (premiumVideo) {
     document.addEventListener("scroll", forceVideoPlay, { once: true, passive: true });
 }
 
+// ============================================================================
+// 1.5 APPLE STYLE MULTI-VIDEO CAROUSEL ENGINE
+// ============================================================================
+const videoPlaylist = ['video.mp4', 'video2.mp4', 'video3.mp4'];
+let currentVideoIndex = 0;
+
+const prevBtn = document.getElementById('prevVideoBtn');
+const nextBtn = document.getElementById('nextVideoBtn');
+const indicators = document.querySelectorAll('.indicator');
+
+if (premiumVideo && prevBtn && nextBtn) {
+    function updateVideoSource(newIndex) {
+        // Quick GSAP fade out
+        gsap.to(premiumVideo, { 
+            opacity: 0, 
+            duration: 0.3, 
+            onComplete: () => {
+                // Swap the video source
+                premiumVideo.src = videoPlaylist[newIndex];
+                premiumVideo.load();
+                
+                // Force play
+                let playPromise = premiumVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(err => console.log("Autoplay prevented on swap"));
+                }
+                
+                // Update dots
+                indicators.forEach((ind, i) => {
+                    if (i === newIndex) {
+                        ind.classList.add('active');
+                    } else {
+                        ind.classList.remove('active');
+                    }
+                });
+
+                // Fade back in
+                gsap.to(premiumVideo, { opacity: 1, duration: 0.3 });
+            }
+        });
+    }
+
+    prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentVideoIndex = (currentVideoIndex - 1 + videoPlaylist.length) % videoPlaylist.length;
+        updateVideoSource(currentVideoIndex);
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentVideoIndex = (currentVideoIndex + 1) % videoPlaylist.length;
+        updateVideoSource(currentVideoIndex);
+    });
+}
 
 // ============================================================================
 // 2. CURSOR SYSTEMS & COORDINATE TRACKING LOOPS
@@ -91,7 +145,6 @@ document.addEventListener("touchmove", (e) => {
     }
 }, { passive: true });
 
-
 // ============================================================================
 // 3. HOLLYWOOD OSCAR-STYLE OSCILLATING SPOTLIGHT RAY TRACKER
 // ============================================================================
@@ -103,7 +156,6 @@ if(spotlightFrame && oscarBeam) {
         oscarBeam.style.left = e.clientX + "px";
     });
 }
-
 
 // ============================================================================
 // 4. SPARKLE CONFETTI PARTY POPS BUTTON LAYER RE-ROUTING
@@ -233,7 +285,6 @@ if (burstCanvas && burstBtnWrapper) {
     burstBtnWrapper.addEventListener("touchend", stopBurstTrigger);
 }
 
-
 // ============================================================================
 // 5. HYBRID 3D TILT ENGINE & INTEGRATED INSIDE-BOX CARD ANIMATIONS
 // ============================================================================
@@ -346,7 +397,6 @@ cards.forEach(card => {
     }, { passive: true });
     card.addEventListener('touchend', resetTiltState);
 });
-
 
 // ============================================================================
 // 6. CANVAS RENDERING ENGINE & PROOFED TRIPLE-TAP LOGIC
@@ -464,7 +514,6 @@ function animateBackgroundPipeline(){
 }
 if(canvas) animateBackgroundPipeline();
 
-
 // ============================================================================
 // 7. DUAL-STATE CASSETTE TAPE TRACKING ENGINE
 // ============================================================================
@@ -495,7 +544,6 @@ function updateCassette() {
 }
 if(cassette) updateCassette();
 
-
 // ============================================================================
 // 8. CLOUD PARALLAX ENGINE
 // ============================================================================
@@ -509,7 +557,6 @@ window.addEventListener("scroll", () => {
         el.style.transform = `translateY(${yPos}px)`;
     });
 });
-
 
 // ============================================================================
 // 9. REAL SIGNATURE AUTOMATIC WRITE-ON ENGINE LOOP
@@ -531,7 +578,6 @@ if (signaturePath) {
         .to([".sig-title-text", ".sig-subtitle-text"], { opacity: 0, duration: 0.3 })
         .to(signaturePath, { strokeDashoffset: pathLength, duration: 1.2, ease: "power2.in" });
 }
-
 
 // ============================================================================
 // 10. INTERACTIVE FAQ ACCORDION TOGGLE
@@ -558,7 +604,6 @@ faqQuestions.forEach(question => {
         }
     });
 });
-
 
 // ============================================================================
 // 11. "WANT EASTER EGGS?" AD SIMULATOR
@@ -604,7 +649,6 @@ if(adTriggerBtn && adOverlay && adNextBtn && adCloseBtn) {
     adCloseBtn.addEventListener("click", closeAdOverlayCleanly);
 }
 
-
 // ============================================================================
 // 12. APPLE STYLE iMESSAGE POPUP TRIGGER INTERACTION
 // ============================================================================
@@ -634,7 +678,6 @@ if (contactHeader && appleMsgNotify && appleMsgClose) {
         appleMsgNotify.classList.remove("show");
     });
 }
-
 
 // ============================================================================
 // 13. INFINITE TIMELINE DRAG & CROSS-PLATFORM HAPTIC SCRUBBING SYSTEM
@@ -718,7 +761,6 @@ if (scrubZone && ticksTrack && readoutText) {
     document.addEventListener("mouseup", terminateDragState);
     document.addEventListener("touchend", terminateDragState);
 }
-
 
 // ============================================================================
 // 14. DYNAMIC JUMPING MONEY EMOTICONS PARTICLE CANVAS PIPELINE
@@ -805,7 +847,6 @@ if (moneyZone && moneyCanvas) {
     moneyZone.addEventListener("touchend", () => { isHoveringZone = false; });
 }
 
-
 // ============================================================================
 // 15. UPDATED: DEFENSIVE INTERCEPTION LOGIC REDIRECTING TO INSTAGRAM PROFILE
 // ============================================================================
@@ -834,7 +875,6 @@ if (selectionMenu && inputLabel && inputField) {
     });
 }
 
-// CONVERTED: Intercepts form submit vectors and loads your main public feed page
 if (clientFormElement) {
     clientFormElement.addEventListener("submit", (e) => {
         e.preventDefault(); 
@@ -846,7 +886,7 @@ if (clientFormElement) {
 
         console.log("Timeline Onboarding Intent Captured:", { clientName, companyName, pickedChannel, handleDetail });
 
-        // Redirects your clients directly to your main Instagram profile feed wall cleanly
+        // Redirects directly to the main Instagram profile
         window.location.href = "https://www.instagram.com/thecatguy.editz/";
     });
 }
